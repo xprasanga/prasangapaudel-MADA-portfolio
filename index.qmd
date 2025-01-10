@@ -2,15 +2,13 @@
 title: "My website and data analysis portfolio"
 ---
 
-**Feel free to change the text below any way you want 😁!**
+**This is a website I created for the MADA course**
 
 # Hello
 
-### And hello again
+### My name is Prasanga Paudel.
 
-Welcome to **my website** and _data analysis portfolio._ 
+Welcome to **my website** and *data analysis portfolio.*
 
-
-* Please use the `Menu Bar` above to look around.
-* Have fun!
-
+-   Please use the `Menu Bar` above to look around.
+-   Have fun!

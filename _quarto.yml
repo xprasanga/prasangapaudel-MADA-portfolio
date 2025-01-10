@@ -3,10 +3,10 @@ project:
   output-dir: docs
 
 website:
-  title: "YOURNAME Data Analysis Portfolio"
+  title: "Prasanga's Data Analysis Portfolio"
   navbar:
     left:
-      - text: "About Me"
+      - text: "Prasanga Paudel's MADA Portfolio"
         file: aboutme.qmd
       - text: "Projects"
         menu:
@@ -16,10 +16,10 @@ website:
             file: coding-exercise/coding-exercise.qmd
     right:
       - icon: github 
-        href: URL-TO-THIS-REPOSITORY-HERE        
+        href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio       
 format:
   html:
-    theme: cosmo
+    theme: flatly
     highlight: zenburn
     css: styles.css
     toc: FALSE

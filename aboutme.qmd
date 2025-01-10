@@ -2,6 +2,28 @@
 title: "About me"
 ---
 
-Add some text and a figure describing myself.
+## Picture
 
-For details, see the exercise instructions. 
+![Prasanga Paudel](assets/images/unnamed.jpg)
+
+## Education
+
+Hello! My name is Prasanga Paudel. I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.
+
+## Programming Experience
+
+I have experience with the following programming tools: - **SAS** - **STATA** - **MATLAB**
+
+## Research Interests
+
+## Research Interests
+
+My research interests include: 1. **Food Economics** 2. **Environmental Economics** 3. **Policy Analysis** 4. **Health Economics**
+
+## Expectations from This Course
+
+Through this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields.
+
+## Something Interesting About Me
+
+I love watching soccer and cricket. My favorite club is **FC Bayern Munich**, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala.
