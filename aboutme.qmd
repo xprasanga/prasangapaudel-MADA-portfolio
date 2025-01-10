@@ -1,12 +1,12 @@
 ---
-title: "Module 1"
+title: "Welcome!"
 ---
 
-![Prasanga Paudel](assets/images/unnamed.jpg)
+![Hello! My name is Prasanga Paudel.](assets/images/unnamed.jpg)
 
 ## Education
 
-Hello! My name is Prasanga Paudel. I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.
+I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.
 
 ## Programming Experience
 
