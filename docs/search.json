@@ -51,9 +51,9 @@
   {
     "objectID": "aboutme.html",
     "href": "aboutme.html",
-    "title": "About me",
+    "title": "Module 1",
     "section": "",
-    "text": "Hello! My name is Prasanga Paudel. I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.\n\n\n\nI have experience with the following programming tools: - SAS - STATA - MATLAB\n\n\n\n\n\n\nMy research interests include: 1. Food Economics 2. Environmental Economics 3. Policy Analysis 4. Health Economics\n\n\n\nThrough this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields.\n\n\n\nI love watching soccer and cricket. My favorite club is FC Bayern Munich, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala."
+    "text": "Prasanga Paudel"
   },
   {
     "objectID": "coding-exercise/coding-exercise.html",
@@ -198,9 +198,9 @@
   {
     "objectID": "aboutme.html#education",
     "href": "aboutme.html#education",
-    "title": "About me",
-    "section": "",
-    "text": "Hello! My name is Prasanga Paudel. I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis."
+    "title": "Module 1",
+    "section": "Education",
+    "text": "Education\nHello! My name is Prasanga Paudel. I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis."
   },
   {
     "objectID": "aboutme.html#research-interest",
@@ -212,9 +212,9 @@
   {
     "objectID": "aboutme.html#expectations-from-this-course",
     "href": "aboutme.html#expectations-from-this-course",
-    "title": "About me",
-    "section": "",
-    "text": "Through this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields."
+    "title": "Module 1",
+    "section": "Expectations from This Course",
+    "text": "Expectations from This Course\nThrough this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields."
   },
   {
     "objectID": "aboutme.html#interesting-thing-about-me",
@@ -226,23 +226,23 @@
   {
     "objectID": "aboutme.html#programming-experience",
     "href": "aboutme.html#programming-experience",
-    "title": "About me",
-    "section": "",
-    "text": "I have experience with the following programming tools: - SAS - STATA - MATLAB"
+    "title": "Module 1",
+    "section": "Programming Experience",
+    "text": "Programming Experience\nI have experience with the following programming tools: - SAS - STATA - MATLAB"
   },
   {
     "objectID": "aboutme.html#research-interests",
     "href": "aboutme.html#research-interests",
-    "title": "About me",
-    "section": "",
-    "text": "My research interests include: 1. Food Economics 2. Environmental Economics 3. Policy Analysis 4. Health Economics"
+    "title": "Module 1",
+    "section": "Research Interests",
+    "text": "Research Interests\nMy research interests include: 1. Food Economics 2. Environmental Economics 3. Policy Analysis 4. Health Economics"
   },
   {
     "objectID": "aboutme.html#something-interesting-about-me",
     "href": "aboutme.html#something-interesting-about-me",
-    "title": "About me",
-    "section": "",
-    "text": "I love watching soccer and cricket. My favorite club is FC Bayern Munich, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala."
+    "title": "Module 1",
+    "section": "Something Interesting About Me",
+    "text": "Something Interesting About Me\nI love watching soccer and cricket. My favorite club is FC Bayern Munich, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala."
   },
   {
     "objectID": "aboutme.html#research-interests-1",
@@ -250,5 +250,12 @@
     "title": "About me",
     "section": "",
     "text": "My research interests include: 1. Food Economics 2. Environmental Economics 3. Policy Analysis 4. Health Economics"
+  },
+  {
+    "objectID": "aboutme.html#image",
+    "href": "aboutme.html#image",
+    "title": "Module 1",
+    "section": "",
+    "text": "Prasanga Paudel"
   }
 ]

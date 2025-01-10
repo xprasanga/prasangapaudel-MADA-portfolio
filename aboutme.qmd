@@ -1,8 +1,6 @@
 ---
-title: "About me"
+title: "Module 1"
 ---
-
-## Picture
 
 ![Prasanga Paudel](assets/images/unnamed.jpg)
 
@@ -13,8 +11,6 @@ Hello! My name is Prasanga Paudel. I am currently pursuing an MS in Agricultural
 ## Programming Experience
 
 I have experience with the following programming tools: - **SAS** - **STATA** - **MATLAB**
-
-## Research Interests
 
 ## Research Interests
 
