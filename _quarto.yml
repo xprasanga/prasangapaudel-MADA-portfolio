@@ -19,7 +19,7 @@ website:
         href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio       
 format:
   html:
-    theme: flatly
+    theme: cosmo
     highlight: zenburn
     css: styles.css
     toc: FALSE
