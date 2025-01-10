@@ -1,1 +1,9 @@
-# My website and data analysis portfolio
+# Prasanga Paudel's Data Analysis Portfolio
+
+This is my GitHub repository for my data analysis portfolio. 
+
+You can view my websit here:
+
+[Prasanga Paudel's Data Analysis Portfolio](https://xprasanga.github.io/prasangapaudel-MADA-portfolio/)
+
+Feel free to explore!
