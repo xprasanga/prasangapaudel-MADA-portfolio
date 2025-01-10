@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Prasanga's Data Analysis Portfolio"
+  title: "Prasanga Paudel Data Analysis Portfolio"
   navbar:
     left:
       - text: "Prasanga Paudel's MADA Portfolio"
