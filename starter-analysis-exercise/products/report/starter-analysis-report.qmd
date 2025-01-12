@@ -39,7 +39,7 @@ _Write a summary of your project._
 _Provide enough background on your topic that others can understand the why and how of your analysis_ 
 
 ## Description of data and data source
-_Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+_The dataset contains information on three variables height, weight, and gender. Two additional variables have been added to the original data, one is Country, representing the country of origin and the other is Age, representing the age in years_
 
 ## Questions/Hypotheses to be addressed
 _State the research questions you plan to answer with this analysis._
