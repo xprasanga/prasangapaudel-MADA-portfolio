@@ -6,7 +6,7 @@ website:
   title: "Prasanga Paudel's Data Analysis Portfolio"
   navbar:
     left:
-      - text: "Prasanga Paudel's MADA Portfolio"
+      - text: "About Prasanga"
         file: aboutme.qmd
       - text: "Projects"
         menu:
