@@ -1,5 +1,166 @@
 ---
 title: "R Coding Exercise"
+author: Prasanga Paudel
+date: January 21, 2025
+format:
+  html:
+    toc: false
+    number-sections: true
+    highlight-style: github
 ---
 
 Placeholder file for the future R coding exercise.
+
+```{r, echo=FALSE, message=FALSE}
+# load a few R packages
+library(here)
+library(knitr)
+library(dslabs) # loading dslabs package as we will use gapminder dataset from it
+library(tidyverse) # loading tidyverse package 
+```
+
+{{< pagebreak >}}
+# Data Aquisition
+In this section we will acquire data from gapminder, and have an initial look at it.
+```{r}
+help(gapminder) #looking a the help file for gapminder data
+str(gapminder) # getting an overview of the data structire
+summary(gapminder) # getting a summary of the gapminder dataset
+class(gapminder) # obtaining the type of object gapminder is
+```
+We can confirm that gapminder is a dataframe.
+
+{{< pagebreak >}}
+# Data Cleaning
+Next, we will extract the data required for our excercise from the vast dataset of gapminder
+```{r}
+africadata <- gapminder %>% filter(continent == "Africa") #filtering african countries to make a new dataset
+str(africadata) # getting an overview of the data structire of africadata
+summary(africadata) # geting a summary of africadata
+```
+
+## Creating new dataset: "one" and "two"
+
+```{r}
+# selecting the required variables to create a new dataset named one
+one <- africadata %>% select(infant_mortality, life_expectancy) 
+str(one) # obtaining the information about the structure of one
+summary(one) # summarizing the details about one
+two <- africadata %>% select(population, life_expectancy) # creating another dataset with only two variables as listed
+str(two)  # obtaining the information about the structure of two
+summary(two)  # obtaining the summary about the dataset two
+```
+
+{{< pagebreak >}}
+# Data Visualization
+We will now visualize the data using multiple figures.
+
+## Figure1: Scatterplot of Life Expectancy vs Infant Mortality
+
+We observe that the life expectancy is going down as the infant mortality increases for the country, this could be because the health infrastructure that is unable to provide support to infant population might also not be able to support the general population. The streaks of data represent individual countries, most of the streaks seem to be heading downwards, and the overall tendency is also downwards implying negative correlation.
+
+```{r}
+# Creating scatterplot with infant mortality on x-axis and life expectancy on y-axis
+ggplot(one, aes(x = log(infant_mortality), y = life_expectancy)) + #setting variables to different axis
+  geom_point(color = "red", alpha = 0.7) +
+labs(
+    title = "Scatterplot of Life Expectancy vs Infant Mortality", # giving a title to the figure
+    x = "Infant Mortality", #labeling the axis
+    y = "Life Expectancy" #labeling the axis
+  ) +
+  theme_minimal()
+
+```
+
+## Figure 2: Scatterplot of Life Expectancy vs Population Size
+
+We observe the life expectancy is going up as the country is more populated, this could be because more populated countries in Africa are more developed in health sectors and able to prove health support. The streaks of data represent individual countries, most of the streaks seem to be heading upwards, and the overall tendency is also upwards implying positive correlation.
+
+```{r}
+# Create scatterplot with regression line
+ggplot(two, aes(x = log(population), y = life_expectancy)) + #setting variables to different axis
+  geom_point(color = "darkgreen", alpha = 0.7) +
+labs(
+    title = "Scatterplot of Life Expectancy vs Population Size", # giving a title to the figure
+    x = "Population Size (Natural Log Scale)", #labeling the axis
+    y = "Life Expectancy" #labeling the axis
+  ) +
+  theme_minimal()
+
+```
+
+## Table 1: Summary of missing values for infant mortality
+
+```{r}
+# Calculating the number of missing values for infant_mortality by  grouping them according to year
+missing_data_summary <- africadata %>% group_by(year) %>% summarize( missing_infant_mortality = sum(is.na(infant_mortality)), #gives us total missing values
+    total_observations = n(), #gives us total observations
+  )
+
+# printing the result to have a look
+print(missing_data_summary)
+
+```
+
+We will create a new dataset based on the data from year 2000 only.
+
+```{r}
+data_2000 <- africadata %>% filter(year == 2000) # setting filter as year 2000 to be used to create the new dataset
+str(data_2000)
+summary(data_2000)
+```
+
+## Figure 3: Infant mortality vs life expectancy scatterplot for year 2000
+
+The figure shows the scatterplot with a regression line to analyze the correlation more easily.
+
+```{r}
+ggplot(data_2000, aes(x = log(infant_mortality), y = life_expectancy)) + #setting variables to different axis
+  geom_point(color = "red", alpha = 0.7) + geom_smooth(method = "lm", color = "blue", se = FALSE) +
+labs(
+    title = "Scatterplot of Life Expectancy vs Infant Mortality for year 2000", # giving a title to the figure
+    x = "Infant Mortality", #labeling the axis
+    y = "Life Expectancy" #labeling the axis
+  ) +
+  theme_minimal()
+
+```
+
+## Figure 4: Infany mortality vs population catterplot for year 2000
+
+The figure shows the scatterplot with a regression line to analyze the correlation more easily.
+
+```{r}
+ggplot(data_2000, aes(x = log(population), y = life_expectancy)) + #setting variables to different axis
+  geom_point(color = "darkgreen", alpha = 0.7) + geom_smooth(method = "lm", color = "blue", se = FALSE) +
+labs(
+    title = "Scatterplot of Life Expectancy vs Population Size for the year 2000", # giving a title to the figure
+    x = "Population Size (Natural Log Scale)", #labeling the axis
+    y = "Life Expectancy" #labeling the axis
+  ) +
+  theme_minimal()
+
+```
+
+{{< pagebreak >}}
+
+# Linear model
+
+## Fitting the linear model
+
+The two linear models are as follow
+```{r}
+# Fit the linear model
+fit1 <- lm(life_expectancy ~ infant_mortality, data = data_2000) # fit1 is a model with infant mortality as predictor
+fit2 <- lm(life_expectancy ~ log(population), data = data_2000) # fit2 is a model with log(population) as predictor
+```
+
+The relation between life expectancy and infant mortality is statistically significand, with negative correlation. The relation between life expectancy and population is not statistically significant.
+
+## Summarizing the fitting result
+The summary of the two linear models are provided below.
+```{r}
+# View the summary of the model
+summary(fit1) #summary of the fit1 model
+summary(fit2) #summary of the fit2 model
+```
