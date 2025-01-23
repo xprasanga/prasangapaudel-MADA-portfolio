@@ -164,3 +164,82 @@ The summary of the two linear models are provided below.
 summary(fit1) #summary of the fit1 model
 summary(fit2) #summary of the fit2 model
 ```
+
+This section is contributed by DOREEN KIBUULE KALEMBE. 
+
+In this section, we will acquire data from heights.
+```{r}
+library(dslabs)
+help(heights)
+
+# View the structure of the dataset
+str(heights)
+
+# View the first few rows of the dataset
+head(heights)
+```
+The data set includes men and women that reported their heights in inches. We are going to explore this data set and see what we can come up with. 
+
+We are going to assign the data set a name. Lets say heights_data.
+```{r}
+library(naniar) # this package will help us know where there are any missing values in the data
+
+heights_data<-heights
+gg_miss_var(heights_data)# this is helping us check for any na variables in the data set.
+pct_complete(heights_data) # the data is 100 percent complete.
+sum(is.na(heights_data))# checks for missing values in the data set
+```
+The data show that there are no missing values in the dataset and the data is 100 percent complete.
+
+Lets try to get the summary/descriptitive statistics of the data.
+```{r}
+library(tidyverse)
+library(dplyr)
+# Calculate descriptive statistics for height by gender
+heights_summary <- heights_data %>%
+  group_by(sex) %>%  # Group data by gender
+  summarise(
+    count = n(),                   # Count of observations
+    mean_height = mean(height, na.rm = TRUE), # Mean height
+    median_height = median(height, na.rm = TRUE), # Median height
+    sd_height = sd(height, na.rm = TRUE),     # Standard deviation
+    min_height = min(height, na.rm = TRUE),   # Minimum height
+    max_height = max(height, na.rm = TRUE)    # Maximum height
+  )
+heights_summary
+```
+Our summary statistics show that the shortest person male is 50 while the shortest woman is 51 inches. On average, men are taller than women.
+
+Lets try to visualise the data.
+```{r}
+ #Compare the distribution of height for each sex
+ggplot(data = heights_data, aes(x = sex, y = height, fill = sex)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribution of Height by Sex",
+    x = "Sex",
+    y = "Height (inches)"
+  ) +
+  theme_minimal()
+```
+
+
+From our results above, we can make a simple linear regression between sex and height.In this model, height is the dependent variable and sex (categorical variable: "Male" or "Female") is the independent variable.
+
+```{r}
+Linear_model<-lm(height ~ sex, data = heights_data)
+summary(Linear_model)
+
+```
+
+\textbf{Interpretation of results}
+
+Our results show that the average height of females which is our reference group is 64.94inches.
+
+sexMale (Estimate = 4.3753):
+This result represents the difference in average height between males and females.Males are, on average, 4.3753 inches taller than females.
+
+Both the intercept and the coefficient for sexMale have p-values < 2e-16, meaning they are highly statistically significant (p < 0.0001).This indicates that the difference in height between males and females is unlikely to be due to random chance.
+
+
+
