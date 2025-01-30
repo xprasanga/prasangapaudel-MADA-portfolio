@@ -14,6 +14,8 @@ website:
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
           - text: "R Coding Exercise"
             file: coding-exercise/coding-exercise.qmd
+          - text: "Exercise 4: Synthetic Data Generation"
+            file: data-excercise/synthetic-data.qmd
     right:
       - icon: github 
         href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio       

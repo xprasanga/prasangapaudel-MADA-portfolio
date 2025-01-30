@@ -1,0 +1,173 @@
+---
+title: "Exercise: Generating Synthetic Data"
+author: Prasanga Paudel
+date: January 30, 2025
+format:
+  html:
+    toc: false
+    number-sections: true
+    highlight-style: github
+---
+
+Placeholder file for the future R coding exercise.
+
+```{r, echo=FALSE, message=FALSE}
+# load a few R packages
+library(dplyr)
+library(purrr)
+library(lubridate)
+library(ggplot2)
+library(here)
+```
+
+{{< pagebreak >}}
+# Data Aquisition
+In this section we will set the seed so that we can create reproducible data, and set the number of observations to 180.
+
+```{r}
+# Set a seed for reproducibility
+set.seed(324)
+# Define the number of observations (patients) to generate
+n_obs <- 180
+```
+
+
+We will then create an empty dataset with just variable names and their data structure. We will make sure that every variable has the same number of obserations.
+
+```{r}
+# Create an empty data frame with placeholders for variables
+data <- data.frame(
+  userID = numeric(n_obs),
+  Age = numeric(n_obs),
+  Gender = character(n_obs),
+  Country = character(n_obs),
+  InstallationDate = lubridate::as_date(character(n_obs)),
+  PlayTime = numeric(n_obs),
+  PointsEarned = numeric(n_obs),
+  POTY = integer(n_obs)
+)
+```
+We can confirm that the new dataset "data" is formed successfully.
+
+{{< pagebreak >}}
+# Data Cleaning
+Next, we will create the synthetic the data required for our excercise.
+
+```{r}
+# Variable 1: Patient ID
+data$userID <- 1:n_obs
+
+# Variable 2: Age (numeric variable)
+data$Age <- round(rnorm(n_obs, mean = 23, sd = 5), 1)
+
+# Variable 3: Gender (categorical variable)
+data$Gender <- purrr::map_chr(sample(c("Male", "Female"), n_obs, replace = TRUE), as.character)
+
+# Variable 4: Country Group (categorical variable)
+data$Country <- purrr::map_chr(sample(c("USA", "Canada", "Germany"), n_obs, replace = TRUE), as.character)
+
+# Variable 5: Date of Enrollment (date variable)
+data$InstallationDate <- lubridate::as_date(sample(seq(from = lubridate::as_date("2022-01-01"), to = lubridate::as_date("2024-12-31"), by = "days"), n_obs, replace = TRUE))
+
+# Variable 6: Play time (numeric variable)
+data$PlayTime <- round(runif(n_obs, min = 40, max = 160), 1)
+
+# Variable 7: PointsEarned  (numeric variable)
+# PointsEarned is dependent on PlayTime
+# Define coefficients for the linear function
+beta_0 <- 50  # Intercept
+beta_1 <- 5   # Slope
+
+# Generate PointsEarned based on PlayTime with some randomness
+data$PointsEarned <- round(beta_0 + beta_1 * data$PlayTime + rnorm(nrow(data), mean = 0, sd = 130), 1)
+
+
+# Variable 8: Player of the Year Nominee (binary variable, 0 = No, 1 = Yes)
+# Option 1: Player of the Year Nominees are independent of Country
+data$POTY <- purrr::map_int(sample(0:1, n_obs, replace = TRUE, prob = c(0.8, 0.2)), as.integer)
+```
+
+## Saving new dataset: 
+
+```{r}
+# Save the simulated data to a CSV and Rds file
+write.csv(data, here("data-excercise","data","data.csv"), row.names = FALSE)
+# if we wanted an RDS version
+#saveRDS(data, here("data-excercise", "data","data.Rds"))
+```
+
+{{< pagebreak >}}
+# Data Visualization
+We will now visualize the data using multiple figures.
+
+## Figure1: Scatterplot of Life Expectancy vs Infant Mortality
+
+We observe that the life expectancy is going down as the infant mortality increases for the country, this could be because the health infrastructure that is unable to provide support to infant population might also not be able to support the general population. The streaks of data represent individual countries, most of the streaks seem to be heading downwards, and the overall tendency is also downwards implying negative correlation.
+
+```{r}
+# ggplot2 boxplot for PointsEarned by Country group
+ggplot(data, aes(x = Country, y = PointsEarned)) +
+  geom_boxplot() +
+  labs(x = "Country Group", y = "PointsEarned Level") +
+  theme_bw()
+
+```
+
+```{r}
+# ggplot2 boxplot for PointsEarned by Country group
+ggplot(data, aes(x = Gender, y = PointsEarned)) +
+  geom_boxplot() +
+  labs(x = "Country Group", y = "PointsEarned Level") +
+  theme_bw()
+
+```
+
+## Figure 2: Scatterplot of Life Expectancy vs Population Size
+
+We observe the life expectancy is going up as the country is more populated, this could be because more populated countries in Africa are more developed in health sectors and able to prove health support. The streaks of data represent individual countries, most of the streaks seem to be heading upwards, and the overall tendency is also upwards implying positive correlation.
+
+```{r}
+# Create scatterplot with regression line
+ggplot(data, aes(x = PlayTime, y = PointsEarned)) + #setting variables to different axis
+  geom_point(color = "darkgreen", alpha = 0.7) + geom_smooth(method = "lm", color = "red", se = FALSE) +
+labs(
+    title = "Scatterplot of Play Time vs Points Earned", # giving a title to the figure
+    x = "Play Time", #labeling the axis
+    y = "Points earned" #labeling the axis
+  ) +
+  theme_minimal()
+
+```
+```{r}
+# Fit the linear model
+fit1 <- lm(PointsEarned ~ PlayTime, data = data) # fit1 is a model with Age as predictor
+summary(fit1)
+```
+
+
+```{r}
+# Create scatterplot with regression line
+ggplot(data, aes(x = Age, y = PointsEarned)) + #setting variables to different axis
+  geom_point(color = "darkgreen", alpha = 0.7) +
+labs(
+    title = "Scatterplot of Play Time vs Points Earned", # giving a title to the figure
+    x = "Age of the player", #labeling the axis
+    y = "Points earned" #labeling the axis
+  ) +
+  theme_minimal()
+```
+
+```{r}
+# Fit the linear model
+fit1 <- lm(PointsEarned ~ Age, data = data) # fit1 is a model with Age as predictor
+summary(fit1)
+```
+```{r}
+# Fit the linear model
+fit3 <- glm(POTY ~ Age + PlayTime + Country, family = binomial(link = "probit"), data = data) # fit1 is a model with Age as predictor
+summary(fit3)
+```
+
+
+
+
