@@ -62,7 +62,7 @@ We can confirm that the new dataset "data" is formed successfully.
 
 
 {{< pagebreak >}}
-# Data Cleaning
+# Data Formation
 Next, we will create the synthetic the data required for our excercise.
 We will try to control how the data is formed while we generate these data. 
 All the variables will be generated with randomness except for:
