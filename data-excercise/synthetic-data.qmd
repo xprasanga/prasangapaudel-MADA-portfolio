@@ -1,5 +1,5 @@
 ---
-title: "Exercise: Generating Synthetic Data"
+title: "Exercise 3: Generating Synthetic Data"
 author: Prasanga Paudel
 date: January 30, 2025
 format:
@@ -9,7 +9,7 @@ format:
     highlight-style: github
 ---
 
-Placeholder file for the future R coding exercise.
+
 
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
@@ -21,17 +21,28 @@ library(here)
 ```
 
 {{< pagebreak >}}
-# Data Aquisition
-In this section we will set the seed so that we can create reproducible data, and set the number of observations to 180.
+
+# Introduction
+
+In this excercise, I have chosen to create synthetic data and perform analysis based on it. I will be creating a dataset related to an online game "Soccer 101". 
+
+The dataset will contain information related to the country of origin of the player, age, play-time, points earned throughout the game, and the date when the online game account was created.The daataset will also include information on the Gender of the player and an indicator variable that explains whether the player has been nominated for the player of the year award or not.
+
+{{< pagebreak >}}
+# Data Generation
+
+## Setting the seeds and observation number
+In this section we will create the baseline for generating our synthetic data. We will set the seed so that we can create reproducible data, and we will also set the number of observations to 180.
 
 ```{r}
-# Set a seed for reproducibility
+# Setting a seed for reproducibility of data
 set.seed(324)
-# Define the number of observations (patients) to generate
+# Definining the number of observations (players) to generate
 n_obs <- 180
 ```
 
-
+{{< pagebreak >}}
+## Creating an empty Dataset
 We will then create an empty dataset with just variable names and their data structure. We will make sure that every variable has the same number of obserations.
 
 ```{r}
@@ -49,50 +60,59 @@ data <- data.frame(
 ```
 We can confirm that the new dataset "data" is formed successfully.
 
+
 {{< pagebreak >}}
 # Data Cleaning
 Next, we will create the synthetic the data required for our excercise.
+We will try to control how the data is formed while we generate these data. 
+All the variables will be generated with randomness except for:
+Points Earned _(This variable will be formed as a linear function of the variable play time as higher play time usually results in more control over the game and hence higher points)_
+
+We will also make sure that the variable "Player of the Year (POTY) Nominee is independent of country of origin of the player as it makes no sense.
+
 
 ```{r}
-# Variable 1: Patient ID
+# Variable 1: userID (represents the online userID of the player)
 data$userID <- 1:n_obs
 
-# Variable 2: Age (numeric variable)
+# Variable 2: Age of the player (coded as numeric variable)
 data$Age <- round(rnorm(n_obs, mean = 23, sd = 5), 1)
 
-# Variable 3: Gender (categorical variable)
+# Variable 3: Gender of the player (coded as categorical variable)
 data$Gender <- purrr::map_chr(sample(c("Male", "Female"), n_obs, replace = TRUE), as.character)
 
-# Variable 4: Country Group (categorical variable)
+# Variable 4: Country of origin (coded as categorical variable)
 data$Country <- purrr::map_chr(sample(c("USA", "Canada", "Germany"), n_obs, replace = TRUE), as.character)
 
-# Variable 5: Date of Enrollment (date variable)
+# Variable 5: Date of Installation (coded as date variable)
 data$InstallationDate <- lubridate::as_date(sample(seq(from = lubridate::as_date("2022-01-01"), to = lubridate::as_date("2024-12-31"), by = "days"), n_obs, replace = TRUE))
 
-# Variable 6: Play time (numeric variable)
+# Variable 6: PlayTime (coded as numeric variable)
 data$PlayTime <- round(runif(n_obs, min = 40, max = 160), 1)
 
-# Variable 7: PointsEarned  (numeric variable)
-# PointsEarned is dependent on PlayTime
-# Define coefficients for the linear function
-beta_0 <- 50  # Intercept
-beta_1 <- 5   # Slope
+# Variable 7: PointsEarned  ( coded as numeric variable)
+# PointsEarned will be kept dependent on PlayTime through a linear function
 
-# Generate PointsEarned based on PlayTime with some randomness
+beta_0 <- 50  # Defining coefficient for the linear function (Intercept)
+beta_1 <- 5   # Defining coefficient for the linear function (Slope)
+
+# Generating PointsEarned based on PlayTime with some randomness
 data$PointsEarned <- round(beta_0 + beta_1 * data$PlayTime + rnorm(nrow(data), mean = 0, sd = 130), 1)
 
 
 # Variable 8: Player of the Year Nominee (binary variable, 0 = No, 1 = Yes)
-# Option 1: Player of the Year Nominees are independent of Country
+# Option 1: Player of the Year Nominees are independent of Country of origin
 data$POTY <- purrr::map_int(sample(0:1, n_obs, replace = TRUE, prob = c(0.8, 0.2)), as.integer)
 ```
 
-## Saving new dataset: 
+
+{{< pagebreak >}}
+# Saving new dataset: 
 
 ```{r}
-# Save the simulated data to a CSV and Rds file
+# Saving the simulated data to a CSV file
 write.csv(data, here("data-excercise","data","data.csv"), row.names = FALSE)
-# if we wanted an RDS version
+# Saving as Rds is optional and we wont trigger that option for now.
 #saveRDS(data, here("data-excercise", "data","data.Rds"))
 ```
 
@@ -100,34 +120,36 @@ write.csv(data, here("data-excercise","data","data.csv"), row.names = FALSE)
 # Data Visualization
 We will now visualize the data using multiple figures.
 
-## Figure1: Scatterplot of Life Expectancy vs Infant Mortality
+## Figure1: Boxplot of Country vs Points Earned
 
-We observe that the life expectancy is going down as the infant mortality increases for the country, this could be because the health infrastructure that is unable to provide support to infant population might also not be able to support the general population. The streaks of data represent individual countries, most of the streaks seem to be heading downwards, and the overall tendency is also downwards implying negative correlation.
+We observe that there is no statistical difference across countries for points earned as we created these variables with randoness. All countries seem to have the mean in the same range with different variation within the data.
 
 ```{r}
 # ggplot2 boxplot for PointsEarned by Country group
 ggplot(data, aes(x = Country, y = PointsEarned)) +
   geom_boxplot() +
-  labs(x = "Country Group", y = "PointsEarned Level") +
+  labs(x = "Country of Origin", y = "Points earned by the player") +
   theme_bw()
 
 ```
+## Figure2: Boxplot of Gender vs Points Earned
+We can again observe that there is no statistical difference across Gender for points earned as we created these variables with randoness as well. Both male and female seem to have the mean in the same range with different variation within the group.
 
 ```{r}
 # ggplot2 boxplot for PointsEarned by Country group
 ggplot(data, aes(x = Gender, y = PointsEarned)) +
   geom_boxplot() +
-  labs(x = "Country Group", y = "PointsEarned Level") +
+  labs(x = "Gender", y = "Points earned by the player") +
   theme_bw()
 
 ```
 
-## Figure 2: Scatterplot of Life Expectancy vs Population Size
+## Figure 3: Scatterplot of Life Expectancy vs Population Size
 
-We observe the life expectancy is going up as the country is more populated, this could be because more populated countries in Africa are more developed in health sectors and able to prove health support. The streaks of data represent individual countries, most of the streaks seem to be heading upwards, and the overall tendency is also upwards implying positive correlation.
+We observe the points earned by the player is going up as the playing time is increasing, this is because we have created the data to follow this pattern. As we set the slope to a positive 5, the data has been generated with a positive correlation.
 
 ```{r}
-# Create scatterplot with regression line
+# Create scatterplot with a red regression line
 ggplot(data, aes(x = PlayTime, y = PointsEarned)) + #setting variables to different axis
   geom_point(color = "darkgreen", alpha = 0.7) + geom_smooth(method = "lm", color = "red", se = FALSE) +
 labs(
@@ -138,35 +160,50 @@ labs(
   theme_minimal()
 
 ```
+## Table 1: Fitting a linear model to test the results in Figure 3
+We will fit a linear regression model with the same x and y variable to see the statistical result and slope.
+
 ```{r}
-# Fit the linear model
+# Fitting the linear model
 fit1 <- lm(PointsEarned ~ PlayTime, data = data) # fit1 is a model with Age as predictor
 summary(fit1)
 ```
+As we can see the coefficient (+4), which is statistically significant, is around the slope we first set (+5). The data has been generated as per our direction.
 
+## Figure 4: Scatterplot of Life Expectancy vs Population Size
+
+We can observe that the points earned by the player is showing no relation with the playing time, this is because we did not set any relation between these variables and they were generated with randomness.
 
 ```{r}
-# Create scatterplot with regression line
+# Creating scatterplot
 ggplot(data, aes(x = Age, y = PointsEarned)) + #setting variables to different axis
   geom_point(color = "darkgreen", alpha = 0.7) +
 labs(
     title = "Scatterplot of Play Time vs Points Earned", # giving a title to the figure
     x = "Age of the player", #labeling the axis
-    y = "Points earned" #labeling the axis
+    y = "Points earned by the player" #labeling the axis
   ) +
   theme_minimal()
 ```
+## Table 1: Fitting a linear model to test the results in Figure 4
+We will fit a linear regression model with the same x and y variable to see the statistical result and slope.
+```{r}
+# Fit the linear model
+fit2 <- lm(PointsEarned ~ Age, data = data) # fit1 is a model with Age as predictor
+summary(fit2)
+```
+We can confirm that the relation between Age and Points earned is not statistically significant.
+
+
+## Table 3: Fitting a Probit model for Player of the Year Nomination
+We will fit a probit regression model with Age, Playtime and Country as predictors to see if they influence the outcome of the POTY variable.As we have not set such relation between them, they should show no relation among them.
 
 ```{r}
-# Fit the linear model
-fit1 <- lm(PointsEarned ~ Age, data = data) # fit1 is a model with Age as predictor
-summary(fit1)
-```
-```{r}
-# Fit the linear model
+# Fitting the probit model
 fit3 <- glm(POTY ~ Age + PlayTime + Country, family = binomial(link = "probit"), data = data) # fit1 is a model with Age as predictor
 summary(fit3)
 ```
+We can verify from the results above that there is no such relation among the variables.
 
 
 
