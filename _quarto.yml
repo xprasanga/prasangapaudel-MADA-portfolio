@@ -16,6 +16,9 @@ website:
             file: coding-exercise/coding-exercise.qmd
           - text: "Exercise 4: Synthetic Data Generation"
             file: data-excercise/synthetic-data.qmd
+          - text: "Data Analysis Exercise"
+            file: cdcdata-exercise/cdc-exercise.qmd
+            
     right:
       - icon: github 
         href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio       
