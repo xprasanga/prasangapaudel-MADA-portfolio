@@ -16,8 +16,8 @@ This exercise is based on CDC dataset.
 library(here)
 library(knitr)
 library(dslabs) # loading dslabs package as we will use gapminder dataset from it
-library(tidyverse) # loading tidyverse package  #loading readxl package
-library(readxl)
+library(tidyverse) # loading tidyverse package
+library(readxl) #loading readxl package
 
 ```
 
