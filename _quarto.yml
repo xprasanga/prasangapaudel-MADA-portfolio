@@ -17,7 +17,7 @@ website:
           - text: "Exercise 4: Synthetic Data Generation"
             file: data-excercise/synthetic-data.qmd
           - text: "Data Analysis Exercise"
-            file: cdcdata-exercise/cdc-exercise.qmd
+            file: cdcdata-exercise/cdcdata-exercise.qmd
             
     right:
       - icon: github 
