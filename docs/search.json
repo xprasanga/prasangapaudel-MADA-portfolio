@@ -56,11 +56,186 @@
     "text": "This folder contains code to do some simple exploratory analysis and statistical analysis on the processed/cleaned data. The code produces a few tables and figures, which are saved in the results folder.\nIt’s the same code done 3 times:\n\nFirst, there is an R script that you can run which does all the computations.\nSecond, there is a Quarto file which contains exactly the same code as the R script.\nThird, my current favorite, is a Quarto file with an approach where the code is pulled in from the R script and run.\n\nThe last version has the advantage of having code in one place for easy writing/debugging, and then being able to pull the code into the Quarto file for a nice combination of text/commentary and code.\nEach way of doing this is a reasonable approach, pick whichever one you prefer or makes the most sense for your setup. Whichever approach you choose, add ample documentation/commentary so you and others can easily understand what’s going on and what is done."
   },
   {
+    "objectID": "data-excercise/synthetic-data.html#setting-the-seeds-and-observation-number",
+    "href": "data-excercise/synthetic-data.html#setting-the-seeds-and-observation-number",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "2.1 Setting the seeds and observation number",
+    "text": "2.1 Setting the seeds and observation number\nIn this section we will create the baseline for generating our synthetic data. We will set the seed so that we can create reproducible data, and we will also set the number of observations to 180.\n\n# Setting a seed for reproducibility of data\nset.seed(324)\n# Definining the number of observations (players) to generate\nn_obs &lt;- 180"
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#creating-an-empty-dataset",
+    "href": "data-excercise/synthetic-data.html#creating-an-empty-dataset",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "2.2 Creating an empty Dataset",
+    "text": "2.2 Creating an empty Dataset\nWe will then create an empty dataset with just variable names and their data structure. We will make sure that every variable has the same number of obserations.\n\n# Create an empty data frame with placeholders for variables\ndata &lt;- data.frame(\n  userID = numeric(n_obs),\n  Age = numeric(n_obs),\n  Gender = character(n_obs),\n  Country = character(n_obs),\n  InstallationDate = lubridate::as_date(character(n_obs)),\n  PlayTime = numeric(n_obs),\n  PointsEarned = numeric(n_obs),\n  POTY = integer(n_obs)\n)\n\nWe can confirm that the new dataset “data” is formed successfully."
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#figure1-boxplot-of-country-vs-points-earned",
+    "href": "data-excercise/synthetic-data.html#figure1-boxplot-of-country-vs-points-earned",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.1 Figure1: Boxplot of Country vs Points Earned",
+    "text": "5.1 Figure1: Boxplot of Country vs Points Earned\nWe observe that there is no statistical difference across countries for points earned as we created these variables with randoness. All countries seem to have the mean in the same range with different variation within the data.\n\n# ggplot2 boxplot for PointsEarned by Country group\nggplot(data, aes(x = Country, y = PointsEarned)) +\n  geom_boxplot() +\n  labs(x = \"Country of Origin\", y = \"Points earned by the player\") +\n  theme_bw()"
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#figure2-boxplot-of-gender-vs-points-earned",
+    "href": "data-excercise/synthetic-data.html#figure2-boxplot-of-gender-vs-points-earned",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.2 Figure2: Boxplot of Gender vs Points Earned",
+    "text": "5.2 Figure2: Boxplot of Gender vs Points Earned\nWe can again observe that there is no statistical difference across Gender for points earned as we created these variables with randoness as well. Both male and female seem to have the mean in the same range with different variation within the group.\n\n# ggplot2 boxplot for PointsEarned by Country group\nggplot(data, aes(x = Gender, y = PointsEarned)) +\n  geom_boxplot() +\n  labs(x = \"Gender\", y = \"Points earned by the player\") +\n  theme_bw()"
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#figure-3-scatterplot-of-life-expectancy-vs-population-size",
+    "href": "data-excercise/synthetic-data.html#figure-3-scatterplot-of-life-expectancy-vs-population-size",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.3 Figure 3: Scatterplot of Life Expectancy vs Population Size",
+    "text": "5.3 Figure 3: Scatterplot of Life Expectancy vs Population Size\nWe observe the points earned by the player is going up as the playing time is increasing, this is because we have created the data to follow this pattern. As we set the slope to a positive 5, the data has been generated with a positive correlation.\n\n# Create scatterplot with a red regression line\nggplot(data, aes(x = PlayTime, y = PointsEarned)) + #setting variables to different axis\n  geom_point(color = \"darkgreen\", alpha = 0.7) + geom_smooth(method = \"lm\", color = \"red\", se = FALSE) +\nlabs(\n    title = \"Scatterplot of Play Time vs Points Earned\", # giving a title to the figure\n    x = \"Play Time\", #labeling the axis\n    y = \"Points earned\" #labeling the axis\n  ) +\n  theme_minimal()\n\n`geom_smooth()` using formula = 'y ~ x'"
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-3",
+    "href": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-3",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.4 Table 1: Fitting a linear model to test the results in Figure 3",
+    "text": "5.4 Table 1: Fitting a linear model to test the results in Figure 3\nWe will fit a linear regression model with the same x and y variable to see the statistical result and slope.\n\n# Fitting the linear model\nfit1 &lt;- lm(PointsEarned ~ PlayTime, data = data) # fit1 is a model with Age as predictor\nsummary(fit1)\n\n\nCall:\nlm(formula = PointsEarned ~ PlayTime, data = data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-335.18  -81.80    3.11   81.69  371.40 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  78.2272    28.4187   2.753  0.00652 ** \nPlayTime      4.6537     0.2742  16.971  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 132.1 on 178 degrees of freedom\nMultiple R-squared:  0.6181,    Adjusted R-squared:  0.6159 \nF-statistic:   288 on 1 and 178 DF,  p-value: &lt; 2.2e-16\n\n\nAs we can see the coefficient (+4), which is statistically significant, is around the slope we first set (+5). The data has been generated as per our direction."
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#figure-4-scatterplot-of-life-expectancy-vs-population-size",
+    "href": "data-excercise/synthetic-data.html#figure-4-scatterplot-of-life-expectancy-vs-population-size",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.5 Figure 4: Scatterplot of Life Expectancy vs Population Size",
+    "text": "5.5 Figure 4: Scatterplot of Life Expectancy vs Population Size\nWe can observe that the points earned by the player is showing no relation with the playing time, this is because we did not set any relation between these variables and they were generated with randomness.\n\n# Creating scatterplot\nggplot(data, aes(x = Age, y = PointsEarned)) + #setting variables to different axis\n  geom_point(color = \"darkgreen\", alpha = 0.7) +\nlabs(\n    title = \"Scatterplot of Play Time vs Points Earned\", # giving a title to the figure\n    x = \"Age of the player\", #labeling the axis\n    y = \"Points earned by the player\" #labeling the axis\n  ) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-4",
+    "href": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-4",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.6 Table 1: Fitting a linear model to test the results in Figure 4",
+    "text": "5.6 Table 1: Fitting a linear model to test the results in Figure 4\nWe will fit a linear regression model with the same x and y variable to see the statistical result and slope.\n\n# Fit the linear model\nfit2 &lt;- lm(PointsEarned ~ Age, data = data) # fit1 is a model with Age as predictor\nsummary(fit2)\n\n\nCall:\nlm(formula = PointsEarned ~ Age, data = data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-537.22 -151.51   22.07  155.17  626.10 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  501.954     74.989   6.694 2.74e-10 ***\nAge            1.254      3.202   0.392    0.696    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 213.7 on 178 degrees of freedom\nMultiple R-squared:  0.0008613, Adjusted R-squared:  -0.004752 \nF-statistic: 0.1534 on 1 and 178 DF,  p-value: 0.6957\n\n\nWe can confirm that the relation between Age and Points earned is not statistically significant."
+  },
+  {
+    "objectID": "data-excercise/synthetic-data.html#table-3-fitting-a-probit-model-for-player-of-the-year-nomination",
+    "href": "data-excercise/synthetic-data.html#table-3-fitting-a-probit-model-for-player-of-the-year-nomination",
+    "title": "Exercise 3: Generating Synthetic Data",
+    "section": "5.7 Table 3: Fitting a Probit model for Player of the Year Nomination",
+    "text": "5.7 Table 3: Fitting a Probit model for Player of the Year Nomination\nWe will fit a probit regression model with Age, Playtime and Country as predictors to see if they influence the outcome of the POTY variable.As we have not set such relation between them, they should show no relation among them.\n\n# Fitting the probit model\nfit3 &lt;- glm(POTY ~ Age + PlayTime + Country, family = binomial(link = \"probit\"), data = data) # fit1 is a model with Age as predictor\nsummary(fit3)\n\n\nCall:\nglm(formula = POTY ~ Age + PlayTime + Country, family = binomial(link = \"probit\"), \n    data = data)\n\nCoefficients:\n                 Estimate Std. Error z value Pr(&gt;|z|)\n(Intercept)    -0.3633860  0.6441956  -0.564    0.573\nAge            -0.0325857  0.0235439  -1.384    0.166\nPlayTime       -0.0001208  0.0033010  -0.037    0.971\nCountryGermany  0.0744650  0.2923346   0.255    0.799\nCountryUSA      0.0617818  0.2874123   0.215    0.830\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 148.66  on 179  degrees of freedom\nResidual deviance: 146.57  on 175  degrees of freedom\nAIC: 156.57\n\nNumber of Fisher Scoring iterations: 5\n\n\nWe can verify from the results above that there is no such relation among the variables."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html",
+    "href": "cdcdata-exercise/cdcdata-exercise.html",
+    "title": "Data Analysis Excerise",
+    "section": "",
+    "text": "This exercise is based on CDC dataset."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#checking-for-missing-values",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#checking-for-missing-values",
+    "title": "Data Analysis Excerise",
+    "section": "2.1 Checking for missing values",
+    "text": "2.1 Checking for missing values\n\n# Check for missing values (NA) within the dataset\nmissing_values &lt;- colSums(is.na(cdc_dataset))\nprint(missing_values) \n\n   LocationAbbr    LocationDesc            Year      Datasource       TopicDesc \n              0               0               0               0               0 \n    MeasureDesc      Data_Value Data_Value_Unit Data_Value_Type     GeoLocation \n              0               0               0               0               0 \n         Source     TopicTypeId         TopicId       MeasureId \n              0               0               0               0 \n\n\nWe can observe that there are 14 variables altogether and there are no missing values in the dataset. We will further check for any missing values coded as 9999 for any numeric variable. We will also use scatterplot to see if there is any such replacement for missing value which can be observed as an outlier. This can be observed later during the analysis."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#confirming-the-structure-of-the-dataset-through-observation-across-states",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#confirming-the-structure-of-the-dataset-through-observation-across-states",
+    "title": "Data Analysis Excerise",
+    "section": "2.2 Confirming the structure of the dataset through observation across States",
+    "text": "2.2 Confirming the structure of the dataset through observation across States\n\n# Counting the number of observations per State\nstate_counts &lt;- cdc_dataset %&gt;%\n  count(LocationDesc)\n\n# View the result\nprint(state_counts)\n\n# A tibble: 51 × 2\n   LocationDesc             n\n   &lt;chr&gt;                &lt;int&gt;\n 1 Alabama                 50\n 2 Alaska                  50\n 3 Arizona                 50\n 4 Arkansas                50\n 5 California              50\n 6 Colorado                50\n 7 Connecticut             50\n 8 Delaware                50\n 9 District of Columbia    50\n10 Florida                 50\n# ℹ 41 more rows\n\n\nWe can confirm that every state has 50 oservations for each State from year 1970-2019, which makes perfect sense.\n\n#Preparing the dataset for replicable properties As the raw data itself is quite messy, we will try to make it as simple as possible to learn about their distribution. As this is a time-series data, we will focus on the “trend” rather than the distribution as normal. We will try to clean the data as much as possible so that we can observe consisteny in the result, making it easier to learn about the properties of the dataset."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-five-states-to-make-the-analysis-easy.",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-five-states-to-make-the-analysis-easy.",
+    "title": "Data Analysis Excerise",
+    "section": "2.3 Filtering out Five states to make the analysis easy.",
+    "text": "2.3 Filtering out Five states to make the analysis easy.\nWe will filter five states from the dataset and make a new dataset based on these states, The next phases of analysis will include these states only: Georgia, Kansas, Idaho, Alabama and Nebraska.\n\n# Filter dataset for selected states\nfiltered_states &lt;- cdc_dataset %&gt;%\n  filter(LocationDesc %in% c(\"Georgia\", \"Kansas\", \"Idaho\", \"Alabama\", \"Nebraska\"))\n\n# View the first few rows of the new dataset\nhead(filtered_states)\n\n# A tibble: 6 × 14\n  LocationAbbr LocationDesc  Year Datasource TopicDesc    MeasureDesc Data_Value\n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt;\n1 AL           Alabama       2019 OW         The Tax Bur… Cigarette …  165763113\n2 GA           Georgia       2019 OW         The Tax Bur… Cigarette …  168549095\n3 ID           Idaho         2019 OW         The Tax Bur… Cigarette …   35817868\n4 KS           Kansas        2019 OW         The Tax Bur… Cigarette …  116778114\n5 NE           Nebraska      2019 OW         The Tax Bur… Cigarette …   50168160\n6 AL           Alabama       2018 OW         The Tax Bur… Cigarette …  172649066\n# ℹ 7 more variables: Data_Value_Unit &lt;chr&gt;, Data_Value_Type &lt;chr&gt;,\n#   GeoLocation &lt;chr&gt;, Source &lt;chr&gt;, TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;,\n#   MeasureId &lt;chr&gt;"
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-the-variables-of-interest",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-the-variables-of-interest",
+    "title": "Data Analysis Excerise",
+    "section": "2.4 Filtering out the variables of interest",
+    "text": "2.4 Filtering out the variables of interest\nIn this section, we will filter out only five variables so that we can look through the dataset more easily. We will set the name to this dataset as “dataset”.\n\n# Select only the required columns\ndataset &lt;- filtered_states %&gt;%\n  select(LocationDesc, LocationAbbr, Year, Data_Value, GeoLocation)\n\n# View the first few rows of the new dataset\nhead(dataset)\n\n# A tibble: 6 × 5\n  LocationDesc LocationAbbr  Year Data_Value GeoLocation                        \n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;                              \n1 Alabama      AL            2019  165763113 POINT (-86.631860762 32.840571122) \n2 Georgia      GA            2019  168549095 POINT (-83.627580346 32.839681093) \n3 Idaho        ID            2019   35817868 POINT (-114.363730042 43.682630005)\n4 Kansas       KS            2019  116778114 POINT (-98.200781227 38.3477403)   \n5 Nebraska     NE            2019   50168160 POINT (-99.365720623 41.6410409880…\n6 Alabama      AL            2018  172649066 POINT (-86.631860762 32.840571122)"
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.",
+    "title": "Data Analysis Excerise",
+    "section": "3.1 Scatter plot of Revenue across time for our five states.",
+    "text": "3.1 Scatter plot of Revenue across time for our five states.\nWe will first use scatter plot to observe the property of our numeric variable Data_Value.\n\n# Defining the custom colors for each state so it is easy for us to observe\ncustom_colors &lt;- c(\"Georgia\" = \"red\", \n                   \"Kansas\" = \"blue\", \n                   \"Idaho\" = \"green\", \n                   \"Nebraska\" = \"purple\", \n                   \"Alabama\" = \"orange\")\n\n# Scatterplot of Year vs Data_Value\nggplot(dataset, aes(x = Year, y = Data_Value, color = LocationDesc)) +\n  geom_point(alpha = 0.6, size = 2) +\n  scale_color_manual(values = custom_colors) +\n  theme_minimal() +\n  labs(title = \"Scatterplot of Data_Value Over Time for Selected States\",\n       x = \"Year\",\n       y = \"Data Value\",\n       color = \"State\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\nAs there is a sudden break in the pattern after the year 2000, we will remove these years from our dataset and create a new dataset based on years 1970-2000."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.-1",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.-1",
+    "title": "Data Analysis Excerise",
+    "section": "5.1 Scatter plot of Revenue across time for our five states.",
+    "text": "5.1 Scatter plot of Revenue across time for our five states.\n\nggplot(data, aes(x = Year, y = Data_Value, #setting the axes\n                 color = LocationDesc)) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"lm\", se = FALSE) +  # Adding a linear trend line\n  theme_minimal() +\n  labs(title = \"Trend of Revenue from Cigarette(in US$) Over Years by State\",\n       x = \"Year\",\n       y = \"Revenue Value\",\n       color = \"State\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n\n\nThis figure clearly shows the relation between the variables across time and States. This relation will be more clear if we use gregression analysis to calculate the slope. We will do that in next step. The scatter plot also confirms that there is no such missing value as encoded as 9999 otherwise we would have seen it as an outlier in our scatterplots."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#calculating-slope-or-association-through-regression",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#calculating-slope-or-association-through-regression",
+    "title": "Data Analysis Excerise",
+    "section": "5.2 Calculating Slope or association through Regression",
+    "text": "5.2 Calculating Slope or association through Regression\nWe will now try to express the relation of revenue over time for Georgia.\n\n# Filtering data for Georgia\ngeorgia_data &lt;- dataset %&gt;% filter(LocationDesc == \"Georgia\")\n\n# Running linear regression based on georgia\ngeorgia_model &lt;- lm(Data_Value ~ Year, data = georgia_data)\n\n# Viewing regression summary for goergia\nsummary(georgia_model)\n\n\nCall:\nlm(formula = Data_Value ~ Year, data = georgia_data)\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-62223438 -24447136   1385557  14666922  80405143 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -6.130e+09  6.714e+08  -9.131 4.55e-12 ***\nYear         3.133e+06  3.366e+05   9.308 2.51e-12 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 34350000 on 48 degrees of freedom\nMultiple R-squared:  0.6435,    Adjusted R-squared:  0.6361 \nF-statistic: 86.64 on 1 and 48 DF,  p-value: 2.512e-12\n\n\nFurthermore, we will also express the relation for Alabama.\n\n# Filtering data for alabama\nalabama_data &lt;- dataset %&gt;% filter(LocationDesc == \"Alabama\")\n\n# Runing linear regression for alabama dataset\nalabama_model &lt;- lm(Data_Value ~ Year, data = alabama_data)\n\n# Viewing regression summary for alabama model\nsummary(alabama_model)\n\n\nCall:\nlm(formula = Data_Value ~ Year, data = alabama_data)\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-50502109 -13652199   5184908  11116529  42297840 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -4.878e+09  4.319e+08  -11.29 4.06e-15 ***\nYear         2.491e+06  2.165e+05   11.51 2.12e-15 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 22100000 on 48 degrees of freedom\nMultiple R-squared:  0.7339,    Adjusted R-squared:  0.7283 \nF-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15\n\n\nFrom the two regression models above, the relation can be clearly observed and the properties of the datasets are clearly expressed."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#summary-of-revenue-across-the-five-states-of-the-final-dataset",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#summary-of-revenue-across-the-five-states-of-the-final-dataset",
+    "title": "Data Analysis Excerise",
+    "section": "5.3 Summary of Revenue across the five states of the final dataset",
+    "text": "5.3 Summary of Revenue across the five states of the final dataset\nWe will will now provide the full statistical summary of revenue based on the States present in our dataset including the mean, meadian, maximum and the minimums.\n\n# Summarizing Data Value for five selected states\nsummary_data &lt;- data %&gt;%\n  filter(LocationDesc %in% c(\"Georgia\", \"Kansas\", \"Idaho\", \"Alabama\", \"Nebraska\")) %&gt;%\n  group_by(LocationDesc) %&gt;%\n  summarise(\n    count = n(), # provides no. of observation\n    mean = mean(Data_Value, na.rm = TRUE), # provides mean\n    median = median(Data_Value, na.rm = TRUE), #provides meadian\n    min = min(Data_Value, na.rm = TRUE), # provides minimum value\n    max = max(Data_Value, na.rm = TRUE), #provides max value\n    sd = sd(Data_Value, na.rm = TRUE) # provides standard deviation\n  )\n\n# Viewing the summary result\nprint(summary_data)\n\n# A tibble: 5 × 7\n  LocationDesc count      mean   median      min      max        sd\n  &lt;chr&gt;        &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 Alabama         31 64412390. 72144256 36739131 77175083 13404642.\n2 Georgia         31 80889810. 85549591 40789310 92494239 11900995.\n3 Idaho           31 13511795.  9777154  5142000 26264174  6580881.\n4 Kansas          31 43645409. 45327675 21175000 62374658 12755999.\n5 Nebraska        31 32675236. 31636000 12529000 48966120 10851763."
+  },
+  {
+    "objectID": "cdcdata-exercise/cdcdata-exercise.html#summary-of-variables",
+    "href": "cdcdata-exercise/cdcdata-exercise.html#summary-of-variables",
+    "title": "Data Analysis Excerise",
+    "section": "5.4 Summary of variables",
+    "text": "5.4 Summary of variables\nThis table provides the overall summary of the final datset.\n\nsummary(data)\n\n LocationDesc       LocationAbbr            Year        Data_Value      \n Length:155         Length:155         Min.   :1970   Min.   : 5142000  \n Class :character   Class :character   1st Qu.:1977   1st Qu.:24687170  \n Mode  :character   Mode  :character   Median :1985   Median :45327675  \n                                       Mean   :1985   Mean   :47026928  \n                                       3rd Qu.:1993   3rd Qu.:72472412  \n                                       Max.   :2000   Max.   :92494239  \n GeoLocation       \n Length:155        \n Class :character  \n Mode  :character"
+  },
+  {
+    "objectID": "aboutme.html",
+    "href": "aboutme.html",
+    "title": "Welcome!",
+    "section": "",
+    "text": "Hello! My name is Prasanga Paudel."
+  },
+  {
+    "objectID": "aboutme.html#education",
+    "href": "aboutme.html#education",
+    "title": "Welcome!",
+    "section": "Education",
+    "text": "Education\nI am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis."
+  },
+  {
+    "objectID": "aboutme.html#programming-experience",
+    "href": "aboutme.html#programming-experience",
+    "title": "Welcome!",
+    "section": "Programming Experience",
+    "text": "Programming Experience\nI have experience with the following programming tools: - SAS - STATA - MATLAB"
+  },
+  {
+    "objectID": "aboutme.html#research-interests",
+    "href": "aboutme.html#research-interests",
+    "title": "Welcome!",
+    "section": "Research Interests",
+    "text": "Research Interests\nMy research interests include: Food Economics, Environmental Economics, Policy Analysis ,Health Economics"
+  },
+  {
+    "objectID": "aboutme.html#expectations-from-this-course",
+    "href": "aboutme.html#expectations-from-this-course",
+    "title": "Welcome!",
+    "section": "Expectations from This Course",
+    "text": "Expectations from This Course\nThrough this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields."
+  },
+  {
+    "objectID": "aboutme.html#something-interesting-about-me",
+    "href": "aboutme.html#something-interesting-about-me",
+    "title": "Welcome!",
+    "section": "Something Interesting About Me",
+    "text": "Something Interesting About Me\nI love watching soccer and cricket. My favorite club is FC Bayern Munich, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala."
+  },
+  {
     "objectID": "coding-exercise/coding-exercise.html",
     "href": "coding-exercise/coding-exercise.html",
     "title": "R Coding Exercise",
     "section": "",
-    "text": "Placeholder file for the future R coding exercise.\nWarning: package 'here' was built under R version 4.4.2\n\n\nWarning: package 'dslabs' was built under R version 4.4.2\n\n\nWarning: package 'tidyverse' was built under R version 4.4.2\n\n\nWarning: package 'stringr' was built under R version 4.4.2"
+    "text": "Placeholder file for the future R coding exercise."
   },
   {
     "objectID": "coding-exercise/coding-exercise.html#creating-new-dataset-one-and-two",
@@ -117,48 +292,6 @@
     "title": "R Coding Exercise",
     "section": "4.2 Summarizing the fitting result",
     "text": "4.2 Summarizing the fitting result\nThe summary of the two linear models are provided below.\n\n# View the summary of the model\nsummary(fit1) #summary of the fit1 model\n\n\nCall:\nlm(formula = life_expectancy ~ infant_mortality, data = data_2000)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-22.6651  -3.7087   0.9914   4.0408   8.6817 \n\nCoefficients:\n                 Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)      71.29331    2.42611  29.386  &lt; 2e-16 ***\ninfant_mortality -0.18916    0.02869  -6.594 2.83e-08 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 6.221 on 49 degrees of freedom\nMultiple R-squared:  0.4701,    Adjusted R-squared:  0.4593 \nF-statistic: 43.48 on 1 and 49 DF,  p-value: 2.826e-08\n\nsummary(fit2) #summary of the fit2 model\n\n\nCall:\nlm(formula = life_expectancy ~ log(population), data = data_2000)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-19.113  -4.809  -1.554   3.907  18.863 \n\nCoefficients:\n                Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)      65.3243    12.5203   5.217 3.65e-06 ***\nlog(population)  -0.5711     0.7943  -0.719    0.476    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.502 on 49 degrees of freedom\nMultiple R-squared:  0.01044,   Adjusted R-squared:  -0.009755 \nF-statistic: 0.517 on 1 and 49 DF,  p-value: 0.4755\n\n\nThis section is contributed by DOREEN KIBUULE KALEMBE.\nIn this section, we will acquire data from heights.\n\nlibrary(dslabs)\nhelp(heights)\n\n# View the structure of the dataset\nstr(heights)\n\n'data.frame':   1050 obs. of  2 variables:\n $ sex   : Factor w/ 2 levels \"Female\",\"Male\": 2 2 2 2 2 1 1 1 1 2 ...\n $ height: num  75 70 68 74 61 65 66 62 66 67 ...\n\n# View the first few rows of the dataset\nhead(heights)\n\n     sex height\n1   Male     75\n2   Male     70\n3   Male     68\n4   Male     74\n5   Male     61\n6 Female     65\n\n\nThe data set includes men and women that reported their heights in inches. We are going to explore this data set and see what we can come up with.\nWe are going to assign the data set a name. Lets say heights_data.\n\nlibrary(naniar) # this package will help us know where there are any missing values in the data\n\nheights_data&lt;-heights\ngg_miss_var(heights_data)# this is helping us check for any na variables in the data set.\n\n\n\n\n\n\n\npct_complete(heights_data) # the data is 100 percent complete.\n\n[1] 100\n\nsum(is.na(heights_data))# checks for missing values in the data set\n\n[1] 0\n\n\nThe data show that there are no missing values in the dataset and the data is 100 percent complete.\nLets try to get the summary/descriptitive statistics of the data.\n\nlibrary(tidyverse)\nlibrary(dplyr)\n# Calculate descriptive statistics for height by gender\nheights_summary &lt;- heights_data %&gt;%\n  group_by(sex) %&gt;%  # Group data by gender\n  summarise(\n    count = n(),                   # Count of observations\n    mean_height = mean(height, na.rm = TRUE), # Mean height\n    median_height = median(height, na.rm = TRUE), # Median height\n    sd_height = sd(height, na.rm = TRUE),     # Standard deviation\n    min_height = min(height, na.rm = TRUE),   # Minimum height\n    max_height = max(height, na.rm = TRUE)    # Maximum height\n  )\nheights_summary\n\n# A tibble: 2 × 7\n  sex    count mean_height median_height sd_height min_height max_height\n  &lt;fct&gt;  &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;\n1 Female   238        64.9          65.0      3.76         51       79  \n2 Male     812        69.3          69        3.61         50       82.7\n\n\nOur summary statistics show that the shortest person male is 50 while the shortest woman is 51 inches. On average, men are taller than women.\nLets try to visualise the data.\n\n #Compare the distribution of height for each sex\nggplot(data = heights_data, aes(x = sex, y = height, fill = sex)) +\n  geom_boxplot() +\n  labs(\n    title = \"Distribution of Height by Sex\",\n    x = \"Sex\",\n    y = \"Height (inches)\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nFrom our results above, we can make a simple linear regression between sex and height.In this model, height is the dependent variable and sex (categorical variable: “Male” or “Female”) is the independent variable.\n\nLinear_model&lt;-lm(height ~ sex, data = heights_data)\nsummary(Linear_model)\n\n\nCall:\nlm(formula = height ~ sex, data = heights_data)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-19.3148  -2.3148  -0.3148   2.6852  14.0606 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  64.9394     0.2363  274.82   &lt;2e-16 ***\nsexMale       4.3753     0.2687   16.28   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 3.645 on 1048 degrees of freedom\nMultiple R-squared:  0.2019,    Adjusted R-squared:  0.2012 \nF-statistic: 265.1 on 1 and 1048 DF,  p-value: &lt; 2.2e-16\n\n\n\nOur results show that the average height of females which is our reference group is 64.94inches.\nsexMale (Estimate = 4.3753): This result represents the difference in average height between males and females.Males are, on average, 4.3753 inches taller than females.\nBoth the intercept and the coefficient for sexMale have p-values &lt; 2e-16, meaning they are highly statistically significant (p &lt; 0.0001).This indicates that the difference in height between males and females is unlikely to be due to random chance."
-  },
-  {
-    "objectID": "aboutme.html",
-    "href": "aboutme.html",
-    "title": "Welcome!",
-    "section": "",
-    "text": "Hello! My name is Prasanga Paudel."
-  },
-  {
-    "objectID": "aboutme.html#education",
-    "href": "aboutme.html#education",
-    "title": "Welcome!",
-    "section": "Education",
-    "text": "Education\nI am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis."
-  },
-  {
-    "objectID": "aboutme.html#programming-experience",
-    "href": "aboutme.html#programming-experience",
-    "title": "Welcome!",
-    "section": "Programming Experience",
-    "text": "Programming Experience\nI have experience with the following programming tools: - SAS - STATA - MATLAB"
-  },
-  {
-    "objectID": "aboutme.html#research-interests",
-    "href": "aboutme.html#research-interests",
-    "title": "Welcome!",
-    "section": "Research Interests",
-    "text": "Research Interests\nMy research interests include: Food Economics, Environmental Economics, Policy Analysis ,Health Economics"
-  },
-  {
-    "objectID": "aboutme.html#expectations-from-this-course",
-    "href": "aboutme.html#expectations-from-this-course",
-    "title": "Welcome!",
-    "section": "Expectations from This Course",
-    "text": "Expectations from This Course\nThrough this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields."
-  },
-  {
-    "objectID": "aboutme.html#something-interesting-about-me",
-    "href": "aboutme.html#something-interesting-about-me",
-    "title": "Welcome!",
-    "section": "Something Interesting About Me",
-    "text": "Something Interesting About Me\nI love watching soccer and cricket. My favorite club is FC Bayern Munich, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala."
   },
   {
     "objectID": "index.html",
@@ -320,173 +453,5 @@
     "title": "Prasanga Paudel's Data Analysis Portfolio",
     "section": "",
     "text": "This folder contains results produced by the code, such as figures and tables.\nDepending on the size and type of your project, you can either place it all in a single folder or create sub-folders. For instance you could create a folder for figures, another for tables. Or you could create a sub-folder for dataset 1, another for dataset 2. Or you could have a subfolder for exploratory analysis, another for final analysis. The options are endless, choose whatever makes sense for your project. For this template, there is just a a single folder, but having sub-folders is often a good idea."
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html",
-    "href": "data-excercise/synthetic-data.html",
-    "title": "Exercise: Generating Synthetic Data",
-    "section": "",
-    "text": "Placeholder file for the future R coding exercise."
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#saving-new-dataset",
-    "href": "data-excercise/synthetic-data.html#saving-new-dataset",
-    "title": "Exercise: Generating Synthetic Data",
-    "section": "2.1 Saving new dataset:",
-    "text": "2.1 Saving new dataset:\n\n# Save the simulated data to a CSV and Rds file\nwrite.csv(data, here(\"data-excercise\",\"data\",\"data.csv\"), row.names = FALSE)\n# if we wanted an RDS version\n#saveRDS(data, here(\"data-excercise\", \"data\",\"data.Rds\"))"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#figure1-scatterplot-of-life-expectancy-vs-infant-mortality",
-    "href": "data-excercise/synthetic-data.html#figure1-scatterplot-of-life-expectancy-vs-infant-mortality",
-    "title": "Exercise: Generating Synthetic Data",
-    "section": "3.1 Figure1: Scatterplot of Life Expectancy vs Infant Mortality",
-    "text": "3.1 Figure1: Scatterplot of Life Expectancy vs Infant Mortality\nWe observe that the life expectancy is going down as the infant mortality increases for the country, this could be because the health infrastructure that is unable to provide support to infant population might also not be able to support the general population. The streaks of data represent individual countries, most of the streaks seem to be heading downwards, and the overall tendency is also downwards implying negative correlation.\n\n# ggplot2 boxplot for PointsEarned by Country group\nggplot(data, aes(x = Country, y = PointsEarned)) +\n  geom_boxplot() +\n  labs(x = \"Country Group\", y = \"PointsEarned Level\") +\n  theme_bw()\n\n\n\n\n\n\n\n\n\n# ggplot2 boxplot for PointsEarned by Country group\nggplot(data, aes(x = Gender, y = PointsEarned)) +\n  geom_boxplot() +\n  labs(x = \"Country Group\", y = \"PointsEarned Level\") +\n  theme_bw()"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#figure-2-scatterplot-of-life-expectancy-vs-population-size",
-    "href": "data-excercise/synthetic-data.html#figure-2-scatterplot-of-life-expectancy-vs-population-size",
-    "title": "Exercise: Generating Synthetic Data",
-    "section": "3.2 Figure 2: Scatterplot of Life Expectancy vs Population Size",
-    "text": "3.2 Figure 2: Scatterplot of Life Expectancy vs Population Size\nWe observe the life expectancy is going up as the country is more populated, this could be because more populated countries in Africa are more developed in health sectors and able to prove health support. The streaks of data represent individual countries, most of the streaks seem to be heading upwards, and the overall tendency is also upwards implying positive correlation.\n\n# Create scatterplot with regression line\nggplot(data, aes(x = PlayTime, y = PointsEarned)) + #setting variables to different axis\n  geom_point(color = \"darkgreen\", alpha = 0.7) + geom_smooth(method = \"lm\", color = \"red\", se = FALSE) +\nlabs(\n    title = \"Scatterplot of Play Time vs Points Earned\", # giving a title to the figure\n    x = \"Play Time\", #labeling the axis\n    y = \"Points earned\" #labeling the axis\n  ) +\n  theme_minimal()\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n\n\n\n# Fit the linear model\nfit1 &lt;- lm(PointsEarned ~ PlayTime, data = data) # fit1 is a model with Age as predictor\nsummary(fit1)\n\n\nCall:\nlm(formula = PointsEarned ~ PlayTime, data = data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-335.18  -81.80    3.11   81.69  371.40 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  78.2272    28.4187   2.753  0.00652 ** \nPlayTime      4.6537     0.2742  16.971  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 132.1 on 178 degrees of freedom\nMultiple R-squared:  0.6181,    Adjusted R-squared:  0.6159 \nF-statistic:   288 on 1 and 178 DF,  p-value: &lt; 2.2e-16\n\n\n\n# Create scatterplot with regression line\nggplot(data, aes(x = Age, y = PointsEarned)) + #setting variables to different axis\n  geom_point(color = \"darkgreen\", alpha = 0.7) +\nlabs(\n    title = \"Scatterplot of Play Time vs Points Earned\", # giving a title to the figure\n    x = \"Age of the player\", #labeling the axis\n    y = \"Points earned\" #labeling the axis\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n# Fit the linear model\nfit1 &lt;- lm(PointsEarned ~ Age, data = data) # fit1 is a model with Age as predictor\nsummary(fit1)\n\n\nCall:\nlm(formula = PointsEarned ~ Age, data = data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-537.22 -151.51   22.07  155.17  626.10 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  501.954     74.989   6.694 2.74e-10 ***\nAge            1.254      3.202   0.392    0.696    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 213.7 on 178 degrees of freedom\nMultiple R-squared:  0.0008613, Adjusted R-squared:  -0.004752 \nF-statistic: 0.1534 on 1 and 178 DF,  p-value: 0.6957\n\n\n\n# Fit the linear model\nfit3 &lt;- glm(POTY ~ Age + PlayTime + Country, family = binomial(link = \"probit\"), data = data) # fit1 is a model with Age as predictor\nsummary(fit3)\n\n\nCall:\nglm(formula = POTY ~ Age + PlayTime + Country, family = binomial(link = \"probit\"), \n    data = data)\n\nCoefficients:\n                 Estimate Std. Error z value Pr(&gt;|z|)\n(Intercept)    -0.3633860  0.6441956  -0.564    0.573\nAge            -0.0325857  0.0235439  -1.384    0.166\nPlayTime       -0.0001208  0.0033010  -0.037    0.971\nCountryGermany  0.0744650  0.2923346   0.255    0.799\nCountryUSA      0.0617818  0.2874123   0.215    0.830\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 148.66  on 179  degrees of freedom\nResidual deviance: 146.57  on 175  degrees of freedom\nAIC: 156.57\n\nNumber of Fisher Scoring iterations: 5"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#setting-the-seeds-and-observation-number",
-    "href": "data-excercise/synthetic-data.html#setting-the-seeds-and-observation-number",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "2.1 Setting the seeds and observation number",
-    "text": "2.1 Setting the seeds and observation number\nIn this section we will create the baseline for generating our synthetic data. We will set the seed so that we can create reproducible data, and we will also set the number of observations to 180.\n\n# Setting a seed for reproducibility of data\nset.seed(324)\n# Definining the number of observations (players) to generate\nn_obs &lt;- 180"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#creating-an-empty-dataset",
-    "href": "data-excercise/synthetic-data.html#creating-an-empty-dataset",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "2.2 Creating an empty Dataset",
-    "text": "2.2 Creating an empty Dataset\nWe will then create an empty dataset with just variable names and their data structure. We will make sure that every variable has the same number of obserations.\n\n# Create an empty data frame with placeholders for variables\ndata &lt;- data.frame(\n  userID = numeric(n_obs),\n  Age = numeric(n_obs),\n  Gender = character(n_obs),\n  Country = character(n_obs),\n  InstallationDate = lubridate::as_date(character(n_obs)),\n  PlayTime = numeric(n_obs),\n  PointsEarned = numeric(n_obs),\n  POTY = integer(n_obs)\n)\n\nWe can confirm that the new dataset “data” is formed successfully."
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#figure1-boxplot-of-country-vs-points-earned",
-    "href": "data-excercise/synthetic-data.html#figure1-boxplot-of-country-vs-points-earned",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.1 Figure1: Boxplot of Country vs Points Earned",
-    "text": "5.1 Figure1: Boxplot of Country vs Points Earned\nWe observe that there is no statistical difference across countries for points earned as we created these variables with randoness. All countries seem to have the mean in the same range with different variation within the data.\n\n# ggplot2 boxplot for PointsEarned by Country group\nggplot(data, aes(x = Country, y = PointsEarned)) +\n  geom_boxplot() +\n  labs(x = \"Country of Origin\", y = \"Points earned by the player\") +\n  theme_bw()"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#figure2-boxplot-of-gender-vs-points-earned",
-    "href": "data-excercise/synthetic-data.html#figure2-boxplot-of-gender-vs-points-earned",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.2 Figure2: Boxplot of Gender vs Points Earned",
-    "text": "5.2 Figure2: Boxplot of Gender vs Points Earned\nWe can again observe that there is no statistical difference across Gender for points earned as we created these variables with randoness as well. Both male and female seem to have the mean in the same range with different variation within the group.\n\n# ggplot2 boxplot for PointsEarned by Country group\nggplot(data, aes(x = Gender, y = PointsEarned)) +\n  geom_boxplot() +\n  labs(x = \"Gender\", y = \"Points earned by the player\") +\n  theme_bw()"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#figure-3-scatterplot-of-life-expectancy-vs-population-size",
-    "href": "data-excercise/synthetic-data.html#figure-3-scatterplot-of-life-expectancy-vs-population-size",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.3 Figure 3: Scatterplot of Life Expectancy vs Population Size",
-    "text": "5.3 Figure 3: Scatterplot of Life Expectancy vs Population Size\nWe observe the points earned by the player is going up as the playing time is increasing, this is because we have created the data to follow this pattern. As we set the slope to a positive 5, the data has been generated with a positive correlation.\n\n# Create scatterplot with a red regression line\nggplot(data, aes(x = PlayTime, y = PointsEarned)) + #setting variables to different axis\n  geom_point(color = \"darkgreen\", alpha = 0.7) + geom_smooth(method = \"lm\", color = \"red\", se = FALSE) +\nlabs(\n    title = \"Scatterplot of Play Time vs Points Earned\", # giving a title to the figure\n    x = \"Play Time\", #labeling the axis\n    y = \"Points earned\" #labeling the axis\n  ) +\n  theme_minimal()\n\n`geom_smooth()` using formula = 'y ~ x'"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-3",
-    "href": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-3",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.4 Table 1: Fitting a linear model to test the results in Figure 3",
-    "text": "5.4 Table 1: Fitting a linear model to test the results in Figure 3\nWe will fit a linear regression model with the same x and y variable to see the statistical result and slope.\n\n# Fitting the linear model\nfit1 &lt;- lm(PointsEarned ~ PlayTime, data = data) # fit1 is a model with Age as predictor\nsummary(fit1)\n\n\nCall:\nlm(formula = PointsEarned ~ PlayTime, data = data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-335.18  -81.80    3.11   81.69  371.40 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  78.2272    28.4187   2.753  0.00652 ** \nPlayTime      4.6537     0.2742  16.971  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 132.1 on 178 degrees of freedom\nMultiple R-squared:  0.6181,    Adjusted R-squared:  0.6159 \nF-statistic:   288 on 1 and 178 DF,  p-value: &lt; 2.2e-16\n\n\nAs we can see the coefficient (+4), which is statistically significant, is around the slope we first set (+5). The data has been generated as per our direction."
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#figure-4-scatterplot-of-life-expectancy-vs-population-size",
-    "href": "data-excercise/synthetic-data.html#figure-4-scatterplot-of-life-expectancy-vs-population-size",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.5 Figure 4: Scatterplot of Life Expectancy vs Population Size",
-    "text": "5.5 Figure 4: Scatterplot of Life Expectancy vs Population Size\nWe can observe that the points earned by the player is showing no relation with the playing time, this is because we did not set any relation between these variables and they were generated with randomness.\n\n# Creating scatterplot\nggplot(data, aes(x = Age, y = PointsEarned)) + #setting variables to different axis\n  geom_point(color = \"darkgreen\", alpha = 0.7) +\nlabs(\n    title = \"Scatterplot of Play Time vs Points Earned\", # giving a title to the figure\n    x = \"Age of the player\", #labeling the axis\n    y = \"Points earned by the player\" #labeling the axis\n  ) +\n  theme_minimal()"
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-4",
-    "href": "data-excercise/synthetic-data.html#table-1-fitting-a-linear-model-to-test-the-results-in-figure-4",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.6 Table 1: Fitting a linear model to test the results in Figure 4",
-    "text": "5.6 Table 1: Fitting a linear model to test the results in Figure 4\nWe will fit a linear regression model with the same x and y variable to see the statistical result and slope.\n\n# Fit the linear model\nfit2 &lt;- lm(PointsEarned ~ Age, data = data) # fit1 is a model with Age as predictor\nsummary(fit2)\n\n\nCall:\nlm(formula = PointsEarned ~ Age, data = data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-537.22 -151.51   22.07  155.17  626.10 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  501.954     74.989   6.694 2.74e-10 ***\nAge            1.254      3.202   0.392    0.696    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 213.7 on 178 degrees of freedom\nMultiple R-squared:  0.0008613, Adjusted R-squared:  -0.004752 \nF-statistic: 0.1534 on 1 and 178 DF,  p-value: 0.6957\n\n\nWe can confirm that the relation between Age and Points earned is not statistically significant."
-  },
-  {
-    "objectID": "data-excercise/synthetic-data.html#table-3-fitting-a-probit-model-for-player-of-the-year-nomination",
-    "href": "data-excercise/synthetic-data.html#table-3-fitting-a-probit-model-for-player-of-the-year-nomination",
-    "title": "Exercise 3: Generating Synthetic Data",
-    "section": "5.7 Table 3: Fitting a Probit model for Player of the Year Nomination",
-    "text": "5.7 Table 3: Fitting a Probit model for Player of the Year Nomination\nWe will fit a probit regression model with Age, Playtime and Country as predictors to see if they influence the outcome of the POTY variable.As we have not set such relation between them, they should show no relation among them.\n\n# Fitting the probit model\nfit3 &lt;- glm(POTY ~ Age + PlayTime + Country, family = binomial(link = \"probit\"), data = data) # fit1 is a model with Age as predictor\nsummary(fit3)\n\n\nCall:\nglm(formula = POTY ~ Age + PlayTime + Country, family = binomial(link = \"probit\"), \n    data = data)\n\nCoefficients:\n                 Estimate Std. Error z value Pr(&gt;|z|)\n(Intercept)    -0.3633860  0.6441956  -0.564    0.573\nAge            -0.0325857  0.0235439  -1.384    0.166\nPlayTime       -0.0001208  0.0033010  -0.037    0.971\nCountryGermany  0.0744650  0.2923346   0.255    0.799\nCountryUSA      0.0617818  0.2874123   0.215    0.830\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 148.66  on 179  degrees of freedom\nResidual deviance: 146.57  on 175  degrees of freedom\nAIC: 156.57\n\nNumber of Fisher Scoring iterations: 5\n\n\nWe can verify from the results above that there is no such relation among the variables."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html",
-    "href": "cdcdata-exercise/cdcdata-exercise.html",
-    "title": "Data Analysis Excerise",
-    "section": "",
-    "text": "This exercise is based on CDC dataset."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-five-states-to-make-the-analysis-easy.",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-five-states-to-make-the-analysis-easy.",
-    "title": "Data Analysis Excerise",
-    "section": "2.3 Filtering out Five states to make the analysis easy.",
-    "text": "2.3 Filtering out Five states to make the analysis easy.\nWe will filter five states from the dataset and make a new dataset based on these states, The next phases of analysis will include these states only: Georgia, Kansas, Idaho, Alabama and Nebraska.\n\n# Filter dataset for selected states\nfiltered_states &lt;- cdc_dataset %&gt;%\n  filter(LocationDesc %in% c(\"Georgia\", \"Kansas\", \"Idaho\", \"Alabama\", \"Nebraska\"))\n\n# View the first few rows of the new dataset\nhead(filtered_states)\n\n# A tibble: 6 × 14\n  LocationAbbr LocationDesc  Year Datasource TopicDesc    MeasureDesc Data_Value\n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt;\n1 AL           Alabama       2019 OW         The Tax Bur… Cigarette …  165763113\n2 GA           Georgia       2019 OW         The Tax Bur… Cigarette …  168549095\n3 ID           Idaho         2019 OW         The Tax Bur… Cigarette …   35817868\n4 KS           Kansas        2019 OW         The Tax Bur… Cigarette …  116778114\n5 NE           Nebraska      2019 OW         The Tax Bur… Cigarette …   50168160\n6 AL           Alabama       2018 OW         The Tax Bur… Cigarette …  172649066\n# ℹ 7 more variables: Data_Value_Unit &lt;chr&gt;, Data_Value_Type &lt;chr&gt;,\n#   GeoLocation &lt;chr&gt;, Source &lt;chr&gt;, TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;,\n#   MeasureId &lt;chr&gt;"
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-the-variables-of-interest",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-the-variables-of-interest",
-    "title": "Data Analysis Excerise",
-    "section": "2.4 Filtering out the variables of interest",
-    "text": "2.4 Filtering out the variables of interest\nIn this section, we will filter out only five variables so that we can look through the dataset more easily. We will set the name to this dataset as “dataset”.\n\n# Select only the required columns\ndataset &lt;- filtered_states %&gt;%\n  select(LocationDesc, LocationAbbr, Year, Data_Value, GeoLocation)\n\n# View the first few rows of the new dataset\nhead(dataset)\n\n# A tibble: 6 × 5\n  LocationDesc LocationAbbr  Year Data_Value GeoLocation                        \n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;                              \n1 Alabama      AL            2019  165763113 POINT (-86.631860762 32.840571122) \n2 Georgia      GA            2019  168549095 POINT (-83.627580346 32.839681093) \n3 Idaho        ID            2019   35817868 POINT (-114.363730042 43.682630005)\n4 Kansas       KS            2019  116778114 POINT (-98.200781227 38.3477403)   \n5 Nebraska     NE            2019   50168160 POINT (-99.365720623 41.6410409880…\n6 Alabama      AL            2018  172649066 POINT (-86.631860762 32.840571122)"
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#visualizing-the-data",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#visualizing-the-data",
-    "title": "CDC Exercise",
-    "section": "2.3 Visualizing the data",
-    "text": "2.3 Visualizing the data\nWe will use multiple techniques to visualize and summarize the dataset so that it will be easy for other classmates to understand the structure behind the data.."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.",
-    "title": "Data Analysis Excerise",
-    "section": "3.1 Scatter plot of Revenue across time for our five states.",
-    "text": "3.1 Scatter plot of Revenue across time for our five states.\nWe will first use scatter plot to observe the property of our numeric variable Data_Value.\n\n# Defining the custom colors for each state so it is easy for us to observe\ncustom_colors &lt;- c(\"Georgia\" = \"red\", \n                   \"Kansas\" = \"blue\", \n                   \"Idaho\" = \"green\", \n                   \"Nebraska\" = \"purple\", \n                   \"Alabama\" = \"orange\")\n\n# Scatterplot of Year vs Data_Value\nggplot(dataset, aes(x = Year, y = Data_Value, color = LocationDesc)) +\n  geom_point(alpha = 0.6, size = 2) +\n  scale_color_manual(values = custom_colors) +\n  theme_minimal() +\n  labs(title = \"Scatterplot of Data_Value Over Time for Selected States\",\n       x = \"Year\",\n       y = \"Data Value\",\n       color = \"State\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\nAs there is a sudden break in the pattern after the year 2000, we will remove these years from our dataset and create a new dataset based on years 1970-2000."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.-1",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.-1",
-    "title": "Data Analysis Excerise",
-    "section": "5.1 Scatter plot of Revenue across time for our five states.",
-    "text": "5.1 Scatter plot of Revenue across time for our five states.\n\nggplot(data, aes(x = Year, y = Data_Value, #setting the axes\n                 color = LocationDesc)) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"lm\", se = FALSE) +  # Adding a linear trend line\n  theme_minimal() +\n  labs(title = \"Trend of Revenue from Cigarette(in US$) Over Years by State\",\n       x = \"Year\",\n       y = \"Revenue Value\",\n       color = \"State\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n\n\nThis figure clearly shows the relation between the variables across time and States. This relation will be more clear if we use gregression analysis to calculate the slope. We will do that in next step. The scatter plot also confirms that there is no such missing value as encoded as 9999 otherwise we would have seen it as an outlier in our scatterplots."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#checking-for-missing-values",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#checking-for-missing-values",
-    "title": "Data Analysis Excerise",
-    "section": "2.1 Checking for missing values",
-    "text": "2.1 Checking for missing values\n\n# Check for missing values (NA) within the dataset\nmissing_values &lt;- colSums(is.na(cdc_dataset))\nprint(missing_values) \n\n   LocationAbbr    LocationDesc            Year      Datasource       TopicDesc \n              0               0               0               0               0 \n    MeasureDesc      Data_Value Data_Value_Unit Data_Value_Type     GeoLocation \n              0               0               0               0               0 \n         Source     TopicTypeId         TopicId       MeasureId \n              0               0               0               0 \n\n\nWe can observe that there are 14 variables altogether and there are no missing values in the dataset. We will further check for any missing values coded as 9999 for any numeric variable. We will also use scatterplot to see if there is any such replacement for missing value which can be observed as an outlier. This can be observed later during the analysis."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#confirming-the-structure-of-the-dataset-through-observation-across-states",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#confirming-the-structure-of-the-dataset-through-observation-across-states",
-    "title": "Data Analysis Excerise",
-    "section": "2.2 Confirming the structure of the dataset through observation across States",
-    "text": "2.2 Confirming the structure of the dataset through observation across States\n\n# Counting the number of observations per State\nstate_counts &lt;- cdc_dataset %&gt;%\n  count(LocationDesc)\n\n# View the result\nprint(state_counts)\n\n# A tibble: 51 × 2\n   LocationDesc             n\n   &lt;chr&gt;                &lt;int&gt;\n 1 Alabama                 50\n 2 Alaska                  50\n 3 Arizona                 50\n 4 Arkansas                50\n 5 California              50\n 6 Colorado                50\n 7 Connecticut             50\n 8 Delaware                50\n 9 District of Columbia    50\n10 Florida                 50\n# ℹ 41 more rows\n\n\nWe can confirm that every state has 50 oservations for each State from year 1970-2019, which makes perfect sense.\n\n#Preparing the dataset for replicable properties As the raw data itself is quite messy, we will try to make it as simple as possible to learn about their distribution. As this is a time-series data, we will focus on the “trend” rather than the distribution as normal. We will try to clean the data as much as possible so that we can observe consisteny in the result, making it easier to learn about the properties of the dataset."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#calculating-slope-or-association-through-regression",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#calculating-slope-or-association-through-regression",
-    "title": "Data Analysis Excerise",
-    "section": "5.2 Calculating Slope or association through Regression",
-    "text": "5.2 Calculating Slope or association through Regression\nWe will now try to express the relation of revenue over time for Georgia.\n\n# Filtering data for Georgia\ngeorgia_data &lt;- dataset %&gt;% filter(LocationDesc == \"Georgia\")\n\n# Running linear regression based on georgia\ngeorgia_model &lt;- lm(Data_Value ~ Year, data = georgia_data)\n\n# Viewing regression summary for goergia\nsummary(georgia_model)\n\n\nCall:\nlm(formula = Data_Value ~ Year, data = georgia_data)\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-62223438 -24447136   1385557  14666922  80405143 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -6.130e+09  6.714e+08  -9.131 4.55e-12 ***\nYear         3.133e+06  3.366e+05   9.308 2.51e-12 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 34350000 on 48 degrees of freedom\nMultiple R-squared:  0.6435,    Adjusted R-squared:  0.6361 \nF-statistic: 86.64 on 1 and 48 DF,  p-value: 2.512e-12\n\n\nFurthermore, we will also express the relation for Alabama.\n\n# Filtering data for alabama\nalabama_data &lt;- dataset %&gt;% filter(LocationDesc == \"Alabama\")\n\n# Runing linear regression for alabama dataset\nalabama_model &lt;- lm(Data_Value ~ Year, data = alabama_data)\n\n# Viewing regression summary for alabama model\nsummary(alabama_model)\n\n\nCall:\nlm(formula = Data_Value ~ Year, data = alabama_data)\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-50502109 -13652199   5184908  11116529  42297840 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -4.878e+09  4.319e+08  -11.29 4.06e-15 ***\nYear         2.491e+06  2.165e+05   11.51 2.12e-15 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 22100000 on 48 degrees of freedom\nMultiple R-squared:  0.7339,    Adjusted R-squared:  0.7283 \nF-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15\n\n\nFrom the two regression models above, the relation can be clearly observed and the properties of the datasets are clearly expressed."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#summary-of-revenue-across-the-five-states-of-the-final-dataset",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#summary-of-revenue-across-the-five-states-of-the-final-dataset",
-    "title": "Data Analysis Excerise",
-    "section": "5.3 Summary of Revenue across the five states of the final dataset",
-    "text": "5.3 Summary of Revenue across the five states of the final dataset\nWe will will now provide the full statistical summary of revenue based on the States present in our dataset including the mean, meadian, maximum and the minimums.\n\n# Summarizing Data Value for five selected states\nsummary_data &lt;- data %&gt;%\n  filter(LocationDesc %in% c(\"Georgia\", \"Kansas\", \"Idaho\", \"Alabama\", \"Nebraska\")) %&gt;%\n  group_by(LocationDesc) %&gt;%\n  summarise(\n    count = n(), # provides no. of observation\n    mean = mean(Data_Value, na.rm = TRUE), # provides mean\n    median = median(Data_Value, na.rm = TRUE), #provides meadian\n    min = min(Data_Value, na.rm = TRUE), # provides minimum value\n    max = max(Data_Value, na.rm = TRUE), #provides max value\n    sd = sd(Data_Value, na.rm = TRUE) # provides standard deviation\n  )\n\n# Viewing the summary result\nprint(summary_data)\n\n# A tibble: 5 × 7\n  LocationDesc count      mean   median      min      max        sd\n  &lt;chr&gt;        &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 Alabama         31 64412390. 72144256 36739131 77175083 13404642.\n2 Georgia         31 80889810. 85549591 40789310 92494239 11900995.\n3 Idaho           31 13511795.  9777154  5142000 26264174  6580881.\n4 Kansas          31 43645409. 45327675 21175000 62374658 12755999.\n5 Nebraska        31 32675236. 31636000 12529000 48966120 10851763."
-  },
-  {
-    "objectID": "cdcdata-exercise/cdcdata-exercise.html#summary-of-variables",
-    "href": "cdcdata-exercise/cdcdata-exercise.html#summary-of-variables",
-    "title": "Data Analysis Excerise",
-    "section": "5.4 Summary of variables",
-    "text": "5.4 Summary of variables\nThis table provides the overall summary of the final datset.\n\nsummary(data)\n\n LocationDesc       LocationAbbr            Year        Data_Value      \n Length:155         Length:155         Min.   :1970   Min.   : 5142000  \n Class :character   Class :character   1st Qu.:1977   1st Qu.:24687170  \n Mode  :character   Mode  :character   Median :1985   Median :45327675  \n                                       Mean   :1985   Mean   :47026928  \n                                       3rd Qu.:1993   3rd Qu.:72472412  \n                                       Max.   :2000   Max.   :92494239  \n GeoLocation       \n Length:155        \n Class :character  \n Mode  :character"
   }
 ]
