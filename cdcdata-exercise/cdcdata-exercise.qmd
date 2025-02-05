@@ -1,0 +1,257 @@
+---
+title: "Data Analysis Excerise"
+author: Prasanga Paudel
+date: February 5, 2025
+format:
+  html:
+    toc: false
+    number-sections: true
+    highlight-style: github
+---
+
+This exercise is based on CDC dataset.
+
+```{r, echo=FALSE, message=FALSE}
+# load a few R packages
+library(here)
+library(knitr)
+library(dslabs) # loading dslabs package as we will use gapminder dataset from it
+library(tidyverse) # loading tidyverse package  #loading readxl package
+library(readxl)
+
+```
+
+{{< pagebreak >}}
+# Data Acquisition
+In this section we will acquire data from the directory, and have an initial look at it. This data on tax burden across different state was obtained from the annual compendium on tobacco revenue and industry statistics. These datasets are reported on an annual basis, and they include federal and state-level information regarding taxes applied to the price of a pack of cigarettes.
+The data was last updated on March 22, 2021.
+
+The dataset can be assessed from this link: <https://data.cdc.gov/Policy/Table-of-Gross-Cigarette-Tax-Revenue-Per-State-Orz/rkpp-igza/about_data>
+
+{{< pagebreak >}}
+
+#Data Importing
+
+We will now import the data from our repository using the here command. We can observe that there are 2550 observations with 14 variables. The variables some observations can be viewed using the head() command.
+
+```{r}
+# Constructing the file path using here()
+file_path <- here("cdcdata-exercise","cigarette-tax.xlsx")
+
+# Importing the Excel file fromthe file path
+cdc_dataset <- read_excel(file_path)
+
+# Viewing the uppermost data of the imported dataset
+head(cdc_dataset)
+```
+
+
+{{< pagebreak >}}
+
+# Data Cleaning
+
+```{r}
+# Check for missing values within the cdc_dataset
+summary(cdc_dataset)
+str(cdc_dataset)
+```
+We have one (continuous) numeric variable in out dataset under that name "Data_Value". This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable "Year" has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables.
+
+## Checking for missing values
+```{r}
+# Check for missing values (NA) within the dataset
+missing_values <- colSums(is.na(cdc_dataset))
+print(missing_values) 
+```
+
+We can observe that there are 14 variables altogether and there are no missing values in the dataset. We will further check for any missing values coded as 9999 for any numeric variable. We will also use scatterplot to see if there is any such replacement for missing value which can be observed as an outlier. This can be observed later during the analysis.
+
+## Confirming the structure of the dataset through observation across States
+```{r}
+# Counting the number of observations per State
+state_counts <- cdc_dataset %>%
+  count(LocationDesc)
+
+# View the result
+print(state_counts)
+
+```
+We can confirm that every state has 50 oservations for each State from year 1970-2019, which makes perfect sense.
+
+{{< pagebreak >}}
+
+
+#Preparing the dataset for replicable properties
+As the raw data itself is quite messy, we will try to make it as simple as possible to learn about their distribution. As this is a time-series data, we will focus on the "trend" rather than the distribution as normal. We will try to clean the data as much as possible so that we can observe consisteny in the result, making it easier to learn about the properties of the dataset.
+
+## Filtering out Five states to make the analysis easy.
+We will filter five states from the dataset and make a new dataset based on these states, The next phases of analysis will include these states only:  Georgia, Kansas, Idaho, Alabama and Nebraska.
+
+
+```{r}
+# Filter dataset for selected states
+filtered_states <- cdc_dataset %>%
+  filter(LocationDesc %in% c("Georgia", "Kansas", "Idaho", "Alabama", "Nebraska"))
+
+# View the first few rows of the new dataset
+head(filtered_states)
+
+```
+
+
+## Filtering out the variables of interest
+In this section, we will filter out only five variables so that we can look through the dataset more easily. We will set the name to this dataset as "dataset".
+
+
+```{r}
+# Select only the required columns
+dataset <- filtered_states %>%
+  select(LocationDesc, LocationAbbr, Year, Data_Value, GeoLocation)
+
+# View the first few rows of the new dataset
+head(dataset)
+
+```
+
+{{< pagebreak >}}
+
+
+# Visualizing the data
+We will use multiple techniques to visualize and summarize the dataset so that it will be easy for other classmates to understand the structure behind the data..
+
+## Scatter plot of Revenue across time for our five states.
+ We will first use scatter plot to observe the property of our numeric variable Data_Value.
+ 
+```{r}
+
+# Defining the custom colors for each state so it is easy for us to observe
+custom_colors <- c("Georgia" = "red", 
+                   "Kansas" = "blue", 
+                   "Idaho" = "green", 
+                   "Nebraska" = "purple", 
+                   "Alabama" = "orange")
+
+# Scatterplot of Year vs Data_Value
+ggplot(dataset, aes(x = Year, y = Data_Value, color = LocationDesc)) +
+  geom_point(alpha = 0.6, size = 2) +
+  scale_color_manual(values = custom_colors) +
+  theme_minimal() +
+  labs(title = "Scatterplot of Data_Value Over Time for Selected States",
+       x = "Year",
+       y = "Data Value",
+       color = "State") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+As there is a sudden break in the pattern after the year 2000, we will remove these years from our dataset and create a new dataset based on years 1970-2000. 
+
+{{< pagebreak >}}
+
+
+# Further Cleaning of the dataset
+
+We will create a new datset based on year 1970 to 2000 which because they show somewhat consistent trend among the data_valuei.e revenue value
+```{r}
+# Filtering dataset for years less than 2001
+data <- dataset %>% filter(Year < 2001)
+
+# Viewing the first few rows of the newly filtered dataset
+head(data)
+```
+
+We can observe that we now have 155 observations with 5 variables.
+```{r}
+# Counting the number of observations per state again.
+state_counts2 <- data %>%
+  count(LocationDesc)
+
+# Viewing the count result
+print(state_counts2)
+```
+Here, we can observe we have 31 observations for each State across 1970-2000
+
+{{< pagebreak >}} 
+
+
+# Association of variables in final Dataset
+This section will talk about the association of revenue within the five state across the year 1970-2000. We will use few figures and a regression analysis to get some idea of the relationship.
+
+
+## Scatter plot of Revenue across time for our five states. 
+```{r}
+ggplot(data, aes(x = Year, y = Data_Value, #setting the axes
+                 color = LocationDesc)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +  # Adding a linear trend line
+  theme_minimal() +
+  labs(title = "Trend of Revenue from Cigarette(in US$) Over Years by State",
+       x = "Year",
+       y = "Revenue Value",
+       color = "State")
+
+``` 
+This figure clearly shows the relation between the variables across time and States. This relation will be more clear if we use gregression analysis to calculate the slope. We will do that in next step. The scatter plot also confirms that there is no such missing value as encoded as 9999 otherwise we would have seen it as an outlier in our scatterplots.
+
+## Calculating Slope or association through Regression
+
+We will now try to express the relation of revenue over time for Georgia.
+```{r}
+# Filtering data for Georgia
+georgia_data <- dataset %>% filter(LocationDesc == "Georgia")
+
+# Running linear regression based on georgia
+georgia_model <- lm(Data_Value ~ Year, data = georgia_data)
+
+# Viewing regression summary for goergia
+summary(georgia_model)
+```
+
+Furthermore, we will also express the relation for Alabama.
+```{r}
+# Filtering data for alabama
+alabama_data <- dataset %>% filter(LocationDesc == "Alabama")
+
+# Runing linear regression for alabama dataset
+alabama_model <- lm(Data_Value ~ Year, data = alabama_data)
+
+# Viewing regression summary for alabama model
+summary(alabama_model)
+```
+
+From the two regression models above,  the relation can be clearly observed and the properties of the datasets are clearly expressed.
+
+## Summary of Revenue across the five states of the final dataset
+
+We will will now provide the full statistical summary of revenue based on the States present in our dataset including the mean, meadian, maximum and the minimums.
+
+```{r}
+# Summarizing Data Value for five selected states
+summary_data <- data %>%
+  filter(LocationDesc %in% c("Georgia", "Kansas", "Idaho", "Alabama", "Nebraska")) %>%
+  group_by(LocationDesc) %>%
+  summarise(
+    count = n(), # provides no. of observation
+    mean = mean(Data_Value, na.rm = TRUE), # provides mean
+    median = median(Data_Value, na.rm = TRUE), #provides meadian
+    min = min(Data_Value, na.rm = TRUE), # provides minimum value
+    max = max(Data_Value, na.rm = TRUE), #provides max value
+    sd = sd(Data_Value, na.rm = TRUE) # provides standard deviation
+  )
+
+# Viewing the summary result
+print(summary_data)
+```
+
+## Summary of variables
+This table provides the overall summary of the final datset.
+
+```{r}
+summary(data)
+```
+
+
+
+
+
+
