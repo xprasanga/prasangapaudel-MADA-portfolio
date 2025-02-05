@@ -55,7 +55,7 @@ head(cdc_dataset)
 summary(cdc_dataset)
 str(cdc_dataset)
 ```
-We have one (continuous) numeric variable in out dataset under that name "Data_Value". This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable "Year" has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables.
+We have one (continuous) numeric variable in out dataset under that name "Data_Value". This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable "Year" which represents the year of data collection has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables. The variable "LocationDesc" represents the name of the States.
 
 ## Checking for missing values
 ```{r}
