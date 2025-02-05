@@ -1,4 +1,4 @@
-project: 
+project:
   type: website
   output-dir: docs
 
@@ -6,24 +6,25 @@ website:
   title: "Prasanga Paudel's Data Analysis Portfolio"
   navbar:
     left:
-      - text: "About Me"
+      - text: About Me
         file: aboutme.qmd
-      - text: "Projects"
+      - text: Projects
         menu:
-          - text: "Starter Analysis Exercise"
+          - text: Starter Analysis Exercise
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
-          - text: "R Coding Exercise"
+          - text: R Coding Exercise
             file: coding-exercise/coding-exercise.qmd
-          - text: "Exercise 4: Synthetic Data Generation"
-            file: data-excercise/synthetic-data.qmd
-          - text: "Data Analysis Exercise"
+          - text: Exercise 4 - Synthetic Data Generation
+            file: data-exercise/synthetic-data.qmd
+          - text: Data Analysis Exercise
             file: cdcdata-exercise/cdcdata-exercise.qmd
     right:
-      - icon: github 
-        href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio       
+      - icon: github
+        href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio
+
 format:
   html:
     theme: cosmo
     highlight: zenburn
     css: styles.css
-    toc: FALSE
+    toc: false
