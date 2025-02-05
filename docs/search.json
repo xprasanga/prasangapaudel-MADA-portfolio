@@ -415,21 +415,21 @@
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html",
     "href": "cdcdata-exercise/cdcdata-exercise.html",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "",
     "text": "This exercise is based on CDC dataset."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-five-states-to-make-the-analysis-easy.",
     "href": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-five-states-to-make-the-analysis-easy.",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "2.3 Filtering out Five states to make the analysis easy.",
     "text": "2.3 Filtering out Five states to make the analysis easy.\nWe will filter five states from the dataset and make a new dataset based on these states, The next phases of analysis will include these states only: Georgia, Kansas, Idaho, Alabama and Nebraska.\n\n# Filter dataset for selected states\nfiltered_states &lt;- cdc_dataset %&gt;%\n  filter(LocationDesc %in% c(\"Georgia\", \"Kansas\", \"Idaho\", \"Alabama\", \"Nebraska\"))\n\n# View the first few rows of the new dataset\nhead(filtered_states)\n\n# A tibble: 6 × 14\n  LocationAbbr LocationDesc  Year Datasource TopicDesc    MeasureDesc Data_Value\n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt;\n1 AL           Alabama       2019 OW         The Tax Bur… Cigarette …  165763113\n2 GA           Georgia       2019 OW         The Tax Bur… Cigarette …  168549095\n3 ID           Idaho         2019 OW         The Tax Bur… Cigarette …   35817868\n4 KS           Kansas        2019 OW         The Tax Bur… Cigarette …  116778114\n5 NE           Nebraska      2019 OW         The Tax Bur… Cigarette …   50168160\n6 AL           Alabama       2018 OW         The Tax Bur… Cigarette …  172649066\n# ℹ 7 more variables: Data_Value_Unit &lt;chr&gt;, Data_Value_Type &lt;chr&gt;,\n#   GeoLocation &lt;chr&gt;, Source &lt;chr&gt;, TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;,\n#   MeasureId &lt;chr&gt;"
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-the-variables-of-interest",
     "href": "cdcdata-exercise/cdcdata-exercise.html#filtering-out-the-variables-of-interest",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "2.4 Filtering out the variables of interest",
     "text": "2.4 Filtering out the variables of interest\nIn this section, we will filter out only five variables so that we can look through the dataset more easily. We will set the name to this dataset as “dataset”.\n\n# Select only the required columns\ndataset &lt;- filtered_states %&gt;%\n  select(LocationDesc, LocationAbbr, Year, Data_Value, GeoLocation)\n\n# View the first few rows of the new dataset\nhead(dataset)\n\n# A tibble: 6 × 5\n  LocationDesc LocationAbbr  Year Data_Value GeoLocation                        \n  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;                              \n1 Alabama      AL            2019  165763113 POINT (-86.631860762 32.840571122) \n2 Georgia      GA            2019  168549095 POINT (-83.627580346 32.839681093) \n3 Idaho        ID            2019   35817868 POINT (-114.363730042 43.682630005)\n4 Kansas       KS            2019  116778114 POINT (-98.200781227 38.3477403)   \n5 Nebraska     NE            2019   50168160 POINT (-99.365720623 41.6410409880…\n6 Alabama      AL            2018  172649066 POINT (-86.631860762 32.840571122)"
   },
@@ -443,49 +443,49 @@
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.",
     "href": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "3.1 Scatter plot of Revenue across time for our five states.",
     "text": "3.1 Scatter plot of Revenue across time for our five states.\nWe will first use scatter plot to observe the property of our numeric variable Data_Value.\n\n# Defining the custom colors for each state so it is easy for us to observe\ncustom_colors &lt;- c(\"Georgia\" = \"red\", \n                   \"Kansas\" = \"blue\", \n                   \"Idaho\" = \"green\", \n                   \"Nebraska\" = \"purple\", \n                   \"Alabama\" = \"orange\")\n\n# Scatterplot of Year vs Data_Value\nggplot(dataset, aes(x = Year, y = Data_Value, color = LocationDesc)) +\n  geom_point(alpha = 0.6, size = 2) +\n  scale_color_manual(values = custom_colors) +\n  theme_minimal() +\n  labs(title = \"Scatterplot of Data_Value Over Time for Selected States\",\n       x = \"Year\",\n       y = \"Data Value\",\n       color = \"State\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\nAs there is a sudden break in the pattern after the year 2000, we will remove these years from our dataset and create a new dataset based on years 1970-2000."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.-1",
     "href": "cdcdata-exercise/cdcdata-exercise.html#scatter-plot-of-revenue-across-time-for-our-five-states.-1",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "5.1 Scatter plot of Revenue across time for our five states.",
     "text": "5.1 Scatter plot of Revenue across time for our five states.\n\nggplot(data, aes(x = Year, y = Data_Value, #setting the axes\n                 color = LocationDesc)) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"lm\", se = FALSE) +  # Adding a linear trend line\n  theme_minimal() +\n  labs(title = \"Trend of Revenue from Cigarette(in US$) Over Years by State\",\n       x = \"Year\",\n       y = \"Revenue Value\",\n       color = \"State\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n\n\nThis figure clearly shows the relation between the variables across time and States. This relation will be more clear if we use gregression analysis to calculate the slope. We will do that in next step. The scatter plot also confirms that there is no such missing value as encoded as 9999 otherwise we would have seen it as an outlier in our scatterplots."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#checking-for-missing-values",
     "href": "cdcdata-exercise/cdcdata-exercise.html#checking-for-missing-values",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "2.1 Checking for missing values",
     "text": "2.1 Checking for missing values\n\n# Check for missing values (NA) within the dataset\nmissing_values &lt;- colSums(is.na(cdc_dataset))\nprint(missing_values) \n\n   LocationAbbr    LocationDesc            Year      Datasource       TopicDesc \n              0               0               0               0               0 \n    MeasureDesc      Data_Value Data_Value_Unit Data_Value_Type     GeoLocation \n              0               0               0               0               0 \n         Source     TopicTypeId         TopicId       MeasureId \n              0               0               0               0 \n\n\nWe can observe that there are 14 variables altogether and there are no missing values in the dataset. We will further check for any missing values coded as 9999 for any numeric variable. We will also use scatterplot to see if there is any such replacement for missing value which can be observed as an outlier. This can be observed later during the analysis."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#confirming-the-structure-of-the-dataset-through-observation-across-states",
     "href": "cdcdata-exercise/cdcdata-exercise.html#confirming-the-structure-of-the-dataset-through-observation-across-states",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "2.2 Confirming the structure of the dataset through observation across States",
     "text": "2.2 Confirming the structure of the dataset through observation across States\n\n# Counting the number of observations per State\nstate_counts &lt;- cdc_dataset %&gt;%\n  count(LocationDesc)\n\n# View the result\nprint(state_counts)\n\n# A tibble: 51 × 2\n   LocationDesc             n\n   &lt;chr&gt;                &lt;int&gt;\n 1 Alabama                 50\n 2 Alaska                  50\n 3 Arizona                 50\n 4 Arkansas                50\n 5 California              50\n 6 Colorado                50\n 7 Connecticut             50\n 8 Delaware                50\n 9 District of Columbia    50\n10 Florida                 50\n# ℹ 41 more rows\n\n\nWe can confirm that every state has 50 oservations for each State from year 1970-2019, which makes perfect sense.\n\n#Preparing the dataset for replicable properties As the raw data itself is quite messy, we will try to make it as simple as possible to learn about their distribution. As this is a time-series data, we will focus on the “trend” rather than the distribution as normal. We will try to clean the data as much as possible so that we can observe consisteny in the result, making it easier to learn about the properties of the dataset."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#calculating-slope-or-association-through-regression",
     "href": "cdcdata-exercise/cdcdata-exercise.html#calculating-slope-or-association-through-regression",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "5.2 Calculating Slope or association through Regression",
     "text": "5.2 Calculating Slope or association through Regression\nWe will now try to express the relation of revenue over time for Georgia.\n\n# Filtering data for Georgia\ngeorgia_data &lt;- dataset %&gt;% filter(LocationDesc == \"Georgia\")\n\n# Running linear regression based on georgia\ngeorgia_model &lt;- lm(Data_Value ~ Year, data = georgia_data)\n\n# Viewing regression summary for goergia\nsummary(georgia_model)\n\n\nCall:\nlm(formula = Data_Value ~ Year, data = georgia_data)\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-62223438 -24447136   1385557  14666922  80405143 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -6.130e+09  6.714e+08  -9.131 4.55e-12 ***\nYear         3.133e+06  3.366e+05   9.308 2.51e-12 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 34350000 on 48 degrees of freedom\nMultiple R-squared:  0.6435,    Adjusted R-squared:  0.6361 \nF-statistic: 86.64 on 1 and 48 DF,  p-value: 2.512e-12\n\n\nFurthermore, we will also express the relation for Alabama.\n\n# Filtering data for alabama\nalabama_data &lt;- dataset %&gt;% filter(LocationDesc == \"Alabama\")\n\n# Runing linear regression for alabama dataset\nalabama_model &lt;- lm(Data_Value ~ Year, data = alabama_data)\n\n# Viewing regression summary for alabama model\nsummary(alabama_model)\n\n\nCall:\nlm(formula = Data_Value ~ Year, data = alabama_data)\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-50502109 -13652199   5184908  11116529  42297840 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -4.878e+09  4.319e+08  -11.29 4.06e-15 ***\nYear         2.491e+06  2.165e+05   11.51 2.12e-15 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 22100000 on 48 degrees of freedom\nMultiple R-squared:  0.7339,    Adjusted R-squared:  0.7283 \nF-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15\n\n\nFrom the two regression models above, the relation can be clearly observed and the properties of the datasets are clearly expressed."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#summary-of-revenue-across-the-five-states-of-the-final-dataset",
     "href": "cdcdata-exercise/cdcdata-exercise.html#summary-of-revenue-across-the-five-states-of-the-final-dataset",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "5.3 Summary of Revenue across the five states of the final dataset",
     "text": "5.3 Summary of Revenue across the five states of the final dataset\nWe will will now provide the full statistical summary of revenue based on the States present in our dataset including the mean, meadian, maximum and the minimums.\n\n# Summarizing Data Value for five selected states\nsummary_data &lt;- data %&gt;%\n  filter(LocationDesc %in% c(\"Georgia\", \"Kansas\", \"Idaho\", \"Alabama\", \"Nebraska\")) %&gt;%\n  group_by(LocationDesc) %&gt;%\n  summarise(\n    count = n(), # provides no. of observation\n    mean = mean(Data_Value, na.rm = TRUE), # provides mean\n    median = median(Data_Value, na.rm = TRUE), #provides meadian\n    min = min(Data_Value, na.rm = TRUE), # provides minimum value\n    max = max(Data_Value, na.rm = TRUE), #provides max value\n    sd = sd(Data_Value, na.rm = TRUE) # provides standard deviation\n  )\n\n# Viewing the summary result\nprint(summary_data)\n\n# A tibble: 5 × 7\n  LocationDesc count      mean   median      min      max        sd\n  &lt;chr&gt;        &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 Alabama         31 64412390. 72144256 36739131 77175083 13404642.\n2 Georgia         31 80889810. 85549591 40789310 92494239 11900995.\n3 Idaho           31 13511795.  9777154  5142000 26264174  6580881.\n4 Kansas          31 43645409. 45327675 21175000 62374658 12755999.\n5 Nebraska        31 32675236. 31636000 12529000 48966120 10851763."
   },
   {
     "objectID": "cdcdata-exercise/cdcdata-exercise.html#summary-of-variables",
     "href": "cdcdata-exercise/cdcdata-exercise.html#summary-of-variables",
-    "title": "Exercise 5: CDC Dataset",
+    "title": "Data Analysis Excerise",
     "section": "5.4 Summary of variables",
     "text": "5.4 Summary of variables\nThis table provides the overall summary of the final datset.\n\nsummary(data)\n\n LocationDesc       LocationAbbr            Year        Data_Value      \n Length:155         Length:155         Min.   :1970   Min.   : 5142000  \n Class :character   Class :character   1st Qu.:1977   1st Qu.:24687170  \n Mode  :character   Mode  :character   Median :1985   Median :45327675  \n                                       Mean   :1985   Mean   :47026928  \n                                       3rd Qu.:1993   3rd Qu.:72472412  \n                                       Max.   :2000   Max.   :92494239  \n GeoLocation       \n Length:155        \n Class :character  \n Mode  :character"
   }
