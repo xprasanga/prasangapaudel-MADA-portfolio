@@ -250,7 +250,211 @@ This table provides the overall summary of the final datset.
 summary(data)
 ```
 
+This section contributed by Mohammed Zuber
 
+
+```{r setup, include=FALSE}
+# Set global options for knitr
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Required Libraries
+```{r}
+# Load necessary libraries for data processing and visualization
+library(readxl)  # For reading Excel files
+library(dplyr)   # For data manipulation
+library(ggplot2) # For visualization
+
+# Set seed for reproducibility
+set.seed(42)
+```
+
+## Load the Original Data
+```{r}
+# Define the path to the dataset
+# Ensure the dataset is in the working directory
+
+data_path <- "cigarette-tax.xlsx"
+
+# Read the dataset from the specified sheet in the Excel file
+df <- read_excel(data_path, sheet = "cigarette-tax")
+
+# Display the first few rows to understand the dataset structure
+head(df)
+```
+We will now import the data from our repository using the here command. We can observe that there are 2550 observations with 14 variables. The variables some observations can be viewed using the head() command.
+
+## Generate Synthetic Data- LLM AI tools were used to help write the code
+```{r}
+# Copy the original dataset to preserve its structure
+synthetic_df <- df
+
+# Generate synthetic values for the 'Data_Value' column
+# The values are randomly sampled within the original range
+synthetic_df$Data_Value <- sample(
+  min(df$Data_Value, na.rm = TRUE):max(df$Data_Value, na.rm = TRUE), 
+  size = nrow(df), 
+  replace = TRUE
+)
+
+# Display the first few rows of the synthetic dataset to verify changes
+head(synthetic_df)
+```
+I created a synthetic dataset by copying the structure of the original dataset and replacing the Data_Value column with randomly sampled values within its original range. This ensures that the synthetic data maintains a similar distribution while removing any real-world patterns. While the minimum and maximum values are preserved, the randomness may not reflect trends or correlations present in the original data. 
+
+
+
+# Data Cleaning for Synthetic Data
+
+```{r}
+# Check for missing values and summary statistics
+summary(synthetic_df)
+
+# Display the structure of the synthetic dataset
+str(synthetic_df)
+```
+To assess the quality of the synthetic dataset, I checked for missing values and generated summary statistics using the summary() function. This provides key metrics such as the minimum, maximum, median, and quartiles, allowing for a comparison with the original dataset. Additionally, the str() function was used to confirm the structure and data types of each column, ensuring consistency with the original dataset. This step helps verify that the synthetic data retains the expected format and completeness before further analysis.
+
+
+```{r}
+# Check for missing values (NA) within the synthetic dataset
+missing_values <- colSums(is.na(synthetic_df))
+
+# Print the number of missing values for each column
+print(missing_values)
+```
+To ensure data completeness, I checked for missing values in the synthetic dataset using colSums(is.na(synthetic_df)), which calculates the number of NA values in each column.
+## Confirming the Structure of the Dataset Across States
+```{r}
+# Counting the number of observations per State
+state_counts <- synthetic_df %>% count(LocationDesc)
+
+# View the result
+print(state_counts)
+```
+To assess the distribution of observations across states in the synthetic dataset, I utilized the count() function from the dplyr package. This function tallies the number of occurrences for each unique value in the specified column, in this case, LocationDesc. By executing synthetic_df %>% count(LocationDesc), I obtained a summary of how many records pertain to each state. 
+## Filtering Five States for Further Analysis
+```{r}
+# Filter dataset for selected states
+filtered_states <- synthetic_df %>%
+  filter(LocationDesc %in% c("Georgia", "Kansas", "Idaho", "Alabama", "Nebraska"))
+
+# View the first few rows of the new dataset
+head(filtered_states)
+```
+To streamline the analysis, I filtered the dataset to include only five selected states: Georgia, Kansas, Idaho, Alabama, and Nebraska. This was done using the filter() function from dplyr, which extracts rows where the LocationDesc column matches one of the specified states. 
+## Selecting Relevant Variables
+```{r}
+# Select only the required columns
+dataset <- filtered_states %>%
+  select(LocationDesc, LocationAbbr, Year, Data_Value, GeoLocation)
+
+# View the first few rows of the new dataset
+head(dataset)
+```
+To focus on key information, I selected only the most relevant variables from the filtered dataset using the select() function from dplyr. The chosen columns—LocationDesc (state name), LocationAbbr (state abbreviation), Year, Data_Value (cigarette sales/revenue), and GeoLocation (state coordinates)—are essential for analyzing trends over time.
+
+## Scatter Plot of Revenue Across Time for Selected States
+```{r}
+# Define custom colors for each state
+custom_colors <- c("Georgia" = "red", 
+                   "Kansas" = "blue", 
+                   "Idaho" = "green", 
+                   "Nebraska" = "purple", 
+                   "Alabama" = "orange")
+
+# Scatterplot of Year vs Data_Value
+ggplot(dataset, aes(x = Year, y = Data_Value, color = LocationDesc)) +
+  geom_point(alpha = 0.6, size = 2) +
+  scale_color_manual(values = custom_colors) +
+  theme_minimal() +
+  labs(title = "Scatterplot of Data_Value Over Time for Selected States",
+       x = "Year",
+       y = "Data Value",
+       color = "State") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+The key difference between my scatter plot and my classmate’s is that mine appears randomly distributed, while theirs shows a clear trend over time, with values increasing before 2000 and declining afterward. This is because I generated my synthetic data using random sampling, which removed any underlying structure present in the original dataset. My classmate’s data retains a progressive pattern, suggesting that Data_Value follows a time-dependent trend. 
+## Further Cleaning: Filtering Data for 1970-2000
+```{r}
+# Filtering dataset for years less than 2001
+data <- dataset %>% filter(Year < 2001)
+
+# Viewing the first few rows of the newly filtered dataset
+head(data)
+```
+To focus on historical trends, I filtered the dataset to include only records from years before 2001 using the filter() function. This step ensures that the analysis captures a consistent time period, especially if later years exhibit different trends or irregularities. By restricting the data to 1970-2000, I aim to observe stable patterns without the potential disruptions seen in later years.
+
+## Confirming Observations Per State
+```{r}
+# Counting the number of observations per state again.
+state_counts2 <- data %>% count(LocationDesc)
+
+# Viewing the count result
+print(state_counts2)
+```
+To verify the distribution of observations across states after filtering, I used the count() function again to tally the number of records per state in the refined dataset. This step ensures that all selected states (Georgia, Kansas, Idaho, Alabama, and Nebraska) maintain a balanced representation after restricting the data to years before 2001. 
+
+## Association of Variables: Scatter Plot with Trend Line
+```{r}
+ggplot(data, aes(x = Year, y = Data_Value, color = LocationDesc)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +  # Adding a linear trend line
+  theme_minimal() +
+  labs(title = "Trend of Revenue from Cigarette(in US$) Over Years by State",
+       x = "Year",
+       y = "Revenue Value",
+       color = "State")
+```
+The key difference between my plot and my classmate’s is that my trend lines appear flatter, while theirs show a clear upward trajectory over time. This is because my synthetic Data_Value was generated randomly, removing any inherent growth patterns present in the original dataset. My classmate’s plot maintains a structured increase, indicating that revenue values naturally rise over time rather than fluctuating randomly.
+
+
+## Regression Analysis: Relationship Over Time
+```{r}
+# Filtering data for Georgia
+georgia_data <- dataset %>% filter(LocationDesc == "Georgia")
+
+# Running linear regression based on Georgia
+georgia_model <- lm(Data_Value ~ Year, data = georgia_data)
+
+# Viewing regression summary for Georgia
+summary(georgia_model)
+```
+The dataset maintains the original structure, with each selected state having 50 observations, ensuring consistency. However, the regression analysis for Georgia shows a very low R-squared value (0.00164) and a high p-value (0.7798), indicating no clear trend over time. This suggests that the synthetic Data_Value was randomly assigned and does not reflect a structured increase or decrease.
+```{r}
+# Filtering data for Alabama
+alabama_data <- dataset %>% filter(LocationDesc == "Alabama")
+
+# Running linear regression for Alabama dataset
+alabama_model <- lm(Data_Value ~ Year, data = alabama_data)
+
+# Viewing regression summary for Alabama model
+summary(alabama_model)
+```
+The regression analysis for Alabama shows a low R-squared value (0.0078) and a high p-value (0.5419), indicating that Year does not significantly explain the variation in Data_Value. The near-zero R-squared suggests that the synthetic revenue values do not follow a clear increasing or decreasing trend over time. This likely results from the random assignment of Data_Value, which does not capture the expected real-world growth or decline.
+## Summary Statistics of Revenue for Selected States
+```{r}
+# Summarizing Data Value for five selected states
+summary_data <- data %>%
+  group_by(LocationDesc) %>%
+  summarise(
+    count = n(), 
+    mean = mean(Data_Value, na.rm = TRUE), 
+    median = median(Data_Value, na.rm = TRUE), 
+    min = min(Data_Value, na.rm = TRUE), 
+    max = max(Data_Value, na.rm = TRUE), 
+    sd = sd(Data_Value, na.rm = TRUE)
+  )
+
+# Viewing the summary result
+print(summary_data)
+```
+The summary statistics for the five selected states indicate that each state has 31 observations, maintaining a balanced dataset. However, the mean and median values show high variability, suggesting inconsistencies in how Data_Value was generated. The wide range between min and max values and high standard deviation indicate that the synthetic data may still be too random rather than following a structured trend.
+## Final Summary of the Dataset
+```{r}
+summary(data)
+```
+From the outputs, my synthetic dataset maintains the correct structure with selected variables such as LocationDesc, Year, and Data_Value, ensuring consistency. However, the regression analysis for Georgia and Alabama shows very low R-squared values (0.0016 and 0.0078, respectively) and high p-values (0.7798 and 0.5419), indicating no significant relationship between Year and Data_Value. Additionally, while the mean and median values for each state appear reasonable, the wide range and high standard deviation suggest excessive randomness in Data_Value generation. 
 
 
 

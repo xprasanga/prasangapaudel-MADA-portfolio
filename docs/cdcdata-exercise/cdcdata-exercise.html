@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.40">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4d01e6e8a406b62be36f5785d81e4bf1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -293,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ MeasureId      : chr [1:2550] "450CGS" "450CGS" "450CGS" "450CGS" ...</code></pre>
 </div>
 </div>
-<p>We have one (continuous) numeric variable in out dataset under that name “Data_Value”. This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable “Year” has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables.</p>
+<p>We have one (continuous) numeric variable in out dataset under that name “Data_Value”. This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable “Year” which represents the year of data collection has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables. The variable “LocationDesc” represents the name of the States.</p>
 <section id="checking-for-missing-values" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="checking-for-missing-values"><span class="header-section-number">2.1</span> Checking for missing values</h2>
 <div class="cell">
@@ -618,6 +618,424 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
                    </code></pre>
 </div>
 </div>
+<p>This section contributed by Mohammed Zuber</p>
+</section>
+<section id="load-required-libraries" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="load-required-libraries"><span class="header-section-number">5.5</span> Load Required Libraries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries for data processing and visualization</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)  <span class="co"># For reading Excel files</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)   <span class="co"># For data manipulation</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># For visualization</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-the-original-data" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="load-the-original-data"><span class="header-section-number">5.6</span> Load the Original Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the path to the dataset</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the dataset is in the working directory</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="st">"cigarette-tax.xlsx"</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the dataset from the specified sheet in the Excel file</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(data_path, <span class="at">sheet =</span> <span class="st">"cigarette-tax"</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows to understand the dataset structure</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  LocationAbbr LocationDesc  Year Datasource TopicDesc    MeasureDesc Data_Value
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;            &lt;dbl&gt;
+1 AL           Alabama       2019 OW         The Tax Bur… Cigarette …  165763113
+2 AK           Alaska        2019 OW         The Tax Bur… Cigarette …   44773153
+3 AZ           Arizona       2019 OW         The Tax Bur… Cigarette …  296712275
+4 AR           Arkansas      2019 OW         The Tax Bur… Cigarette …  161909335
+5 CA           California    2019 OW         The Tax Bur… Cigarette … 1791254942
+6 CO           Colorado      2019 OW         The Tax Bur… Cigarette …  145551255
+# ℹ 7 more variables: Data_Value_Unit &lt;chr&gt;, Data_Value_Type &lt;chr&gt;,
+#   GeoLocation &lt;chr&gt;, Source &lt;chr&gt;, TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;,
+#   MeasureId &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>We will now import the data from our repository using the here command. We can observe that there are 2550 observations with 14 variables. The variables some observations can be viewed using the head() command.</p>
+</section>
+<section id="generate-synthetic-data--llm-ai-tools-were-used-to-help-write-the-code" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="generate-synthetic-data--llm-ai-tools-were-used-to-help-write-the-code"><span class="header-section-number">5.7</span> Generate Synthetic Data- LLM AI tools were used to help write the code</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the original dataset to preserve its structure</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>synthetic_df <span class="ot">&lt;-</span> df</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate synthetic values for the 'Data_Value' column</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The values are randomly sampled within the original range</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>synthetic_df<span class="sc">$</span>Data_Value <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(df<span class="sc">$</span>Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)<span class="sc">:</span><span class="fu">max</span>(df<span class="sc">$</span>Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">nrow</span>(df), </span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of the synthetic dataset to verify changes</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(synthetic_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  LocationAbbr LocationDesc  Year Datasource TopicDesc    MeasureDesc Data_Value
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;            &lt;int&gt;
+1 AL           Alabama       2019 OW         The Tax Bur… Cigarette … 1784329036
+2 AK           Alaska        2019 OW         The Tax Bur… Cigarette … 1231722496
+3 AZ           Arizona       2019 OW         The Tax Bur… Cigarette …  611534923
+4 AR           Arkansas      2019 OW         The Tax Bur… Cigarette … 1018881505
+5 CA           California    2019 OW         The Tax Bur… Cigarette …  677017575
+6 CO           Colorado      2019 OW         The Tax Bur… Cigarette … 1869612235
+# ℹ 7 more variables: Data_Value_Unit &lt;chr&gt;, Data_Value_Type &lt;chr&gt;,
+#   GeoLocation &lt;chr&gt;, Source &lt;chr&gt;, TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;,
+#   MeasureId &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>I created a synthetic dataset by copying the structure of the original dataset and replacing the Data_Value column with randomly sampled values within its original range. This ensures that the synthetic data maintains a similar distribution while removing any real-world patterns. While the minimum and maximum values are preserved, the randomness may not reflect trends or correlations present in the original data.</p>
+</section>
+</section>
+<section id="data-cleaning-for-synthetic-data" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Data Cleaning for Synthetic Data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values and summary statistics</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(synthetic_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> LocationAbbr       LocationDesc            Year       Datasource       
+ Length:2550        Length:2550        Min.   :1970   Length:2550       
+ Class :character   Class :character   1st Qu.:1982   Class :character  
+ Mode  :character   Mode  :character   Median :1994   Mode  :character  
+                                       Mean   :1994                     
+                                       3rd Qu.:2007                     
+                                       Max.   :2019                     
+  TopicDesc         MeasureDesc          Data_Value        Data_Value_Unit   
+ Length:2550        Length:2550        Min.   :2.811e+06   Length:2550       
+ Class :character   Class :character   1st Qu.:4.743e+08   Class :character  
+ Mode  :character   Mode  :character   Median :9.411e+08   Mode  :character  
+                                       Mean   :9.422e+08                     
+                                       3rd Qu.:1.411e+09                     
+                                       Max.   :1.887e+09                     
+ Data_Value_Type    GeoLocation           Source          TopicTypeId       
+ Length:2550        Length:2550        Length:2550        Length:2550       
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+   TopicId           MeasureId        
+ Length:2550        Length:2550       
+ Class :character   Class :character  
+ Mode  :character   Mode  :character  
+                                      
+                                      
+                                      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the structure of the synthetic dataset</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(synthetic_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [2,550 × 14] (S3: tbl_df/tbl/data.frame)
+ $ LocationAbbr   : chr [1:2550] "AL" "AK" "AZ" "AR" ...
+ $ LocationDesc   : chr [1:2550] "Alabama" "Alaska" "Arizona" "Arkansas" ...
+ $ Year           : num [1:2550] 2019 2019 2019 2019 2019 ...
+ $ Datasource     : chr [1:2550] "OW" "OW" "OW" "OW" ...
+ $ TopicDesc      : chr [1:2550] "The Tax Burden on Tobacco" "The Tax Burden on Tobacco" "The Tax Burden on Tobacco" "The Tax Burden on Tobacco" ...
+ $ MeasureDesc    : chr [1:2550] "Cigarette Sales" "Cigarette Sales" "Cigarette Sales" "Cigarette Sales" ...
+ $ Data_Value     : int [1:2550] 1784329036 1231722496 611534923 1018881505 677017575 1869612235 1738008298 356796171 1678682950 1023251209 ...
+ $ Data_Value_Unit: chr [1:2550] "$" "$" "$" "$" ...
+ $ Data_Value_Type: chr [1:2550] "Dollars" "Dollars" "Dollars" "Dollars" ...
+ $ GeoLocation    : chr [1:2550] "POINT (-86.631860762 32.840571122)" "POINT (-147.722059036 64.845079957001)" "POINT (-111.763811277 34.86597028)" "POINT (-92.274490743 34.748650124)" ...
+ $ Source         : chr [1:2550] "Table 12- Orzechowski and Walker, Tax Burden on Tobacco" "Table 12- Orzechowski and Walker, Tax Burden on Tobacco" "Table 12- Orzechowski and Walker, Tax Burden on Tobacco" "Table 12- Orzechowski and Walker, Tax Burden on Tobacco" ...
+ $ TopicTypeId    : chr [1:2550] "POL" "POL" "POL" "POL" ...
+ $ TopicId        : chr [1:2550] "450POL" "450POL" "450POL" "450POL" ...
+ $ MeasureId      : chr [1:2550] "450CGS" "450CGS" "450CGS" "450CGS" ...</code></pre>
+</div>
+</div>
+<p>To assess the quality of the synthetic dataset, I checked for missing values and generated summary statistics using the summary() function. This provides key metrics such as the minimum, maximum, median, and quartiles, allowing for a comparison with the original dataset. Additionally, the str() function was used to confirm the structure and data types of each column, ensuring consistency with the original dataset. This step helps verify that the synthetic data retains the expected format and completeness before further analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values (NA) within the synthetic dataset</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(synthetic_df))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the number of missing values for each column</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(missing_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   LocationAbbr    LocationDesc            Year      Datasource       TopicDesc 
+              0               0               0               0               0 
+    MeasureDesc      Data_Value Data_Value_Unit Data_Value_Type     GeoLocation 
+              0               0               0               0               0 
+         Source     TopicTypeId         TopicId       MeasureId 
+              0               0               0               0 </code></pre>
+</div>
+</div>
+<p>To ensure data completeness, I checked for missing values in the synthetic dataset using colSums(is.na(synthetic_df)), which calculates the number of NA values in each column. ## Confirming the Structure of the Dataset Across States</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Counting the number of observations per State</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>state_counts <span class="ot">&lt;-</span> synthetic_df <span class="sc">%&gt;%</span> <span class="fu">count</span>(LocationDesc)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View the result</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(state_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 51 × 2
+   LocationDesc             n
+   &lt;chr&gt;                &lt;int&gt;
+ 1 Alabama                 50
+ 2 Alaska                  50
+ 3 Arizona                 50
+ 4 Arkansas                50
+ 5 California              50
+ 6 Colorado                50
+ 7 Connecticut             50
+ 8 Delaware                50
+ 9 District of Columbia    50
+10 Florida                 50
+# ℹ 41 more rows</code></pre>
+</div>
+</div>
+<p>To assess the distribution of observations across states in the synthetic dataset, I utilized the count() function from the dplyr package. This function tallies the number of occurrences for each unique value in the specified column, in this case, LocationDesc. By executing synthetic_df %&gt;% count(LocationDesc), I obtained a summary of how many records pertain to each state. ## Filtering Five States for Further Analysis</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter dataset for selected states</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>filtered_states <span class="ot">&lt;-</span> synthetic_df <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(LocationDesc <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Georgia"</span>, <span class="st">"Kansas"</span>, <span class="st">"Idaho"</span>, <span class="st">"Alabama"</span>, <span class="st">"Nebraska"</span>))</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first few rows of the new dataset</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(filtered_states)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  LocationAbbr LocationDesc  Year Datasource TopicDesc    MeasureDesc Data_Value
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;            &lt;int&gt;
+1 AL           Alabama       2019 OW         The Tax Bur… Cigarette … 1784329036
+2 GA           Georgia       2019 OW         The Tax Bur… Cigarette … 1669690063
+3 ID           Idaho         2019 OW         The Tax Bur… Cigarette …   34207889
+4 KS           Kansas        2019 OW         The Tax Bur… Cigarette … 1857140875
+5 NE           Nebraska      2019 OW         The Tax Bur… Cigarette …  832504060
+6 AL           Alabama       2018 OW         The Tax Bur… Cigarette …  484349853
+# ℹ 7 more variables: Data_Value_Unit &lt;chr&gt;, Data_Value_Type &lt;chr&gt;,
+#   GeoLocation &lt;chr&gt;, Source &lt;chr&gt;, TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;,
+#   MeasureId &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>To streamline the analysis, I filtered the dataset to include only five selected states: Georgia, Kansas, Idaho, Alabama, and Nebraska. This was done using the filter() function from dplyr, which extracts rows where the LocationDesc column matches one of the specified states. ## Selecting Relevant Variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select only the required columns</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> filtered_states <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(LocationDesc, LocationAbbr, Year, Data_Value, GeoLocation)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first few rows of the new dataset</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  LocationDesc LocationAbbr  Year Data_Value GeoLocation                        
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;                              
+1 Alabama      AL            2019 1784329036 POINT (-86.631860762 32.840571122) 
+2 Georgia      GA            2019 1669690063 POINT (-83.627580346 32.839681093) 
+3 Idaho        ID            2019   34207889 POINT (-114.363730042 43.682630005)
+4 Kansas       KS            2019 1857140875 POINT (-98.200781227 38.3477403)   
+5 Nebraska     NE            2019  832504060 POINT (-99.365720623 41.6410409880…
+6 Alabama      AL            2018  484349853 POINT (-86.631860762 32.840571122) </code></pre>
+</div>
+</div>
+<p>To focus on key information, I selected only the most relevant variables from the filtered dataset using the select() function from dplyr. The chosen columns—LocationDesc (state name), LocationAbbr (state abbreviation), Year, Data_Value (cigarette sales/revenue), and GeoLocation (state coordinates)—are essential for analyzing trends over time.</p>
+<section id="scatter-plot-of-revenue-across-time-for-selected-states" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-selected-states"><span class="header-section-number">6.1</span> Scatter Plot of Revenue Across Time for Selected States</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define custom colors for each state</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>custom_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Georgia"</span> <span class="ot">=</span> <span class="st">"red"</span>, </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Kansas"</span> <span class="ot">=</span> <span class="st">"blue"</span>, </span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Idaho"</span> <span class="ot">=</span> <span class="st">"green"</span>, </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Nebraska"</span> <span class="ot">=</span> <span class="st">"purple"</span>, </span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Alabama"</span> <span class="ot">=</span> <span class="st">"orange"</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot of Year vs Data_Value</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dataset, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Data_Value, <span class="at">color =</span> LocationDesc)) <span class="sc">+</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> custom_colors) <span class="sc">+</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scatterplot of Data_Value Over Time for Selected States"</span>,</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Data Value"</span>,</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"State"</span>) <span class="sc">+</span></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The key difference between my scatter plot and my classmate’s is that mine appears randomly distributed, while theirs shows a clear trend over time, with values increasing before 2000 and declining afterward. This is because I generated my synthetic data using random sampling, which removed any underlying structure present in the original dataset. My classmate’s data retains a progressive pattern, suggesting that Data_Value follows a time-dependent trend. ## Further Cleaning: Filtering Data for 1970-2000</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering dataset for years less than 2001</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Year <span class="sc">&lt;</span> <span class="dv">2001</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing the first few rows of the newly filtered dataset</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  LocationDesc LocationAbbr  Year Data_Value GeoLocation                        
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;                              
+1 Alabama      AL            2000 1226607262 POINT (-86.631860762 32.840571122) 
+2 Georgia      GA            2000  695213645 POINT (-83.627580346 32.839681093) 
+3 Idaho        ID            2000 1592713712 POINT (-114.363730042 43.682630005)
+4 Kansas       KS            2000  748675169 POINT (-98.200781227 38.3477403)   
+5 Nebraska     NE            2000 1061013837 POINT (-99.365720623 41.6410409880…
+6 Alabama      AL            1999 1074575607 POINT (-86.631860762 32.840571122) </code></pre>
+</div>
+</div>
+<p>To focus on historical trends, I filtered the dataset to include only records from years before 2001 using the filter() function. This step ensures that the analysis captures a consistent time period, especially if later years exhibit different trends or irregularities. By restricting the data to 1970-2000, I aim to observe stable patterns without the potential disruptions seen in later years.</p>
+</section>
+<section id="confirming-observations-per-state" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="confirming-observations-per-state"><span class="header-section-number">6.2</span> Confirming Observations Per State</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Counting the number of observations per state again.</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>state_counts2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">count</span>(LocationDesc)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing the count result</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(state_counts2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  LocationDesc     n
+  &lt;chr&gt;        &lt;int&gt;
+1 Alabama         31
+2 Georgia         31
+3 Idaho           31
+4 Kansas          31
+5 Nebraska        31</code></pre>
+</div>
+</div>
+<p>To verify the distribution of observations across states after filtering, I used the count() function again to tally the number of records per state in the refined dataset. This step ensures that all selected states (Georgia, Kansas, Idaho, Alabama, and Nebraska) maintain a balanced representation after restricting the data to years before 2001.</p>
+</section>
+<section id="association-of-variables-scatter-plot-with-trend-line" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="association-of-variables-scatter-plot-with-trend-line"><span class="header-section-number">6.3</span> Association of Variables: Scatter Plot with Trend Line</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Data_Value, <span class="at">color =</span> LocationDesc)) <span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span>  <span class="co"># Adding a linear trend line</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Trend of Revenue from Cigarette(in US$) Over Years by State"</span>,</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Revenue Value"</span>,</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"State"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The key difference between my plot and my classmate’s is that my trend lines appear flatter, while theirs show a clear upward trajectory over time. This is because my synthetic Data_Value was generated randomly, removing any inherent growth patterns present in the original dataset. My classmate’s plot maintains a structured increase, indicating that revenue values naturally rise over time rather than fluctuating randomly.</p>
+</section>
+<section id="regression-analysis-relationship-over-time" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="regression-analysis-relationship-over-time"><span class="header-section-number">6.4</span> Regression Analysis: Relationship Over Time</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering data for Georgia</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>georgia_data <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span> <span class="fu">filter</span>(LocationDesc <span class="sc">==</span> <span class="st">"Georgia"</span>)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Running linear regression based on Georgia</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>georgia_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Data_Value <span class="sc">~</span> Year, <span class="at">data =</span> georgia_data)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing regression summary for Georgia</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(georgia_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Data_Value ~ Year, data = georgia_data)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-974428520 -333610875  -49039365  449037525  889230815 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  3.899e+09  1.026e+10   0.380    0.705
+Year        -1.446e+06  5.142e+06  -0.281    0.780
+
+Residual standard error: 524700000 on 48 degrees of freedom
+Multiple R-squared:  0.001644,  Adjusted R-squared:  -0.01915 
+F-statistic: 0.07906 on 1 and 48 DF,  p-value: 0.7798</code></pre>
+</div>
+</div>
+<p>The dataset maintains the original structure, with each selected state having 50 observations, ensuring consistency. However, the regression analysis for Georgia shows a very low R-squared value (0.00164) and a high p-value (0.7798), indicating no clear trend over time. This suggests that the synthetic Data_Value was randomly assigned and does not reflect a structured increase or decrease.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering data for Alabama</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>alabama_data <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span> <span class="fu">filter</span>(LocationDesc <span class="sc">==</span> <span class="st">"Alabama"</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Running linear regression for Alabama dataset</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>alabama_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Data_Value <span class="sc">~</span> Year, <span class="at">data =</span> alabama_data)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing regression summary for Alabama model</span></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(alabama_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Data_Value ~ Year, data = alabama_data)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-842238895 -386165861   38772300  400649003  842216045 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) -4.996e+09  9.614e+09  -0.520    0.606
+Year         2.961e+06  4.820e+06   0.614    0.542
+
+Residual standard error: 491900000 on 48 degrees of freedom
+Multiple R-squared:  0.0078,    Adjusted R-squared:  -0.01287 
+F-statistic: 0.3773 on 1 and 48 DF,  p-value: 0.5419</code></pre>
+</div>
+</div>
+<p>The regression analysis for Alabama shows a low R-squared value (0.0078) and a high p-value (0.5419), indicating that Year does not significantly explain the variation in Data_Value. The near-zero R-squared suggests that the synthetic revenue values do not follow a clear increasing or decreasing trend over time. This likely results from the random assignment of Data_Value, which does not capture the expected real-world growth or decline. ## Summary Statistics of Revenue for Selected States</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarizing Data Value for five selected states</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>summary_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(LocationDesc) <span class="sc">%&gt;%</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(), </span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(Data_Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing the summary result</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 7
+  LocationDesc count        mean     median       min        max         sd
+  &lt;chr&gt;        &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;
+1 Alabama         31  897512416.  960156234  48443527 1592272124 459682451.
+2 Georgia         31 1041163227.  931027872 119283033 1795190468 483486517.
+3 Idaho           31  962935962.  953346293  37056961 1801657976 502962014.
+4 Kansas          31  940194286.  927004867 133488936 1853330662 507391652.
+5 Nebraska        31 1045789591. 1068338750  14826708 1851782104 515086985.</code></pre>
+</div>
+</div>
+<p>The summary statistics for the five selected states indicate that each state has 31 observations, maintaining a balanced dataset. However, the mean and median values show high variability, suggesting inconsistencies in how Data_Value was generated. The wide range between min and max values and high standard deviation indicate that the synthetic data may still be too random rather than following a structured trend. ## Final Summary of the Dataset</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> LocationDesc       LocationAbbr            Year        Data_Value       
+ Length:155         Length:155         Min.   :1970   Min.   :1.483e+07  
+ Class :character   Class :character   1st Qu.:1977   1st Qu.:5.343e+08  
+ Mode  :character   Mode  :character   Median :1985   Median :9.591e+08  
+                                       Mean   :1985   Mean   :9.775e+08  
+                                       3rd Qu.:1993   3rd Qu.:1.388e+09  
+                                       Max.   :2000   Max.   :1.853e+09  
+ GeoLocation       
+ Length:155        
+ Class :character  
+ Mode  :character  
+                   
+                   
+                   </code></pre>
+</div>
+</div>
+<p>From the outputs, my synthetic dataset maintains the correct structure with selected variables such as LocationDesc, Year, and Data_Value, ensuring consistency. However, the regression analysis for Georgia and Alabama shows very low R-squared values (0.0016 and 0.0078, respectively) and high p-values (0.7798 and 0.5419), indicating no significant relationship between Year and Data_Value. Additionally, while the mean and median values for each state appear reasonable, the wide range and high standard deviation suggest excessive randomness in Data_Value generation.</p>
 
 
 </section>
@@ -706,6 +1124,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -816,6 +1236,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
