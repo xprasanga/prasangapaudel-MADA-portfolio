@@ -236,7 +236,7 @@ gt(police_summary_with_averages) %>%
     asian = "Asian (%)"
   ) %>%
   tab_footnote(
-    footnote = "Data represents the latest available statistics on police force residency.",
+    footnote = "Data represents the available statistics on police force residency based on FiveThirtyEight.",
     locations = cells_title(groups = "title")
   ) %>%
   tab_caption("Table 1: Residency rates of police officers by race across 10 major U.S. cities.")
