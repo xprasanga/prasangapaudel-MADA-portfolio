@@ -12,11 +12,15 @@ format:
 Placeholder file for the future R coding exercise.
 
 ```{r, echo=FALSE, message=FALSE}
-# load a few R packages
+# loading R packages
 library(here)
 library(knitr)
-library(dslabs) # loading dslabs package as we will use gapminder dataset from it
-library(tidyverse) # loading tidyverse package 
+library(tidyverse)  
+library(gt)
+library(dplyr)
+library(scales)
+library(ggplot2)
+library(tidyr)
 ```
 
 {{< pagebreak >}}
@@ -40,7 +44,7 @@ head(police_data)
 # Asking ChatGPT to create a graph based on original gaph
 
 I took a screenshot of the graph from the website as it was a fairly long and I instructed chatGPT to follow some instruction so that it creates the graph that I want.
-![This image was provided to chatGPT along with the instructions](presentation-exercise/images/image.JPEG) 
+![Graph Screenshot](../presentation-exercise/images/image.JPEG)
 
 The initial prompt is as follow:
 
@@ -63,11 +67,12 @@ I want you to follow these instruction if it helps:
 5. generate data yourself if required
 
 {{< pagebreak >}}
+
 # Directly running the code provided by chatGPT (without providing actual data)
 
+
 ```{r}
-library(ggplot2)
-library(dplyr)
+
 
 # Generate sample data
 data <- data.frame(
@@ -92,33 +97,31 @@ ggplot(data_long, aes(x = percentage, y = reorder(city, police_force_size), colo
   geom_text(aes(label = police_force_size, x = 105), hjust = 0, size = 3, color = "black", data = data)
 
 ```
+This is the figure that was obtained after I ran the code provided by chatGPT, I think chatGPT did a very good job here.
 
 {{< pagebreak >}}
+
 # Final version of the code after repeated iterations
+ 
+After going through multiple edits and back-and-forth conversation with chatGPT, the following code was obtained:
 
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-
-# Assuming your dataset 'police_data' is already loaded with the required columns
-
-# Convert character columns to numeric where necessary
+# Converting character columns to numeric where necessary
 police_data <- police_data %>%
-  mutate(across(c(all, white, non.white), as.numeric))  # Focus only on 'all', 'white', 'non.white'
+  mutate(across(c(all, white, non.white), as.numeric))  # Focusing only on 'all', 'white', 'non.white'
 
-# Reshape data to long format, including only relevant categories
+# Reshaping data to long format, including only relevant categories
 data_long <- police_data %>% 
   pivot_longer(cols = c("all", "white", "non.white"), 
                names_to = "category", 
                values_to = "percentage")
 
-# Create the plot
-p <- ggplot(data_long, aes(x = percentage, y = reorder(city, percentage), color = category, fill = category)) +  # Order cities by 'percentage'
-  geom_point(shape = 21, colour = "black", size = 2, stroke = 0.5) +  # Increase stroke size
-  scale_x_continuous(breaks = seq(0, 1, by = 0.25),  # Adjust breaks for decimal values
-                     labels = scales::percent_format(accuracy = 1),  # Format as percentages
-                     limits = c(0, 1),  # Adjust limits for decimal values
+# Creating the plot
+p <- ggplot(data_long, aes(x = percentage, y = reorder(city, percentage), color = category, fill = category)) +  # Ordering cities by 'percentage'
+  geom_point(shape = 21, colour = "black", size = 2, stroke = 0.5) +  # Increasing stroke size
+  scale_x_continuous(breaks = seq(0, 1, by = 0.25),  # Adjusting breaks for decimal values
+                     labels = scales::percent_format(accuracy = 1),  # Formatting as percentages
+                     limits = c(0, 1),  # Adjusting limits for decimal values
                      position = "top") +
   labs(x = "", y = "City", title = "Percentage of Police Officers Living in the City") +
   scale_color_manual(values = c("all" = "dodgerblue", "white" = "black", "non.white" = "forestgreen")) +  # Adjust color for categories
@@ -128,27 +131,116 @@ p <- ggplot(data_long, aes(x = percentage, y = reorder(city, percentage), color 
     legend.title = element_blank(),
     axis.title.x = element_blank(),
     axis.text.x = element_text(hjust = 0.5),
-    plot.margin = margin(10, 10, 10, 60)  # Increase left margin for y-axis labels
+    plot.margin = margin(10, 10, 10, 60)  # Increasing left margin for y-axis labels
   ) +
   geom_text(aes(label = police_force_size, x = 1.05), hjust = 0, size = 3, color = "black", 
-            data = data_long %>% filter(category == "all")) +  # Use data_long filtered for 'all' category
-  scale_y_discrete(expand = expansion(add = c(0.5, 0.5))) +  # Add spacing to y-axis
-  coord_cartesian(clip = "off")  # Allow labels to go outside the plot area
+            data = data_long %>% filter(category == "all")) +  # Useing data_long filtered for 'all' category
+  scale_y_discrete(expand = expansion(add = c(0.5, 0.5))) +  # Adding spacing to y-axis
+  coord_cartesian(clip = "off")  # Allowing labels to go outside the plot area
 
-# Save the plot as a JPEG file
+# Saving the plot as a JPEG file
 
 ggsave(here("presentation-exercise", "images", "police_officers_plot.jpeg"), 
        plot = p, width = 6.2, height = 10.2, dpi = 300, limitsize = FALSE)
 
 
 
-# Render the plot
+# Rendering the plot
 print(p)
 
 
 ```
 
-_I could not load the exact image in R but the saved file shows that the created image is a vertical image with enough spacing between the y-axis components._
+_I could not load the exact image in R but the saved file shows that the created image is a vertical image with enough spacing between the y-axis components. I also tried placing the total size of the police force at the right side but it seems that ggplot2 is unable to create multiple axes (like two y-axis side by side) R does have options to create multiple axes using par() but i could not make it work_
 
 
-![This is the image that has been saved to the directory: presentation-exercise/images](presentation-exercise/images/police_officers_plot.jpeg)
+![This is the image that has been saved to the directory: presentation-exercise/images](../presentation-exercise/images/police_officers_plot.jpeg)
+# Rename variable for consistency
+Before moving into tabulation, we will rename our variable if they have strange characters in their name.
+```{r}
+police_data <- police_data %>%
+  rename(non_white = non.white)
+```
+  
+  
+# Tabulation
+
+In this section, we will create an advance table based on the same data we collected for the above graph.
+
+
+```{r}
+
+# Converting percentage columns to numeric
+police_data <- police_data %>%
+  mutate(across(c(all, white, non_white, black, hispanic, asian), ~ suppressWarnings(as.numeric(.)))) %>%
+  replace_na(list(all = 0, white = 0, non_white = 0, black = 0, hispanic = 0, asian = 0))
+
+# Defining a function to map values to appropriate RGBA colors
+color_transparency <- function(value) {
+  ifelse(value < 0.25, "rgba(255,165,0,0.25)",  # 75% transparent
+         ifelse(value < 0.50, "rgba(255,165,0,0.50)",  # 50% transparent
+                ifelse(value < 0.75, "rgba(255,165,0,0.75)",  # 25% transparent
+                       "rgba(255,165,0,1.00)")))  # Fully opaque
+}
+
+# Summarizing police data
+police_summary <- police_data %>%
+  arrange(desc(police_force_size)) %>%
+  head(10)  # Keeping the top 10 largest police forces for a concise table
+
+# Calculating averages for the summary
+averages <- police_summary %>%
+  summarise(
+    city = "Average",
+    police_force_size = mean(police_force_size, na.rm = TRUE),
+    all = mean(all, na.rm = TRUE),
+    white = mean(white, na.rm = TRUE),
+    non_white = mean(non_white, na.rm = TRUE),
+    black = mean(black, na.rm = TRUE),
+    hispanic = mean(hispanic, na.rm = TRUE),
+    asian = mean(asian, na.rm = TRUE)
+  )
+
+# Combining the summary and averages
+police_summary_with_averages <- bind_rows(police_summary, averages)
+
+# Creating the formatted table
+gt(police_summary_with_averages) %>%
+  tab_header(
+    title = md("**Police Force Residency and Demographics**"),
+    subtitle = md("*Percentage of police officers living in the city they serve, broken down by race*")
+  ) %>%
+  tab_spanner(
+    label = "Percentage of Officers Living in the City",
+    columns = c(all, white, non_white, black, hispanic, asian)
+  ) %>%
+  fmt_number(
+    columns = c(all, white, non_white, black, hispanic, asian, police_force_size),
+    decimals = 1
+  ) %>%
+  data_color(
+    columns = c(all, white, non_white, black, hispanic, asian),
+    fn = function(x) sapply(x, color_transparency)  # Applying the color function
+  ) %>%
+  cols_label(
+    city = "City",
+    police_force_size = "Total Officers",
+    all = "Total (%)",
+    white = "White (%)",
+    non_white = "Non-White (%)",
+    black = "Black (%)",
+    hispanic = "Hispanic (%)",
+    asian = "Asian (%)"
+  ) %>%
+  tab_footnote(
+    footnote = "Data represents the latest available statistics on police force residency.",
+    locations = cells_title(groups = "title")
+  ) %>%
+  tab_caption("Table 1: Residency rates of police officers by race across 10 major U.S. cities.")
+```
+Once I obtained the table, I asked chatGPT to color code the cells by using the prompt:
+_fix this code such that the values if below 25% show 75% transparent orange, if 25%-50% show 50% transparent orange, 50-75 show 25%, and 75 over show 100% opaque color_
+
+
+
+
