@@ -353,7 +353,8 @@ Removed 75 rows containing missing values or values outside the scale range
 </div>
 </div>
 <p><em>I could not load the exact image in R but the saved file shows that the created image is a vertical image with enough spacing between the y-axis components. I also tried placing the total size of the police force at the right side but it seems that ggplot2 is unable to create multiple axes (like two y-axis side by side) R does have options to create multiple axes using par() but i could not make it work</em></p>
-<p><img src="../presentation-exercise/images/police_officers_plot.jpeg" class="img-fluid" alt="This is the image that has been saved to the directory: presentation-exercise/images"> # Rename variable for consistency Before moving into tabulation, we will rename our variable if they have strange characters in their name.</p>
+<p><img src="../presentation-exercise/images/police_officers_plot.jpeg" class="img-fluid" alt="This is the image that has been saved to the directory: presentation-exercise/images"> <em>Renaming variable for consistency</em></p>
+<p>Before moving into tabulation, we will rename our variable if they have strange characters in their name.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">non_white =</span> non.white)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -431,23 +432,23 @@ Removed 75 rows containing missing values or values outside the scale range
 <span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">"Table 1: Residency rates of police officers by race across 10 major U.S. cities."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="qgzzgmaekc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qgzzgmaekc table {
+<div id="gdononcxzh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gdononcxzh table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qgzzgmaekc thead, #qgzzgmaekc tbody, #qgzzgmaekc tfoot, #qgzzgmaekc tr, #qgzzgmaekc td, #qgzzgmaekc th {
+#gdononcxzh thead, #gdononcxzh tbody, #gdononcxzh tfoot, #gdononcxzh tr, #gdononcxzh td, #gdononcxzh th {
   border-style: none;
 }
 
-#qgzzgmaekc p {
+#gdononcxzh p {
   margin: 0;
   padding: 0;
 }
 
-#qgzzgmaekc .gt_table {
+#gdononcxzh .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -473,12 +474,12 @@ Removed 75 rows containing missing values or values outside the scale range
   border-left-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_caption {
+#gdononcxzh .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qgzzgmaekc .gt_title {
+#gdononcxzh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -490,7 +491,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-width: 0;
 }
 
-#qgzzgmaekc .gt_subtitle {
+#gdononcxzh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -502,7 +503,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-top-width: 0;
 }
 
-#qgzzgmaekc .gt_heading {
+#gdononcxzh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -514,13 +515,13 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_bottom_border {
+#gdononcxzh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_col_headings {
+#gdononcxzh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -535,7 +536,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_col_heading {
+#gdononcxzh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -555,7 +556,7 @@ Removed 75 rows containing missing values or values outside the scale range
   overflow-x: hidden;
 }
 
-#qgzzgmaekc .gt_column_spanner_outer {
+#gdononcxzh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -567,15 +568,15 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 4px;
 }
 
-#qgzzgmaekc .gt_column_spanner_outer:first-child {
+#gdononcxzh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qgzzgmaekc .gt_column_spanner_outer:last-child {
+#gdononcxzh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qgzzgmaekc .gt_column_spanner {
+#gdononcxzh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -587,11 +588,11 @@ Removed 75 rows containing missing values or values outside the scale range
   width: 100%;
 }
 
-#qgzzgmaekc .gt_spanner_row {
+#gdononcxzh .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qgzzgmaekc .gt_group_heading {
+#gdononcxzh .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -617,7 +618,7 @@ Removed 75 rows containing missing values or values outside the scale range
   text-align: left;
 }
 
-#qgzzgmaekc .gt_empty_group_heading {
+#gdononcxzh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -632,15 +633,15 @@ Removed 75 rows containing missing values or values outside the scale range
   vertical-align: middle;
 }
 
-#qgzzgmaekc .gt_from_md > :first-child {
+#gdononcxzh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qgzzgmaekc .gt_from_md > :last-child {
+#gdononcxzh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qgzzgmaekc .gt_row {
+#gdononcxzh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -659,7 +660,7 @@ Removed 75 rows containing missing values or values outside the scale range
   overflow-x: hidden;
 }
 
-#qgzzgmaekc .gt_stub {
+#gdononcxzh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -672,7 +673,7 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#qgzzgmaekc .gt_stub_row_group {
+#gdononcxzh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -686,15 +687,15 @@ Removed 75 rows containing missing values or values outside the scale range
   vertical-align: top;
 }
 
-#qgzzgmaekc .gt_row_group_first td {
+#gdononcxzh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qgzzgmaekc .gt_row_group_first th {
+#gdononcxzh .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qgzzgmaekc .gt_summary_row {
+#gdononcxzh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -704,16 +705,16 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#qgzzgmaekc .gt_first_summary_row {
+#gdononcxzh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_first_summary_row.thick {
+#gdononcxzh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qgzzgmaekc .gt_last_summary_row {
+#gdononcxzh .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -723,7 +724,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_grand_summary_row {
+#gdononcxzh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -733,7 +734,7 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#qgzzgmaekc .gt_first_grand_summary_row {
+#gdononcxzh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -743,7 +744,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-top-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_last_grand_summary_row_top {
+#gdononcxzh .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -753,11 +754,11 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_striped {
+#gdononcxzh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qgzzgmaekc .gt_table_body {
+#gdononcxzh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -766,7 +767,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_footnotes {
+#gdononcxzh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -780,7 +781,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_footnote {
+#gdononcxzh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -789,7 +790,7 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#qgzzgmaekc .gt_sourcenotes {
+#gdononcxzh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -803,7 +804,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#qgzzgmaekc .gt_sourcenote {
+#gdononcxzh .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -811,72 +812,72 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#qgzzgmaekc .gt_left {
+#gdononcxzh .gt_left {
   text-align: left;
 }
 
-#qgzzgmaekc .gt_center {
+#gdononcxzh .gt_center {
   text-align: center;
 }
 
-#qgzzgmaekc .gt_right {
+#gdononcxzh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qgzzgmaekc .gt_font_normal {
+#gdononcxzh .gt_font_normal {
   font-weight: normal;
 }
 
-#qgzzgmaekc .gt_font_bold {
+#gdononcxzh .gt_font_bold {
   font-weight: bold;
 }
 
-#qgzzgmaekc .gt_font_italic {
+#gdononcxzh .gt_font_italic {
   font-style: italic;
 }
 
-#qgzzgmaekc .gt_super {
+#gdononcxzh .gt_super {
   font-size: 65%;
 }
 
-#qgzzgmaekc .gt_footnote_marks {
+#gdononcxzh .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qgzzgmaekc .gt_asterisk {
+#gdononcxzh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qgzzgmaekc .gt_indent_1 {
+#gdononcxzh .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qgzzgmaekc .gt_indent_2 {
+#gdononcxzh .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qgzzgmaekc .gt_indent_3 {
+#gdononcxzh .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qgzzgmaekc .gt_indent_4 {
+#gdononcxzh .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qgzzgmaekc .gt_indent_5 {
+#gdononcxzh .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qgzzgmaekc .katex-display {
+#gdononcxzh .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qgzzgmaekc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#gdononcxzh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
