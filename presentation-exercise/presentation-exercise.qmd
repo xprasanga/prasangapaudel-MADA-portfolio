@@ -1,0 +1,154 @@
+---
+title: "Presentation Exercise"
+author: Prasanga Paudel
+date: February 11, 2025
+format:
+  html:
+    toc: false
+    number-sections: true
+    highlight-style: github
+---
+
+Placeholder file for the future R coding exercise.
+
+```{r, echo=FALSE, message=FALSE}
+# load a few R packages
+library(here)
+library(knitr)
+library(dslabs) # loading dslabs package as we will use gapminder dataset from it
+library(tidyverse) # loading tidyverse package 
+```
+
+{{< pagebreak >}}
+# Data Importing
+In this section we will import the data we acquired from fivethirtyeight, and have an initial look at it. The link to the graphical presentation and the actual data is: <https://fivethirtyeight.com/features/most-police-dont-live-in-the-cities-they-serve/>
+
+```{r}
+# Constructing the file path using here()
+file_path <- here("presentation-exercise","data", "police-locals.csv")
+
+# Importing the Excel file fromthe file path
+police_data <- read.csv(file_path)
+
+# Viewing the uppermost data of the imported dataset
+head(police_data)
+```
+
+
+{{< pagebreak >}}
+
+# Asking ChatGPT to create a graph based on original gaph
+
+I took a screenshot of the graph from the website as it was a fairly long and I instructed chatGPT to follow some instruction so that it creates the graph that I want.
+![This image was provided to chatGPT along with the instructions](presentation-exercise/images/image.png)
+
+The initial prompt is as follow:
+
+I want to create this type of visualization,I have the following variables
+Header	Definition
+city:	U.S. city
+police_force_size:	Number of police officers serving that city
+all:	Percentage of the total police force that lives in the city
+white:	Percentage of white (non-Hispanic) police officers who live in the city
+non-white:	Percentage of non-white police officers who live in the city
+black:	Percentage of black police officers who live in the city
+hispanic:	Percentage of Hispanic police officers who live in the city
+asian:	Percentage of Asian police officers who live in the city
+
+I want you to follow these instruction if it helps:
+1. place the name of the cities to the left
+2. then place the size of the corresponding police force to the right
+3. then in the middle place a scale where you will show what percentage of the officers who live in the city, ( make three categories: All, White, and others and plot their corresponding percent in the scale you created.
+4. mark the scales only at 0%, 25%, 50%, 75%, and 100%
+5. generate data yourself if required
+
+{{< pagebreak >}}
+# Directly running the code provided by chatGPT (without providing actual data)
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Generate sample data
+data <- data.frame(
+  city = c("Laredo, Texas", "Chicago", "Corpus Christi, Texas", "El Paso, Texas", "Philadelphia"),
+  police_force_size = c(1435, 12120, 770, 2260, 6045),
+  all = runif(5, 10, 70),
+  white = runif(5, 5, 65),
+  non_white = runif(5, 5, 65)
+)
+
+data <- data %>% arrange(desc(police_force_size))
+
+data_long <- data %>% 
+  pivot_longer(cols = c("all", "white", "non_white"), names_to = "category", values_to = "percentage")
+
+ggplot(data_long, aes(x = percentage, y = reorder(city, police_force_size), color = category)) +
+  geom_point(size = 3) +
+  scale_x_continuous(breaks = c(0, 25, 50, 75, 100), labels = c("0%", "25%", "50%", "75%", "100%"), limits = c(0, 100)) +
+  labs(x = "Percentage of Police Officers Living in the City", y = "City", title = "Percentage of Police Officers Living in the City") +
+  theme_minimal() +
+  theme(legend.title = element_blank()) +
+  geom_text(aes(label = police_force_size, x = 105), hjust = 0, size = 3, color = "black", data = data)
+
+```
+
+{{< pagebreak >}}
+# Final version of the code after repeated iterations
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Assuming your dataset 'police_data' is already loaded with the required columns
+
+# Convert character columns to numeric where necessary
+police_data <- police_data %>%
+  mutate(across(c(all, white, non.white), as.numeric))  # Focus only on 'all', 'white', 'non.white'
+
+# Reshape data to long format, including only relevant categories
+data_long <- police_data %>% 
+  pivot_longer(cols = c("all", "white", "non.white"), 
+               names_to = "category", 
+               values_to = "percentage")
+
+# Create the plot
+p <- ggplot(data_long, aes(x = percentage, y = reorder(city, percentage), color = category, fill = category)) +  # Order cities by 'percentage'
+  geom_point(shape = 21, colour = "black", size = 2, stroke = 0.5) +  # Increase stroke size
+  scale_x_continuous(breaks = seq(0, 1, by = 0.25),  # Adjust breaks for decimal values
+                     labels = scales::percent_format(accuracy = 1),  # Format as percentages
+                     limits = c(0, 1),  # Adjust limits for decimal values
+                     position = "top") +
+  labs(x = "", y = "City", title = "Percentage of Police Officers Living in the City") +
+  scale_color_manual(values = c("all" = "dodgerblue", "white" = "black", "non.white" = "forestgreen")) +  # Adjust color for categories
+  scale_fill_manual(values = c("all" = "dodgerblue", "white" = "black", "non.white" = "forestgreen")) +  # Fill colors for shape 21
+  theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(hjust = 0.5),
+    plot.margin = margin(10, 10, 10, 60)  # Increase left margin for y-axis labels
+  ) +
+  geom_text(aes(label = police_force_size, x = 1.05), hjust = 0, size = 3, color = "black", 
+            data = data_long %>% filter(category == "all")) +  # Use data_long filtered for 'all' category
+  scale_y_discrete(expand = expansion(add = c(0.5, 0.5))) +  # Add spacing to y-axis
+  coord_cartesian(clip = "off")  # Allow labels to go outside the plot area
+
+# Save the plot as a JPEG file
+
+ggsave(here("presentation-exercise", "images", "police_officers_plot.jpeg"), 
+       plot = p, width = 6.2, height = 10.2, dpi = 300, limitsize = FALSE)
+
+
+
+# Render the plot
+print(p)
+
+
+```
+
+_I could not load the exact image in R but the saved file shows that the created image is a vertical image with enough spacing between the y-axis components._
+
+
+![This is the image that has been saved to the directory: presentation-exercise/images](presentation-exercise/images/police_officers_plot.jpeg)

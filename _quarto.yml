@@ -18,6 +18,8 @@ website:
             file: data-exercise/synthetic-data.qmd
           - text: "Data Analysis Exercise"
             file: cdcdata-exercise/cdcdata-exercise.qmd
+          - text: "Presentation Exercise"
+            file: presentation-exercise/presentation-exercise.qmd
     right:
       - icon: github
         href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio
