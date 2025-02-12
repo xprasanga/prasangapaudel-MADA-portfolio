@@ -40,7 +40,7 @@ head(police_data)
 # Asking ChatGPT to create a graph based on original gaph
 
 I took a screenshot of the graph from the website as it was a fairly long and I instructed chatGPT to follow some instruction so that it creates the graph that I want.
-![This image was provided to chatGPT along with the instructions](presentation-exercise/images/image.png)
+![This image was provided to chatGPT along with the instructions](presentation-exercise/images/image.JPEG)
 
 The initial prompt is as follow:
 
