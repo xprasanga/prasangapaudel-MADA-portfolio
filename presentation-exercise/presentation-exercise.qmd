@@ -155,7 +155,8 @@ _I could not load the exact image in R but the saved file shows that the created
 
 
 ![This is the image that has been saved to the directory: presentation-exercise/images](../presentation-exercise/images/police_officers_plot.jpeg)
-# Rename variable for consistency
+# Renamig variable for consistency
+
 Before moving into tabulation, we will rename our variable if they have strange characters in their name.
 ```{r}
 police_data <- police_data %>%
