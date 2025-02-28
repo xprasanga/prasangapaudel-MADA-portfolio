@@ -1,0 +1,452 @@
+---
+title: "Model Fitting Exercise"
+author: Prasanga Paudel
+date: February 28, 2025
+format:
+  html:
+    toc: false
+    number-sections: true
+    highlight-style: github
+---
+
+
+```{r, echo=FALSE, message=FALSE}
+# load a few R packages
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyr)
+library(knitr)
+library(patchwork)
+library(GGally)
+library(caret)
+library(pROC)
+```
+
+
+
+# Importing Dataset
+```{r}
+# Constructing the file path using here()
+file_path <- here("fitting-exercise","data", "Mavoglurant_A2121_nmpk.csv")
+
+# Importing the Excel file from the file path
+Mavoglurant_data <- read.csv(file_path)
+
+# Viewing the uppermost data of the imported dataset
+head(Mavoglurant_data)
+```
+
+#Looking into the dataset and preparing for EDA 
+
+##Plotting DV on Y-axis and TIME on X-axis
+
+Here, we will write a code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis, Stratified by dose ( using a different color for each dose). 
+
+```{r}
+# Creating a line plot with different colors for each dose
+ggplot(Mavoglurant_data, aes(x = TIME, y = DV, group = ID, color = factor(DOSE))) +
+  geom_line() +
+  labs(title = "DV over Time by ID",
+       x = "Time",
+       y = "DV",
+       color = "Dose") +
+  theme_minimal()
+```
+
+
+## Preparing the data
+
+As there are some individuals that seem to have received the drug more than once, we will only keep observations with OCC = 1
+
+```{r}
+#writing a code that keeps only observations with OCC = 1
+Mavoglurant_data_OCC1 <- subset(Mavoglurant_data, OCC == 1)
+
+#writing code to exclude the observations with TIME = 0
+Mavoglurant_data_filtered <- Mavoglurant_data_OCC1 %>%
+  filter(TIME != 0)
+```
+
+
+# Computing the total amount of drug for each individual by adding all the DV values
+
+Here, we will compute the total amount of drug for each individual by adding all the DV values.
+
+```{r}
+summarized_data <- Mavoglurant_data_filtered %>%
+  group_by(ID) %>%
+  summarize(Y = sum(DV, na.rm = TRUE))
+
+
+dim(summarized_data) # checking dimension
+```
+
+
+Now, we will create a dataframe that contains only the observations where TIME == 0, and then we will check the dimensions to see if it is correctly created. 
+```{r}
+# creating a data frame that contains only the observations where TIME == 0
+time_zero_data <- Mavoglurant_data %>%
+  filter(TIME == 0)
+
+dim(time_zero_data) # checking dimension
+```
+
+Now, we will create a new dataframe using the join function and then we will check the dimensions to see if it is correctly created. 
+```{r}
+# using the join function to combine those two data frames
+final_data <- time_zero_data %>%
+  left_join(summarized_data, by = "ID")
+
+
+dim(final_data) # checking dimension
+```
+
+## Creating the final dataset
+
+Writing a code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT
+```{r}
+final_data_cleaned <- final_data %>% mutate (
+  RACE = factor(RACE), SEX = factor(SEX)) %>% select (Y, DOSE, AGE, SEX, RACE, WT, HT
+)
+
+dim(final_data_cleaned)
+```
+
+
+# Exploratory Data Analysis
+
+Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables. 
+
+##Making some useful summary tables.
+
+Here, we have a summary table of all the variables we have in our final dataset.
+
+```{r}
+
+# Calculating summary statistics for variables
+summary_stats <- final_data_cleaned %>%
+  summarise(across(c(Y, DOSE, AGE, WT, HT), 
+                 list(Mean = ~ mean(., na.rm = TRUE),
+    Min = ~ min(., na.rm = TRUE),
+    Max = ~ max(., na.rm = TRUE),
+    SD = ~ sd(., na.rm = TRUE))))
+
+# Reshaping the data to better present it
+summary_stats <- summary_stats %>%
+  pivot_longer(cols = everything(), 
+               names_to = c("Variable", ".value"), 
+               names_sep = "_")
+
+# Printing the summary statistics as a  table format
+kable(summary_stats, caption = "Summary Statistics", align = "c")
+```
+
+
+
+## Plotting the relationship with outcome of interest (Y)
+
+
+Here, we will show some scatterplots or boxplots, whichever is suitable, between the main outcome of interest (total drug, Y) and other predictors. We will use box-plot if the variable is categorical.
+
+
+```{r}
+
+# Scatterplot: Y vs DOSE
+p1 <- ggplot(final_data_cleaned, aes(x = DOSE, y = Y)) +
+  geom_point(alpha = 0.6, color = "blue") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Y vs DOSE", x = "DOSE", y = "Y")
+
+# Scatterplot: Y vs AGE
+p2 <- ggplot(final_data_cleaned, aes(x = AGE, y = Y)) +
+  geom_point(alpha = 0.6, color = "green") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Y vs AGE", x = "AGE", y = "Y")
+
+# Scatterplot: Y vs WT
+p3 <- ggplot(final_data_cleaned, aes(x = WT, y = Y)) +
+  geom_point(alpha = 0.6, color = "purple") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Y vs WT", x = "WT", y = "Y")
+
+# Scatterplot: Y vs HT
+p4 <- ggplot(final_data_cleaned, aes(x = HT, y = Y)) +
+  geom_point(alpha = 0.6, color = "orange") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Y vs HT", x = "HT", y = "Y")
+
+# Boxplot: Y vs SEX
+p5 <- ggplot(final_data_cleaned, aes(x = SEX, y = Y, fill = SEX)) +
+  geom_boxplot() +
+  labs(title = "Y vs SEX", x = "SEX", y = "Y") +
+  theme(legend.position = "none")
+
+# Boxplot: Y vs RACE
+p6 <- ggplot(final_data_cleaned, aes(x = RACE, y = Y, fill = RACE)) +
+  geom_boxplot() +
+  labs(title = "Y vs RACE", x = "RACE", y = "Y") +
+  theme(legend.position = "none")
+
+# Combine all plots into a common canvas
+combined_plots <- (p1 + p2) / (p3 + p4) / (p5 + p6)
+
+# Display the combined plots
+combined_plots
+
+# Save the combined plot to a file
+ggsave("combined_plots.png", combined_plots, width = 16, height = 12, dpi = 300)
+```
+We can observe from the figures above that: 
+
+1. Dose and Y (Total drug) dont have a strong correlation.
+2. Age and Y dont have a strong correlation.
+3. Weight and Y have a negative correlation.
+4. Height and Y have a negative correlation.
+5. Sex 1 on average has higher total drug.
+
+## Plotting the distribution of variables
+
+Now, we will plot the distributions of our variables to make sure they all make sense. We will set the bin according to the values and distribution patterns within the variable 
+
+```{r}
+
+# Custom theme for consistent styling
+custom_theme <- theme(
+  plot.title = element_text(size = 14, face = "bold"),
+  axis.title = element_text(size = 12),
+  axis.text = element_text(size = 10),
+  plot.margin = margin(1, 1, 1, 1, "cm")
+)
+
+# Histogram for Y
+p1 <- ggplot(final_data_cleaned, aes(x = Y)) +
+  geom_histogram(binwidth = 10, fill = "blue", color = "black") +
+  labs(title = "Distribution of Y", x = "Y", y = "Count") +
+  custom_theme
+
+# Histogram for DOSE
+p2 <- ggplot(final_data_cleaned, aes(x = DOSE)) +
+  geom_histogram(binwidth = 10, fill = "green", color = "black") +
+  labs(title = "Distribution of DOSE", x = "DOSE", y = "Count") +
+  custom_theme
+
+# Histogram for AGE
+p3 <- ggplot(final_data_cleaned, aes(x = AGE)) +
+  geom_histogram(binwidth = 5, fill = "purple", color = "black") +
+  labs(title = "Distribution of AGE", x = "AGE", y = "Count") +
+  custom_theme
+
+# Histogram for WT
+p4 <- ggplot(final_data_cleaned, aes(x = WT)) +
+  geom_histogram(binwidth = 5, fill = "orange", color = "black") +
+  labs(title = "Distribution of WT", x = "WT", y = "Count") +
+  custom_theme
+
+# Histogram for HT
+p5 <- ggplot(final_data_cleaned, aes(x = HT)) +
+  geom_histogram(binwidth = 0.01, fill = "red", color = "black") +
+  labs(title = "Distribution of HT", x = "HT", y = "Count") +
+  custom_theme
+
+# Bar plot for SEX
+p6 <- ggplot(final_data_cleaned, aes(x = SEX)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  labs(title = "Distribution of SEX", x = "SEX", y = "Count") +
+  custom_theme
+
+# Bar plot for RACE
+p7 <- ggplot(final_data_cleaned, aes(x = RACE)) +
+  geom_bar(fill = "pink", color = "black") +
+  labs(title = "Distribution of RACE", x = "RACE", y = "Count") +
+  custom_theme
+
+# Combine all plots into a common canvas
+combined_plots <- (p1 + p2) / (p3 + p4) / (p5 + p6 + p7)
+
+# Display the combined plots
+combined_plots
+
+# Save the combined plot to a file
+ggsave("variable_distributions.png", combined_plots, width = 16, height = 12, dpi = 300)
+```
+
+The distribution of the variables make sense in my opinion. Age, Weight, Height are all fairly normally distributed. Total drug has a somewhat uniform distribution. Other categorical variables have an unbalanced distribution among them but it is practically possible if the research is focused on specific group of people.
+
+## Pair-wise plots
+
+Here, we will plot different variables against each other to see any possible relation or pattern between the variables. 
+
+_Note: Please ignore the plots of a variable against itself as it does not make any sense._
+
+```{r}
+
+# Select the variables of interest
+selected_vars <- final_data_cleaned %>%
+  select(Y, DOSE, AGE, WT, HT)  # Include only numeric variables for pair plots
+
+# Create a pair plot
+pair_plot <- ggpairs(selected_vars, 
+                     title = " Plotting pairs of Numeric Variables",
+                     lower = list(continuous = wrap("smooth", alpha = 0.3, color = "blue")),  # Add smooth lines
+                     diag = list(continuous = wrap("densityDiag", fill = "orange")),  # Density plots on diagonal
+                     upper = list(continuous = wrap("cor", size = 4)))  # Add correlation coefficients
+
+# Display the pair plot
+print(pair_plot)
+
+# Save the pair plot
+ggsave("pair_plot.png", pair_plot, width = 12, height = 10, dpi = 300)
+
+
+```
+It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and wT also show some moderate correlation.
+
+## Correlation among variables
+
+Here, we will create a cross-table matrix that shows the correlation among our variable of interests.
+
+```{r}
+# Create a correlation plot
+cor_plot <- ggcorr(selected_vars, 
+                   method = c("pairwise", "pearson"),  # Use Pearson correlation
+                   label = TRUE,  # Display correlation values
+                   label_size = 4, 
+                   color = "grey50", 
+                   hjust = 0.75, 
+                   size = 3, 
+                   layout.exp = 1)
+
+# Display the correlation plot
+print(cor_plot)
+# Save the correlation plot
+ggsave("cor_plot.png", cor_plot, width = 8, height = 6, dpi = 300)
+```
+
+It is visible that HT and WT show the maximum correlation with a correlation coefficient of 0.6. Age and HT also show sloghtly weaker correlation. Dose has no correlation with WT and HT.
+
+# Fitting a model for Y with only DOSE, and ALL predictors 
+
+
+We will now fit a linear model to the continuous outcome (Y) using the main predictor of interest to be DOSE in one case and using all predictors in another case.
+
+```{r}
+# Fit a linear model using only DOSE as the predictor
+model_dose <- lm(Y ~ DOSE, data = final_data_cleaned)
+
+summary(model_dose)
+```
+We can observe that dose has an insignificant effect on Y.
+
+```{r}
+# Fit a linear model using all predictors
+model_all <- lm(Y ~ DOSE + AGE + SEX + RACE + WT + HT, data = final_data_cleaned)
+
+summary(model_all)
+```
+We can observe that SEX2 and Wt has a significant effect on Y. But majority o the predictors are insignificant in the model. This has lead to an insufficient information to predict the dependent vriable and only around 10% variation in the dependent variable is explained by the model with all predictors. With only DOSE the performance is even poorer.
+
+```{r}
+
+  # For RMSE calculation
+
+# Function to compute RMSE and R-squared
+compute_metrics <- function(model, data) {
+  # Predictions
+  predictions <- predict(model, newdata = data)
+  
+  # Actual values
+  actual <- data$Y
+  
+  # Compute RMSE
+  rmse <- sqrt(mean((actual - predictions)^2))
+  
+  # Compute R-squared
+  r_squared <- summary(model)$r.squared
+  
+  # Return metrics
+  return(list(RMSE = rmse, R_squared = r_squared))
+}
+
+# Compute metrics for the DOSE-only model
+metrics_dose <- compute_metrics(model_dose, final_data_cleaned)
+
+# Compute metrics for the all-predictors model
+metrics_all <- compute_metrics(model_all, final_data_cleaned)
+
+# Create a data frame with the results
+results_table <- data.frame(
+  Model = c("DOSE Only", "All Predictors"),
+  RMSE = c(metrics_dose$RMSE, metrics_all$RMSE),
+  R_squared = c(metrics_dose$R_squared, metrics_all$R_squared)
+)
+
+kable(results_table, caption = "Model Performance Metrics", align = "c")
+
+```
+# Fitting a Logistic model for SEX with only DOSE, and ALL predictors 
+
+
+We will now fit a linear model to the binary outcome (SEX) using the main predictor of interest to be DOSE in one case and using all predictors in another.
+
+```{r}
+# Ensuring SEX is a binary factor
+final_data_cleaned <- final_data_cleaned %>%
+  mutate(SEX = factor(SEX))
+
+# Fiting a logistic model using only DOSE as the predictor
+logistic_dose <- glm(SEX ~ DOSE, data = final_data_cleaned, family = binomial())
+summary(logistic_dose)
+```
+We can observe that DOSE does not significantly affect SEX.
+
+
+```{r}
+# Fit a logistic model using all predictors
+logistic_all <- glm(SEX ~ DOSE + AGE + RACE + WT + HT + Y, data = final_data_cleaned, family = binomial())
+
+
+summary(logistic_all)
+```
+We can observe that HT and Y significantly affect Y. We will need to check the Accuracy and AUC values to tell about the performance of the model.
+
+```{r}
+
+# Function to compute accuracy and ROC-AUC
+compute_metrics_logistic <- function(model, data) {
+  # Predict probabilities
+  predicted_probs <- predict(model, newdata = data, type = "response")
+  
+  # Convert probabilities to binary predictions (0 or 1)
+  predicted_classes <- ifelse(predicted_probs > 0.5, 1, 0)
+  
+  # Actual classes
+  actual_classes <- as.numeric(data$SEX) - 1  # Convert factor to numeric (0 or 1)
+  
+  # Compute accuracy
+  accuracy <- mean(predicted_classes == actual_classes)
+  
+  # Compute ROC-AUC
+  roc_auc <- roc(actual_classes, predicted_probs)$auc
+  
+  # Return metrics
+  return(list(Accuracy = accuracy, ROC_AUC = roc_auc))
+}
+
+# Compute metrics for the DOSE-only model
+metrics_dose <- compute_metrics_logistic(logistic_dose, final_data_cleaned)
+
+# Compute metrics for the all-predictors model
+metrics_all <- compute_metrics_logistic(logistic_all, final_data_cleaned)
+
+results_table_logistic <- data.frame(
+  Model = c("DOSE Only", "All Predictors"),
+  Accuracy = c(metrics_dose$Accuracy, metrics_all$Accuracy),
+  ROC_AUC = c(metrics_dose$ROC_AUC, metrics_all$ROC_AUC)
+)
+
+# Print the table using kable
+kable(results_table_logistic, caption = "Logistic Model Performance Metrics", align = "c")
+```
+The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.
+
