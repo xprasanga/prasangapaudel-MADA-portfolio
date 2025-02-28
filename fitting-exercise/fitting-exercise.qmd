@@ -26,6 +26,9 @@ library(pROC)
 
 
 # Importing Dataset
+
+We will first import our dataset from the directory.
+
 ```{r}
 # Constructing the file path using here()
 file_path <- here("fitting-exercise","data", "Mavoglurant_A2121_nmpk.csv")
@@ -37,11 +40,18 @@ Mavoglurant_data <- read.csv(file_path)
 head(Mavoglurant_data)
 ```
 
-#Looking into the dataset and preparing for EDA 
 
-##Plotting DV on Y-axis and TIME on X-axis
 
-Here, we will write a code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis, Stratified by dose ( using a different color for each dose). 
+
+# Looking into the dataset and preparing for EDA 
+
+
+In this section, we will have an initial look into the dataset and prepare a new dataset for EDA.
+
+
+## Plotting DV on Y-axis and TIME on X-axis
+
+Here, we will write a code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis, stratified by dose ( using a different color for each dose). 
 
 ```{r}
 # Creating a line plot with different colors for each dose
@@ -53,6 +63,8 @@ ggplot(Mavoglurant_data, aes(x = TIME, y = DV, group = ID, color = factor(DOSE))
        color = "Dose") +
   theme_minimal()
 ```
+
+_This figures show the three doses in three colors. The DOSE 37.5 is not visible in this graph, probably because it is less frequent._
 
 
 ## Preparing the data
@@ -69,7 +81,7 @@ Mavoglurant_data_filtered <- Mavoglurant_data_OCC1 %>%
 ```
 
 
-# Computing the total amount of drug for each individual by adding all the DV values
+## Computing the total amount of drug for each individual by adding all the DV values
 
 Here, we will compute the total amount of drug for each individual by adding all the DV values.
 
@@ -118,9 +130,11 @@ dim(final_data_cleaned)
 
 Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables. 
 
-##Making some useful summary tables.
+##Making some useful summary tables
 
-Here, we have a summary table of all the variables we have in our final dataset.
+
+
+Here, we create a summary table of all the variables we have in our final dataset.
 
 ```{r}
 
@@ -141,6 +155,8 @@ summary_stats <- summary_stats %>%
 # Printing the summary statistics as a  table format
 kable(summary_stats, caption = "Summary Statistics", align = "c")
 ```
+
+_This table represennts the summary statistics of the 5 variables._
 
 
 
@@ -194,8 +210,6 @@ combined_plots <- (p1 + p2) / (p3 + p4) / (p5 + p6)
 # Display the combined plots
 combined_plots
 
-# Save the combined plot to a file
-ggsave("combined_plots.png", combined_plots, width = 16, height = 12, dpi = 300)
 ```
 We can observe from the figures above that: 
 
@@ -261,14 +275,13 @@ p7 <- ggplot(final_data_cleaned, aes(x = RACE)) +
   labs(title = "Distribution of RACE", x = "RACE", y = "Count") +
   custom_theme
 
-# Combine all plots into a common canvas
+# Combining all plots into a common canvas
 combined_plots <- (p1 + p2) / (p3 + p4) / (p5 + p6 + p7)
 
 # Display the combined plots
 combined_plots
 
-# Save the combined plot to a file
-ggsave("variable_distributions.png", combined_plots, width = 16, height = 12, dpi = 300)
+
 ```
 
 The distribution of the variables make sense in my opinion. Age, Weight, Height are all fairly normally distributed. Total drug has a somewhat uniform distribution. Other categorical variables have an unbalanced distribution among them but it is practically possible if the research is focused on specific group of people.
@@ -281,36 +294,33 @@ _Note: Please ignore the plots of a variable against itself as it does not make 
 
 ```{r}
 
-# Select the variables of interest
+# Selecting the variables of interest
 selected_vars <- final_data_cleaned %>%
-  select(Y, DOSE, AGE, WT, HT)  # Include only numeric variables for pair plots
+  select(Y, DOSE, AGE, WT, HT)  # to nclude only numeric variables for pair plots
 
-# Create a pair plot
+# Creating a pair plot
 pair_plot <- ggpairs(selected_vars, 
                      title = " Plotting pairs of Numeric Variables",
                      lower = list(continuous = wrap("smooth", alpha = 0.3, color = "blue")),  # Add smooth lines
                      diag = list(continuous = wrap("densityDiag", fill = "orange")),  # Density plots on diagonal
                      upper = list(continuous = wrap("cor", size = 4)))  # Add correlation coefficients
 
-# Display the pair plot
+# Disply the pair plot
 print(pair_plot)
-
-# Save the pair plot
-ggsave("pair_plot.png", pair_plot, width = 12, height = 10, dpi = 300)
 
 
 ```
-It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and wT also show some moderate correlation.
+It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and WT also show some moderate correlation.
 
 ## Correlation among variables
 
 Here, we will create a cross-table matrix that shows the correlation among our variable of interests.
 
 ```{r}
-# Create a correlation plot
+# Creating a correlation plot
 cor_plot <- ggcorr(selected_vars, 
                    method = c("pairwise", "pearson"),  # Use Pearson correlation
-                   label = TRUE,  # Display correlation values
+                   label = TRUE,  # to display correlation values
                    label_size = 4, 
                    color = "grey50", 
                    hjust = 0.75, 
@@ -319,8 +329,7 @@ cor_plot <- ggcorr(selected_vars,
 
 # Display the correlation plot
 print(cor_plot)
-# Save the correlation plot
-ggsave("cor_plot.png", cor_plot, width = 8, height = 6, dpi = 300)
+
 ```
 
 It is visible that HT and WT show the maximum correlation with a correlation coefficient of 0.6. Age and HT also show sloghtly weaker correlation. Dose has no correlation with WT and HT.
@@ -330,13 +339,21 @@ It is visible that HT and WT show the maximum correlation with a correlation coe
 
 We will now fit a linear model to the continuous outcome (Y) using the main predictor of interest to be DOSE in one case and using all predictors in another case.
 
+## Fitting a linear model using only DOSE as the predictor
+
+
 ```{r}
-# Fit a linear model using only DOSE as the predictor
+# Fitting a linear model using only DOSE as the predictor
 model_dose <- lm(Y ~ DOSE, data = final_data_cleaned)
 
 summary(model_dose)
 ```
 We can observe that dose has an insignificant effect on Y.
+
+
+
+## Fitting a linear model using all predictor
+
 
 ```{r}
 # Fit a linear model using all predictors
@@ -346,11 +363,17 @@ summary(model_all)
 ```
 We can observe that SEX2 and Wt has a significant effect on Y. But majority o the predictors are insignificant in the model. This has lead to an insufficient information to predict the dependent vriable and only around 10% variation in the dependent variable is explained by the model with all predictors. With only DOSE the performance is even poorer.
 
+
+
+## computing RMSE and R-squared for both models
+
+Here, we will compute the RMSE and R-squared for the both the models discussed above. 
+
+
 ```{r}
 
-  # For RMSE calculation
 
-# Function to compute RMSE and R-squared
+# creating function to compute RMSE and R-squared
 compute_metrics <- function(model, data) {
   # Predictions
   predictions <- predict(model, newdata = data)
@@ -358,23 +381,23 @@ compute_metrics <- function(model, data) {
   # Actual values
   actual <- data$Y
   
-  # Compute RMSE
+  # Computing RMSE
   rmse <- sqrt(mean((actual - predictions)^2))
   
   # Compute R-squared
   r_squared <- summary(model)$r.squared
   
-  # Return metrics
+
   return(list(RMSE = rmse, R_squared = r_squared))
 }
 
-# Compute metrics for the DOSE-only model
+# Computing metrics for the DOSE-only model
 metrics_dose <- compute_metrics(model_dose, final_data_cleaned)
 
-# Compute metrics for the all-predictors model
+# Computing metrics for the all-predictors model
 metrics_all <- compute_metrics(model_all, final_data_cleaned)
 
-# Create a data frame with the results
+# Creatin a data frame with the results
 results_table <- data.frame(
   Model = c("DOSE Only", "All Predictors"),
   RMSE = c(metrics_dose$RMSE, metrics_all$RMSE),
@@ -384,10 +407,19 @@ results_table <- data.frame(
 kable(results_table, caption = "Model Performance Metrics", align = "c")
 
 ```
+
+_This tables shows the model performance with Y as dependent variable._
+
+
+
 # Fitting a Logistic model for SEX with only DOSE, and ALL predictors 
 
 
 We will now fit a linear model to the binary outcome (SEX) using the main predictor of interest to be DOSE in one case and using all predictors in another.
+
+
+## Fiting a logistic model using only DOSE as the predictor
+
 
 ```{r}
 # Ensuring SEX is a binary factor
@@ -401,6 +433,8 @@ summary(logistic_dose)
 We can observe that DOSE does not significantly affect SEX.
 
 
+## Fitting a logistic model using all predictors
+
 ```{r}
 # Fit a logistic model using all predictors
 logistic_all <- glm(SEX ~ DOSE + AGE + RACE + WT + HT + Y, data = final_data_cleaned, family = binomial())
@@ -409,6 +443,11 @@ logistic_all <- glm(SEX ~ DOSE + AGE + RACE + WT + HT + Y, data = final_data_cle
 summary(logistic_all)
 ```
 We can observe that HT and Y significantly affect Y. We will need to check the Accuracy and AUC values to tell about the performance of the model.
+
+
+## Computing accuracy and ROC-AUC for both the models
+
+Here, we will compute  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable.
 
 ```{r}
 
@@ -448,5 +487,5 @@ results_table_logistic <- data.frame(
 # Print the table using kable
 kable(results_table_logistic, caption = "Logistic Model Performance Metrics", align = "c")
 ```
-The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.
+The tablbe above shoes the  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.
 
