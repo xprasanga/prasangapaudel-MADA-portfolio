@@ -130,7 +130,7 @@ dim(final_data_cleaned)
 
 Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables. 
 
-##Making some useful summary tables
+## Making some useful summary tables
 
 
 
@@ -487,5 +487,5 @@ results_table_logistic <- data.frame(
 # Print the table using kable
 kable(results_table_logistic, caption = "Logistic Model Performance Metrics", align = "c")
 ```
-The tablbe above shoes the  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.
+The table above shows the  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.
 
