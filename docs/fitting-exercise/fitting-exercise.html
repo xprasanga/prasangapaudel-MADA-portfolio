@@ -296,12 +296,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now, we will create a dataframe that contains only the observations where TIME == 0, and then we will check the dimensions to see if it is correctly created.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creating a data frame that contains only the observations where TIME == 0</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>time_zero_data <span class="ot">&lt;-</span> Mavoglurant_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>time_zero_data <span class="ot">&lt;-</span> Mavoglurant_data_OCC1 <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TIME <span class="sc">==</span> <span class="dv">0</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(time_zero_data) <span class="co"># checking dimension</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 198  17</code></pre>
+<pre><code>[1] 120  17</code></pre>
 </div>
 </div>
 <p>Now, we will create a new dataframe using the join function and then we will check the dimensions to see if it is correctly created.</p>
@@ -313,7 +313,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(final_data) <span class="co"># checking dimension</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 198  18</code></pre>
+<pre><code>[1] 120  18</code></pre>
 </div>
 </div>
 </section>
@@ -327,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(final_data_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 198   7</code></pre>
+<pre><code>[1] 120   7</code></pre>
 </div>
 </div>
 </section>
@@ -335,7 +335,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploratory-data-analysis" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Exploratory Data Analysis</h1>
 <p>Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables.</p>
-<p>##Making some useful summary tables</p>
+<section id="making-some-useful-summary-tables" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="making-some-useful-summary-tables"><span class="header-section-number">3.1</span> Making some useful summary tables</h2>
 <p>Here, we create a summary table of all the variables we have in our final dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating summary statistics for variables</span></span>
@@ -369,46 +370,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Y</td>
-<td style="text-align: center;">2371.030253</td>
+<td style="text-align: center;">2445.40733</td>
 <td style="text-align: center;">826.430000</td>
 <td style="text-align: center;">5606.58000</td>
-<td style="text-align: center;">948.3305848</td>
+<td style="text-align: center;">961.6351038</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">DOSE</td>
-<td style="text-align: center;">37.373737</td>
+<td style="text-align: center;">36.45833</td>
 <td style="text-align: center;">25.000000</td>
 <td style="text-align: center;">50.00000</td>
-<td style="text-align: center;">12.1453430</td>
+<td style="text-align: center;">11.8622315</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">AGE</td>
-<td style="text-align: center;">32.813131</td>
+<td style="text-align: center;">33.00000</td>
 <td style="text-align: center;">18.000000</td>
 <td style="text-align: center;">50.00000</td>
-<td style="text-align: center;">8.8667765</td>
+<td style="text-align: center;">8.9761589</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">WT</td>
-<td style="text-align: center;">83.311616</td>
+<td style="text-align: center;">82.55417</td>
 <td style="text-align: center;">56.600000</td>
 <td style="text-align: center;">115.30000</td>
-<td style="text-align: center;">12.5273150</td>
+<td style="text-align: center;">12.5211881</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">HT</td>
-<td style="text-align: center;">1.762633</td>
+<td style="text-align: center;">1.75901</td>
 <td style="text-align: center;">1.520031</td>
 <td style="text-align: center;">1.93012</td>
-<td style="text-align: center;">0.0838085</td>
+<td style="text-align: center;">0.0855081</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <p><em>This table represennts the summary statistics of the 5 variables.</em></p>
-<section id="plotting-the-relationship-with-outcome-of-interest-y" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="plotting-the-relationship-with-outcome-of-interest-y"><span class="header-section-number">3.1</span> Plotting the relationship with outcome of interest (Y)</h2>
+</section>
+<section id="plotting-the-relationship-with-outcome-of-interest-y" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="plotting-the-relationship-with-outcome-of-interest-y"><span class="header-section-number">3.2</span> Plotting the relationship with outcome of interest (Y)</h2>
 <p>Here, we will show some scatterplots or boxplots, whichever is suitable, between the main outcome of interest (total drug, Y) and other predictors. We will use box-plot if the variable is categorical.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot: Y vs DOSE</span></span>
@@ -475,8 +477,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Sex 1 on average has higher total drug.</li>
 </ol>
 </section>
-<section id="plotting-the-distribution-of-variables" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="plotting-the-distribution-of-variables"><span class="header-section-number">3.2</span> Plotting the distribution of variables</h2>
+<section id="plotting-the-distribution-of-variables" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="plotting-the-distribution-of-variables"><span class="header-section-number">3.3</span> Plotting the distribution of variables</h2>
 <p>Now, we will plot the distributions of our variables to make sure they all make sense. We will set the bin according to the values and distribution patterns within the variable</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom theme for consistent styling</span></span>
@@ -544,8 +546,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The distribution of the variables make sense in my opinion. Age, Weight, Height are all fairly normally distributed. Total drug has a somewhat uniform distribution. Other categorical variables have an unbalanced distribution among them but it is practically possible if the research is focused on specific group of people.</p>
 </section>
-<section id="pair-wise-plots" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="pair-wise-plots"><span class="header-section-number">3.3</span> Pair-wise plots</h2>
+<section id="pair-wise-plots" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="pair-wise-plots"><span class="header-section-number">3.4</span> Pair-wise plots</h2>
 <p>Here, we will plot different variables against each other to see any possible relation or pattern between the variables.</p>
 <p><em>Note: Please ignore the plots of a variable against itself as it does not make any sense.</em></p>
 <div class="cell">
@@ -570,10 +572,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and wT also show some moderate correlation.</p>
+<p>It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and WT also show some moderate correlation.</p>
 </section>
-<section id="correlation-among-variables" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="correlation-among-variables"><span class="header-section-number">3.4</span> Correlation among variables</h2>
+<section id="correlation-among-variables" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="correlation-among-variables"><span class="header-section-number">3.5</span> Correlation among variables</h2>
 <p>Here, we will create a cross-table matrix that shows the correlation among our variable of interests.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a correlation plot</span></span>
@@ -615,19 +617,19 @@ Call:
 lm(formula = Y ~ DOSE, data = final_data_cleaned)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--1639.6  -811.0  -124.4   729.0  3140.5 
+     Min       1Q   Median       3Q      Max 
+-1284.91  -441.14   -97.22   325.84  2372.87 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 2089.749    218.101   9.582   &lt;2e-16 ***
-DOSE           7.526      5.551   1.356    0.177    
+(Intercept)  323.062    199.049   1.623    0.107    
+DOSE          58.213      5.194  11.208   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 946.3 on 196 degrees of freedom
-Multiple R-squared:  0.009291,  Adjusted R-squared:  0.004236 
-F-statistic: 1.838 on 1 and 196 DF,  p-value: 0.1767</code></pre>
+Residual standard error: 672.1 on 118 degrees of freedom
+Multiple R-squared:  0.5156,    Adjusted R-squared:  0.5115 
+F-statistic: 125.6 on 1 and 118 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>We can observe that dose has an insignificant effect on Y.</p>
@@ -645,26 +647,26 @@ Call:
 lm(formula = Y ~ DOSE + AGE + SEX + RACE + WT + HT, data = final_data_cleaned)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--1916.3  -763.9  -100.8   665.6  3075.5 
+     Min       1Q   Median       3Q      Max 
+-1480.86  -367.81   -79.95   266.15  2431.52 
 
 Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)   
-(Intercept)  6580.126   2093.164   3.144  0.00194 **
-DOSE            7.967      5.399   1.476  0.14168   
-AGE             1.371      9.103   0.151  0.88046   
-SEX2         -724.935    250.116  -2.898  0.00419 **
-RACE2         -51.315    150.545  -0.341  0.73359   
-RACE7        -231.519    477.617  -0.485  0.62842   
-RACE88        -94.317    276.096  -0.342  0.73302   
-WT            -16.765      7.227  -2.320  0.02143 * 
-HT          -1723.282   1259.612  -1.368  0.17290   
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 3386.863   1835.153   1.846 0.067623 .  
+DOSE          59.935      4.880  12.281  &lt; 2e-16 ***
+AGE            3.155      7.825   0.403 0.687530    
+SEX2        -357.734    216.928  -1.649 0.101957    
+RACE2        155.034    128.627   1.205 0.230650    
+RACE7       -405.320    448.189  -0.904 0.367768    
+RACE88       -53.505    244.668  -0.219 0.827296    
+WT           -23.047      6.395  -3.604 0.000471 ***
+HT          -748.487   1103.979  -0.678 0.499188    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 917 on 189 degrees of freedom
-Multiple R-squared:  0.1029,    Adjusted R-squared:  0.06491 
-F-statistic: 2.709 on 8 and 189 DF,  p-value: 0.007584</code></pre>
+Residual standard error: 614.3 on 111 degrees of freedom
+Multiple R-squared:  0.6193,    Adjusted R-squared:  0.5919 
+F-statistic: 22.57 on 8 and 111 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>We can observe that SEX2 and Wt has a significant effect on Y. But majority o the predictors are insignificant in the model. This has lead to an insufficient information to predict the dependent vriable and only around 10% variation in the dependent variable is explained by the model with all predictors. With only DOSE the performance is even poorer.</p>
@@ -718,19 +720,19 @@ F-statistic: 2.709 on 8 and 189 DF,  p-value: 0.007584</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">DOSE Only</td>
-<td style="text-align: center;">941.5283</td>
-<td style="text-align: center;">0.0092907</td>
+<td style="text-align: center;">666.4618</td>
+<td style="text-align: center;">0.5156446</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">All Predictors</td>
-<td style="text-align: center;">895.9533</td>
-<td style="text-align: center;">0.1028807</td>
+<td style="text-align: center;">590.8535</td>
+<td style="text-align: center;">0.6193084</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p><em>This tables shows the model performance with Y as dependent variable.</em></p>
+<p><em>This tables shows the model performance with Y as dependent variable. “All predictor” model has a lower RMSE and explains the variation in dependent variable better that the “Dose only” model.</em></p>
 </section>
 </section>
 <section id="fitting-a-logistic-model-for-sex-with-only-dose-and-all-predictors" class="level1" data-number="5">
@@ -752,19 +754,17 @@ Call:
 glm(formula = SEX ~ DOSE, family = binomial(), data = final_data_cleaned)
 
 Coefficients:
-             Estimate Std. Error z value Pr(&gt;|z|)   
-(Intercept) -1.825897   0.688944  -2.650  0.00804 **
-DOSE        -0.002916   0.017673  -0.165  0.86895   
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+            Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept) -0.76482    0.85395  -0.896    0.370
+DOSE        -0.03175    0.02432  -1.306    0.192
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 150.17  on 197  degrees of freedom
-Residual deviance: 150.14  on 196  degrees of freedom
-AIC: 154.14
+    Null deviance: 94.242  on 119  degrees of freedom
+Residual deviance: 92.431  on 118  degrees of freedom
+AIC: 96.431
 
-Number of Fisher Scoring iterations: 4</code></pre>
+Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
 <p>We can observe that DOSE does not significantly affect SEX.</p>
@@ -785,28 +785,28 @@ glm(formula = SEX ~ DOSE + AGE + RACE + WT + HT + Y, family = binomial(),
 
 Coefficients:
               Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)  5.419e+01  1.237e+01   4.382 1.17e-05 ***
-DOSE         2.690e-03  2.986e-02   0.090   0.9282    
-AGE          7.667e-02  4.500e-02   1.704   0.0884 .  
-RACE2       -1.815e+00  1.017e+00  -1.785   0.0742 .  
-RACE7       -1.584e-02  2.613e+00  -0.006   0.9952    
-RACE88      -1.374e+00  1.529e+00  -0.899   0.3686    
-WT          -7.562e-02  5.347e-02  -1.414   0.1573    
-HT          -2.920e+01  7.318e+00  -3.990 6.60e-05 ***
-Y           -1.236e-03  5.028e-04  -2.458   0.0140 *  
+(Intercept)  6.033e+01  1.804e+01   3.345 0.000824 ***
+DOSE        -3.076e-02  7.761e-02  -0.396 0.691893    
+AGE          8.340e-02  6.074e-02   1.373 0.169724    
+RACE2       -1.927e+00  1.375e+00  -1.402 0.160967    
+RACE7        1.176e-01  3.846e+00   0.031 0.975604    
+RACE88      -1.500e+00  2.195e+00  -0.683 0.494317    
+WT          -6.283e-02  7.942e-02  -0.791 0.428908    
+HT          -3.320e+01  1.108e+01  -2.995 0.002744 ** 
+Y           -1.040e-03  9.628e-04  -1.081 0.279840    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 150.171  on 197  degrees of freedom
-Residual deviance:  57.426  on 189  degrees of freedom
-AIC: 75.426
+    Null deviance: 94.242  on 119  degrees of freedom
+Residual deviance: 32.077  on 111  degrees of freedom
+AIC: 50.077
 
-Number of Fisher Scoring iterations: 7</code></pre>
+Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
-<p>We can observe that HT and Y significantly affect Y. We will need to check the Accuracy and AUC values to tell about the performance of the model.</p>
+<p>We can observe that HT significantly affect SEX. We will need to check the Accuracy and AUC values to tell about the performance of the model.</p>
 </section>
 <section id="computing-accuracy-and-roc-auc-for-both-the-models" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="computing-accuracy-and-roc-auc-for-both-the-models"><span class="header-section-number">5.3</span> Computing accuracy and ROC-AUC for both the models</h2>
@@ -868,19 +868,304 @@ Setting direction: controls &lt; cases</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">DOSE Only</td>
-<td style="text-align: center;">0.8737374</td>
-<td style="text-align: center;">0.5090173</td>
+<td style="text-align: center;">0.8666667</td>
+<td style="text-align: center;">0.5919471</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">All Predictors</td>
-<td style="text-align: center;">0.9494949</td>
-<td style="text-align: center;">0.9773410</td>
+<td style="text-align: center;">0.9416667</td>
+<td style="text-align: center;">0.9795673</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>The tablbe above shoes the accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.</p>
+<p>The table above shows the accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only slightly better than a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.The accuracy for “all predictor” model is also better.</p>
+</section>
+</section>
+<section id="module-10-model-improvement" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Module 10 (Model Improvement)</h1>
+<p>First, we will remove the variable RACE from our dataset, and store our seeding value <code>1234</code> as <code>rngseed</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(final_data_cleaned, <span class="at">select =</span> <span class="sc">-</span>RACE) <span class="co">#removing race</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>rngseed<span class="ot">=</span><span class="dv">1234</span> <span class="co"># saving value, rngseed = 1234</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(rngseed) <span class="co"># setting seed based on rngseed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will now split the data into <code>train_data</code> and <code>test data</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Putting 3/4 (75%) of the data</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data, <span class="at">prop =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>) <span class="co">#splitting data</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data frames for the two sets:</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split) <span class="co"># setting training data</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split) <span class="co">#setting testing data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>##Fitting models</p>
+<p>We will now define the two models that we will be working on: the model with “all predictors” and the model with only <code>DOSE</code> as predictor</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE , <span class="at">data =</span> train_data) <span class="co"># defining model 1</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX  <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> train_data) <span class="co">#defining model 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Making predictions:</strong></p>
+<p>Then, we make predictions based on these models.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>predictions_m1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="at">newdata =</span> train_data)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>predictions_m2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Computing RMSE</strong></p>
+<p>RMSE for m1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>RMSE_m1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((train_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m1)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"RMSE for m1:"</span>, RMSE_m1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "RMSE for m1: 702.807789314724"</code></pre>
+</div>
+</div>
+<p>RMSE for m2</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>RMSE_m2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((train_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m2)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"RMSE for m2:"</span>, RMSE_m2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "RMSE for m2: 627.440753935564"</code></pre>
+</div>
+</div>
+<p>RMSE for null model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the null model (intercept-only model)</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>null_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate predictions (mean of Y)</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>predictions_null <span class="ot">&lt;-</span> <span class="fu">predict</span>(null_model, <span class="at">newdata =</span> train_data)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract observed values</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>observed_values <span class="ot">&lt;-</span> train_data<span class="sc">$</span>Y</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute residuals (difference between observed and predicted)</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>residuals_null <span class="ot">&lt;-</span> observed_values <span class="sc">-</span> predictions_null</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute RMSE for the null model</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>RMSE_null <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(residuals_null<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print RMSE</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"RMSE for the null model:"</span>, RMSE_null))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "RMSE for the null model: 948.352631392634"</code></pre>
+</div>
+</div>
+<p>Comparing all three RMSE values: RMSE ( all pred) &gt; RMSE (DOSE) &gt; RMSE (NULL) Based on the RMSE values, we can conclude that Model with “all predictors” is the one that is best fitting.</p>
+<section id="setting-random-seed-1234" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="setting-random-seed-1234"><span class="header-section-number">6.1</span> Setting random seed (1234)</h2>
+<p>In this section, we will use CV technique to split the <code>train-data</code> into 90%-10% analysis dataset and assessment dataset, and compare the RMSE values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(rngseed) <span class="co"># setting seed based on rngseed</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data, <span class="at">v =</span> <span class="dv">10</span>) <span class="co"># creating 10 folds</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>folds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#  10-fold cross-validation 
+# A tibble: 10 × 2
+   splits         id    
+   &lt;list&gt;         &lt;chr&gt; 
+ 1 &lt;split [81/9]&gt; Fold01
+ 2 &lt;split [81/9]&gt; Fold02
+ 3 &lt;split [81/9]&gt; Fold03
+ 4 &lt;split [81/9]&gt; Fold04
+ 5 &lt;split [81/9]&gt; Fold05
+ 6 &lt;split [81/9]&gt; Fold06
+ 7 &lt;split [81/9]&gt; Fold07
+ 8 &lt;split [81/9]&gt; Fold08
+ 9 &lt;split [81/9]&gt; Fold09
+10 &lt;split [81/9]&gt; Fold10</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing vectors to store RMSE results</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>rmse_m1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>rmse_m2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>analyze_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)   </span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>assessment_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)   </span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Looping through each fold</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Splitting  the data into analysis and assessment datasets</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="ot">&lt;-</span> <span class="fu">analysis</span>(folds<span class="sc">$</span>splits[[i]])  <span class="co"># 90% analysis data</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  assessment_data <span class="ot">&lt;-</span> <span class="fu">assessment</span>(folds<span class="sc">$</span>splits[[i]])  <span class="co"># 10% assessment data</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Storing sample sizes</span></span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>  analyze_size[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(analysis_data)  </span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>  assessment_size[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(assessment_data) </span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fitting Model 1 (m1): Y ~ DOSE</span></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE, <span class="at">data =</span> analysis_data)</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>  predictions_m1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="at">newdata =</span> assessment_data)</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>  rmse_m1[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((assessment_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m1)<span class="sc">^</span><span class="dv">2</span>)) <span class="co">#RMSE for m1</span></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT</span></span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> analysis_data)</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>  predictions_m2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> assessment_data)  <span class="co"># Corrected spelling</span></span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>  rmse_m2[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((assessment_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m2)<span class="sc">^</span><span class="dv">2</span>)) <span class="co">#RMSE for m2</span></span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Combining results into a data frame</span></span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">Fold =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Analyze_Size =</span> analyze_size,  </span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">Assessment_Size =</span> assessment_size,</span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE_m1 =</span> rmse_m1,</span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE_m2 =</span> rmse_m2</span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Fold Analyze_Size Assessment_Size  RMSE_m1  RMSE_m2
+1     1           81               9 601.7112 745.0822
+2     2           81               9 353.1293 480.0154
+3     3           81               9 804.4908 617.4291
+4     4           81               9 986.2232 971.0726
+5     5           81               9 600.5481 403.0282
+6     6           81               9 969.3069 765.3549
+7     7           81               9 516.3759 454.2764
+8     8           81               9 738.9720 522.0892
+9     9           81               9 482.5414 540.0483
+10   10           81               9 852.0989 958.5128</code></pre>
+</div>
+</div>
+<p>We can observe that in most of the cases, the RMSE of “NULL Model” is greater.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average RMSE for each model</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>avg_rmse_m1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmse_m1)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>avg_rmse_m2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmse_m2)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Average RMSE for m1:"</span>, avg_rmse_m1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Average RMSE for m1: 690.539767935186"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Average RMSE for m2:"</span>, avg_rmse_m2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Average RMSE for m2: 645.690915863492"</code></pre>
+</div>
+</div>
+<p>But, on average, the RMSE value for the NULL Model (m1) is greater than RMSE for m2</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>se_rmse_m1 <span class="ot">&lt;-</span> <span class="fu">sd</span>(rmse_m1) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">10</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Standard Error of RMSE for m1:"</span>, se_rmse_m1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Standard Error of RMSE for m1: 67.495093665314"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>se_rmse_m2 <span class="ot">&lt;-</span> <span class="fu">sd</span>(rmse_m2) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">10</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Standard Error of RMSE for m2:"</span>, se_rmse_m2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Standard Error of RMSE for m2: 64.8192708423115"</code></pre>
+</div>
+</div>
+<p>The standard error for both the Model are fairly acceptable, and the RMSE across the 10 folds can be considered fairly consistent.</p>
+</section>
+<section id="changing-the-random-seed" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="changing-the-random-seed"><span class="header-section-number">6.2</span> Changing the random seed</h2>
+<p>Here, we will change the seeding value and do all the analysis again.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1212</span>) <span class="co"># setting seed based on rngseed</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data, <span class="at">v =</span> <span class="dv">10</span>) <span class="co"># creating 10 folds</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>folds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#  10-fold cross-validation 
+# A tibble: 10 × 2
+   splits         id    
+   &lt;list&gt;         &lt;chr&gt; 
+ 1 &lt;split [81/9]&gt; Fold01
+ 2 &lt;split [81/9]&gt; Fold02
+ 3 &lt;split [81/9]&gt; Fold03
+ 4 &lt;split [81/9]&gt; Fold04
+ 5 &lt;split [81/9]&gt; Fold05
+ 6 &lt;split [81/9]&gt; Fold06
+ 7 &lt;split [81/9]&gt; Fold07
+ 8 &lt;split [81/9]&gt; Fold08
+ 9 &lt;split [81/9]&gt; Fold09
+10 &lt;split [81/9]&gt; Fold10</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize vectors to store RMSE results</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>rmse_m1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>rmse_m2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>analyze_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)  <span class="co"># Corrected spelling</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>assessment_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)  <span class="co"># Corrected spelling</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each fold</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split data into analysis and assessment sets</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="ot">&lt;-</span> <span class="fu">analysis</span>(folds<span class="sc">$</span>splits[[i]])  <span class="co"># 90% analysis data</span></span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  assessment_data <span class="ot">&lt;-</span> <span class="fu">assessment</span>(folds<span class="sc">$</span>splits[[i]])  <span class="co"># 10% assessment data</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Store sample sizes</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>  analyze_size[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(analysis_data)  <span class="co"># Corrected variable name</span></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>  assessment_size[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(assessment_data)  <span class="co"># Corrected variable name</span></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit Model 1 (m1): Y ~ DOSE</span></span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE, <span class="at">data =</span> analysis_data)</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>  predictions_m1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="at">newdata =</span> assessment_data)</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>  rmse_m1[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((assessment_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m1)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT</span></span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> analysis_data)</span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>  predictions_m2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> assessment_data)  <span class="co"># Corrected spelling</span></span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>  rmse_m2[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((assessment_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m2)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine results into a data frame</span></span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">Fold =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Analyze_Size =</span> analyze_size,  <span class="co"># Corrected variable name</span></span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">Assessment_Size =</span> assessment_size,  <span class="co"># Corrected variable name</span></span>
+<span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE_m1 =</span> rmse_m1,</span>
+<span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE_m2 =</span> rmse_m2</span>
+<span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb58-38"><a href="#cb58-38" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Fold Analyze_Size Assessment_Size  RMSE_m1  RMSE_m2
+1     1           81               9 946.5582 986.4273
+2     2           81               9 888.3070 827.9306
+3     3           81               9 499.2513 490.2751
+4     4           81               9 627.0722 462.7571
+5     5           81               9 707.1799 532.4521
+6     6           81               9 978.6113 888.6200
+7     7           81               9 633.9672 631.2505
+8     8           81               9 600.8176 516.9123
+9     9           81               9 601.9640 562.4362
+10   10           81               9 559.3245 536.5775</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average RMSE for each model</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>avg_rmse_m1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmse_m1)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>avg_rmse_m2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmse_m2)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Average RMSE for m1:"</span>, avg_rmse_m1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Average RMSE for m1: 704.305324618717"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Average RMSE for m2:"</span>, avg_rmse_m2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Average RMSE for m2: 643.563859453095"</code></pre>
+</div>
+</div>
+<p>In most of the cases, the RMSE of NULL Model is higher that the model with all predictors. This is similar to the result obtained from previous seed. m1, on average, has a higher RMSE.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>se_rmse_m1 <span class="ot">&lt;-</span> <span class="fu">sd</span>(rmse_m1) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">10</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Standard Error of RMSE for m1:"</span>, se_rmse_m1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Standard Error of RMSE for m1: 54.0532228695418"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>se_rmse_m2 <span class="ot">&lt;-</span> <span class="fu">sd</span>(rmse_m2) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">10</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Standard Error of RMSE for m2:"</span>, se_rmse_m2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Standard Error of RMSE for m2: 59.1000322630771"</code></pre>
+</div>
+</div>
 
 
 </section>

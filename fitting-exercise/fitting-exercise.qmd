@@ -21,6 +21,7 @@ library(patchwork)
 library(GGally)
 library(caret)
 library(pROC)
+library(tidymodels)
 ```
 
 
@@ -78,6 +79,7 @@ Mavoglurant_data_OCC1 <- subset(Mavoglurant_data, OCC == 1)
 #writing code to exclude the observations with TIME = 0
 Mavoglurant_data_filtered <- Mavoglurant_data_OCC1 %>%
   filter(TIME != 0)
+
 ```
 
 
@@ -98,7 +100,7 @@ dim(summarized_data) # checking dimension
 Now, we will create a dataframe that contains only the observations where TIME == 0, and then we will check the dimensions to see if it is correctly created. 
 ```{r}
 # creating a data frame that contains only the observations where TIME == 0
-time_zero_data <- Mavoglurant_data %>%
+time_zero_data <- Mavoglurant_data_OCC1 %>%
   filter(TIME == 0)
 
 dim(time_zero_data) # checking dimension
@@ -408,7 +410,7 @@ kable(results_table, caption = "Model Performance Metrics", align = "c")
 
 ```
 
-_This tables shows the model performance with Y as dependent variable._
+_This tables shows the model performance with Y as dependent variable. "All predictor" model has a lower RMSE and explains the variation in dependent variable better that the "Dose only" model._
 
 
 
@@ -442,7 +444,7 @@ logistic_all <- glm(SEX ~ DOSE + AGE + RACE + WT + HT + Y, data = final_data_cle
 
 summary(logistic_all)
 ```
-We can observe that HT and Y significantly affect Y. We will need to check the Accuracy and AUC values to tell about the performance of the model.
+We can observe that HT significantly affect SEX. We will need to check the Accuracy and AUC values to tell about the performance of the model.
 
 
 ## Computing accuracy and ROC-AUC for both the models
@@ -487,5 +489,238 @@ results_table_logistic <- data.frame(
 # Print the table using kable
 kable(results_table_logistic, caption = "Logistic Model Performance Metrics", align = "c")
 ```
-The table above shows the  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only is similar to a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.
+The table above shows the  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only slightly better than a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.The accuracy for "all predictor" model is also better.
 
+# Module 10  (Model Improvement)
+
+First, we will remove the variable RACE from our dataset, and store our seeding value `1234` as `rngseed`.
+
+```{r}
+data <- subset(final_data_cleaned, select = -RACE) #removing race
+rngseed=1234 # saving value, rngseed = 1234
+set.seed(rngseed) # setting seed based on rngseed
+```
+
+
+We will now split the data into `train_data` and `test data`.
+
+```{r}
+# Putting 3/4 (75%) of the data
+data_split <- initial_split(data, prop = 3/4) #splitting data
+
+# Create data frames for the two sets:
+train_data <- training(data_split) # setting training data
+test_data  <- testing(data_split) #setting testing data
+```
+
+##Fitting models
+
+We will now define the two models that we will be working on:
+the model with "all predictors" and the model with only `DOSE` as predictor
+```{r}
+m1 <- lm(Y ~ DOSE , data = train_data) # defining model 1
+m2 <- lm(Y ~ DOSE + AGE + SEX  + WT + HT, data = train_data) #defining model 2
+```
+
+
+**Making predictions:**
+
+Then, we make predictions based on these models.
+
+```{r}
+predictions_m1 <- predict(m1, newdata = train_data)
+predictions_m2 <- predict(m2, newdata = train_data)
+```
+
+**Computing RMSE**
+
+RMSE for m1
+
+```{r}
+RMSE_m1 <- sqrt(mean((train_data$Y - predictions_m1)^2))
+print(paste("RMSE for m1:", RMSE_m1))
+```
+
+RMSE for m2
+
+```{r}
+RMSE_m2 <- sqrt(mean((train_data$Y - predictions_m2)^2))
+print(paste("RMSE for m2:", RMSE_m2))
+```
+
+RMSE for null model
+
+```{r}
+# Fit the null model (intercept-only model)
+null_model <- lm(Y ~ 1, data = train_data)
+
+# Generate predictions (mean of Y)
+predictions_null <- predict(null_model, newdata = train_data)
+
+# Extract observed values
+observed_values <- train_data$Y
+
+# Compute residuals (difference between observed and predicted)
+residuals_null <- observed_values - predictions_null
+
+# Compute RMSE for the null model
+RMSE_null <- sqrt(mean(residuals_null^2))
+
+# Print RMSE
+print(paste("RMSE for the null model:", RMSE_null))
+```
+Comparing all three RMSE values: RMSE ( all pred) > RMSE (DOSE) > RMSE (NULL)
+Based on the RMSE values, we can conclude that Model with "all predictors" is the one that is best fitting.
+
+
+
+## Setting random seed (1234)
+
+In this section, we will use CV technique to split the `train-data` into 90%-10% analysis dataset and assessment dataset, and compare the RMSE values.
+
+```{r}
+set.seed(rngseed) # setting seed based on rngseed
+folds <- vfold_cv(train_data, v = 10) # creating 10 folds
+folds
+```
+
+
+```{r}
+# Initializing vectors to store RMSE results
+rmse_m1 <- numeric(10)
+rmse_m2 <- numeric(10)
+analyze_size <- numeric(10)   
+assessment_size <- numeric(10)   
+
+# Looping through each fold
+for (i in 1:10) {
+  # Splitting  the data into analysis and assessment datasets
+  analysis_data <- analysis(folds$splits[[i]])  # 90% analysis data
+  assessment_data <- assessment(folds$splits[[i]])  # 10% assessment data
+
+  # Storing sample sizes
+  analyze_size[i] <- nrow(analysis_data)  
+  assessment_size[i] <- nrow(assessment_data) 
+
+  # Fitting Model 1 (m1): Y ~ DOSE
+  m1 <- lm(Y ~ DOSE, data = analysis_data)
+  predictions_m1 <- predict(m1, newdata = assessment_data)
+  rmse_m1[i] <- sqrt(mean((assessment_data$Y - predictions_m1)^2)) #RMSE for m1
+
+  # Fit Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT
+  m2 <- lm(Y ~ DOSE + AGE + SEX + WT + HT, data = analysis_data)
+  predictions_m2 <- predict(m2, newdata = assessment_data)  # Corrected spelling
+  rmse_m2[i] <- sqrt(mean((assessment_data$Y - predictions_m2)^2)) #RMSE for m2
+}
+
+# Combining results into a data frame
+results <- data.frame(
+  Fold = 1:10,
+  Analyze_Size = analyze_size,  
+  Assessment_Size = assessment_size,
+  RMSE_m1 = rmse_m1,
+  RMSE_m2 = rmse_m2
+)
+
+# Print results
+print(results)
+
+```
+We can observe that in most of the cases, the RMSE of "NULL Model" is greater.
+
+```{r}
+# Compute average RMSE for each model
+avg_rmse_m1 <- mean(rmse_m1)
+avg_rmse_m2 <- mean(rmse_m2)
+
+print(paste("Average RMSE for m1:", avg_rmse_m1))
+print(paste("Average RMSE for m2:", avg_rmse_m2))
+```
+
+But, on average, the RMSE value for the NULL Model (m1) is greater than RMSE for m2
+
+```{r}
+se_rmse_m1 <- sd(rmse_m1) / sqrt(10)
+print(paste("Standard Error of RMSE for m1:", se_rmse_m1))
+```
+
+```{r}
+se_rmse_m2 <- sd(rmse_m2) / sqrt(10)
+print(paste("Standard Error of RMSE for m2:", se_rmse_m2))
+
+```
+The standard error for both the Model are fairly acceptable, and the RMSE across the 10 folds can be considered fairly consistent.
+
+
+## Changing the random seed to: 1212
+
+Here, we will change the seeding value and do all the analysis again.
+
+```{r}
+set.seed(1212) # setting seed based on rngseed
+folds <- vfold_cv(train_data, v = 10) # creating 10 folds
+folds
+```
+
+
+```{r}
+# Initialize vectors to store RMSE results
+rmse_m1 <- numeric(10)
+rmse_m2 <- numeric(10)
+analyze_size <- numeric(10)  # Corrected spelling
+assessment_size <- numeric(10)  # Corrected spelling
+
+# Loop through each fold
+for (i in 1:10) {
+  # Split data into analysis and assessment sets
+  analysis_data <- analysis(folds$splits[[i]])  # 90% analysis data
+  assessment_data <- assessment(folds$splits[[i]])  # 10% assessment data
+
+  # Store sample sizes
+  analyze_size[i] <- nrow(analysis_data)  # Corrected variable name
+  assessment_size[i] <- nrow(assessment_data)  # Corrected variable name
+
+  # Fit Model 1 (m1): Y ~ DOSE
+  m1 <- lm(Y ~ DOSE, data = analysis_data)
+  predictions_m1 <- predict(m1, newdata = assessment_data)
+  rmse_m1[i] <- sqrt(mean((assessment_data$Y - predictions_m1)^2))
+
+  # Fit Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT
+  m2 <- lm(Y ~ DOSE + AGE + SEX + WT + HT, data = analysis_data)
+  predictions_m2 <- predict(m2, newdata = assessment_data)  # Corrected spelling
+  rmse_m2[i] <- sqrt(mean((assessment_data$Y - predictions_m2)^2))
+}
+
+# Combine results into a data frame
+results <- data.frame(
+  Fold = 1:10,
+  Analyze_Size = analyze_size,  # Corrected variable name
+  Assessment_Size = assessment_size,  # Corrected variable name
+  RMSE_m1 = rmse_m1,
+  RMSE_m2 = rmse_m2
+)
+
+# Print results
+print(results)
+
+# Compute average RMSE for each model
+avg_rmse_m1 <- mean(rmse_m1)
+avg_rmse_m2 <- mean(rmse_m2)
+
+print(paste("Average RMSE for m1:", avg_rmse_m1))
+print(paste("Average RMSE for m2:", avg_rmse_m2))
+```
+
+In most of the cases, the RMSE of NULL Model is higher that the model with all predictors. This is similar to the result obtained from previous seed. m1, on average, has a higher RMSE.
+
+```{r}
+se_rmse_m1 <- sd(rmse_m1) / sqrt(10)
+print(paste("Standard Error of RMSE for m1:", se_rmse_m1))
+```
+
+```{r}
+se_rmse_m2 <- sd(rmse_m2) / sqrt(10)
+print(paste("Standard Error of RMSE for m2:", se_rmse_m2))
+```
+
+The Standard Error decreased in both the cases when we use another random seed.
