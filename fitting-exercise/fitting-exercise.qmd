@@ -9,6 +9,8 @@ format:
     highlight-style: github
 ---
 
+# This section added by ANNALISE CRAMER, much further down this page
+
 
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
@@ -724,3 +726,114 @@ print(paste("Standard Error of RMSE for m2:", se_rmse_m2))
 ```
 
 The Standard Error decreased in both the cases when we use another random seed.
+
+
+
+The following code is where ANNALISE CRAMER's contribution begins:
+
+First, we will combine the non-cross validated models together into a dataframe.
+```{r}
+#create data frame with obs and pred values
+df_predictions <- rbind(
+  data.frame(Observed = train_data$Y, Predicted = predictions_m1, Model = "m1"),
+  data.frame(Observed = train_data$Y, Predicted = predictions_m2, Model = "m2"),
+  data.frame(Observed = train_data$Y, Predicted = predictions_null, Model = "null_model")
+)
+
+#check
+head(df_predictions)
+```
+
+Then use ggplot to create a figure that plots (as symbols) observed values on the x-axis and predictions (from each of the 3 models, including the null model) on the y-axis. Use a different color and/or a different symbol to differentiate between the 3 model predictions. Alternatively, you can use facets. Let both x and y axes go from 0 to 5000 and add a 45 degree line. For a good model, the points will fall along that line, namely observed and predicted values agree - with some scatter.
+
+This looks a little weird given the data is horizontally clustered, but after examining the models more closely I think it's okay, the dose-only model is based off of 3 possible doses, and the null model is based off one value. None of these models looks particularly good.
+```{r}
+ggplot(df_predictions, aes(x = Observed, y = Predicted, color = Model, shape = Model)) + #color and shape by model
+  geom_point(alpha = 0.6, size = 2) +  # Add points with transparency
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "black") +  # 45-degree line
+  scale_x_continuous(limits = c(0, 5000)) +
+  scale_y_continuous(limits = c(0, 5000)) +
+  labs(title = "Model comparison", 
+       x = "Observed", 
+       y = "Predicted",
+       color = "Model",
+       shape = "Model") +
+  theme_minimal()
+
+#exploring data
+#plot(m1)
+#plot(m2)
+#plot(null_model)
+```
+
+Our next plot will be for model 2, plotting predicted versus residuals (the latter being just residuals = predicted-observed). Also add a straight line at 0. Make sure your y-axis goes the same amount into the positive and negative direction.
+
+The residuals have a pattern, a general negative to positive diagonal trend. This means the model isn't capturing some aspect of the data.
+
+```{r}
+#make a dataframe of only model2
+m2df <- df_predictions[df_predictions$Model == "m2", ]
+m2df$Residuals <- m2df$Predicted - m2df$Observed
+
+#plot(m2, which = 1) #I have to do it using ggplot
+
+ggplot(m2df, aes(x = Predicted, y = Residuals)) +
+  geom_point(color = "blue", alpha = 0.6, size = 2) +  # Scatter points
+  geom_hline(yintercept = 0, linetype = "solid", color = "red") +  # Line at y = 0 #red line at 0
+  scale_y_continuous(limits = c(-4500, 4500)) +  # Symmetric y-axis
+  scale_x_continuous(limits = c(-4500, 4500)) +  # X-axis limit
+  labs(title = "Model 2", 
+       x = "Observed", 
+       y = "Predicted") +
+  theme_minimal()
+```
+
+On to our next task, focusing on model 2 with 100 boostrapped values based on the training data.
+
+Next, write a loop (or use a map or apply function) to fit the model to each of the bootstrap samples and make predictions from this model for the original training data. Record all predictions (e.g., in an array or a list).
+
+Once you have all your predictions stored, compute the mean and confidence intervals.
+
+Finally, make a figure that plots observed values on the x-axis, and point estimate (obtained from your original predictions on the training data), as well as median and the upper and lower bounds - obtained by the bootstrap sampling and stored in pred on the y-axis. You can for instance use black symbols for original predictions (the point estimate, which is the mean), and some colors to indicate median and lower and upper confidence limits. As above, make sure x- and y-axis are on the same and add a 45 degree line.
+
+This plot of values looks better than in the earlier plots, the values and their 95% CIs look closer to the 45 degree line. It's hard to say if the light blue (original) or dark blue (bootstrapped) values are closer to the line, though, there's many cases of each instance.
+
+```{r}
+library(rsample)
+set.seed(rngseed) #set seed
+
+dat_bs <- bootstraps(train_data, times = 100) #get 100 bootstrap samples
+
+#create boot to hold strapped values
+boot <- matrix(0, nrow = length(dat_bs$splits), ncol = nrow(train_data))
+
+# for each repetition, fit the model, predict, and store answer
+for (i in 1:length(dat_bs$splits)) {
+  dat_sample <- rsample::analysis(dat_bs$splits[[i]]) #sample for ith iteration
+  m2_bs <- lm(Y ~ DOSE + AGE + SEX + WT + HT, data = dat_sample) #fit model to particular sample
+  boot[i, ] <- predict(m2_bs, newdata = train_data) #make pred based on training data
+}
+
+#obtain CIs at 95% 
+preds <- boot |> apply(2, quantile,  c(0.025, 0.5, 0.975)) |>  t()
+
+#make it a dataframe to plot
+preds_df <- data.frame(
+  Observed = train_data$Y,
+  Original_Pred = predict(m2, newdata = train_data),  # Original model predictions
+  Lower_CI = preds[, 1],  # Lower confidence interval
+  Median_CI = preds[, 2],  # Median
+  Upper_CI = preds[, 3]   # Upper confidence interval
+)
+
+#plot observed vs. predictions with CIs
+ggplot(preds_df, aes(x = Observed)) +
+  geom_point(aes(y = Original_Pred), color = "skyblue3", shape = 16) + #original predictions
+  geom_point(aes(y = Median_CI), color = "navy", shape = 16) + #median predictions
+  geom_errorbar(aes(ymin = Lower_CI, ymax = Upper_CI), color = "firebrick", width = 0.1, alpha=0.6) + #CIs
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray50") + #45-degree line
+  labs(x = "Observed", y = "Predicted") +
+  theme_minimal() +
+  coord_cartesian(xlim = c(0, 5000), ylim = c(0, 5000)) #axes go from 0 to 5000
+
+```
