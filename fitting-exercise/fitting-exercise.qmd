@@ -9,11 +9,10 @@ format:
     highlight-style: github
 ---
 
-# This section added by ANNALISE CRAMER, much further down this page
 
 
 ```{r, echo=FALSE, message=FALSE}
-# load a few R packages
+# loading R packages
 library(dplyr)
 library(ggplot2)
 library(here)
@@ -666,46 +665,46 @@ folds
 
 
 ```{r}
-# Initialize vectors to store RMSE results
+# Initializing vectors to store RMSE results
 rmse_m1 <- numeric(10)
 rmse_m2 <- numeric(10)
-analyze_size <- numeric(10)  # Corrected spelling
-assessment_size <- numeric(10)  # Corrected spelling
+analyze_size <- numeric(10)  
+assessment_size <- numeric(10)  
 
-# Loop through each fold
+# Looping each fold
 for (i in 1:10) {
-  # Split data into analysis and assessment sets
+  # splitting data into analysis and assessment sets
   analysis_data <- analysis(folds$splits[[i]])  # 90% analysis data
   assessment_data <- assessment(folds$splits[[i]])  # 10% assessment data
 
-  # Store sample sizes
+  # storing sample sizes
   analyze_size[i] <- nrow(analysis_data)  # Corrected variable name
   assessment_size[i] <- nrow(assessment_data)  # Corrected variable name
 
-  # Fit Model 1 (m1): Y ~ DOSE
+  # fitting Model 1 (m1): Y ~ DOSE
   m1 <- lm(Y ~ DOSE, data = analysis_data)
   predictions_m1 <- predict(m1, newdata = assessment_data)
   rmse_m1[i] <- sqrt(mean((assessment_data$Y - predictions_m1)^2))
 
-  # Fit Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT
+  # fitting Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT
   m2 <- lm(Y ~ DOSE + AGE + SEX + WT + HT, data = analysis_data)
   predictions_m2 <- predict(m2, newdata = assessment_data)  # Corrected spelling
   rmse_m2[i] <- sqrt(mean((assessment_data$Y - predictions_m2)^2))
 }
 
-# Combine results into a data frame
+# combining results into a data frame
 results <- data.frame(
   Fold = 1:10,
-  Analyze_Size = analyze_size,  # Corrected variable name
-  Assessment_Size = assessment_size,  # Corrected variable name
+  Analyze_Size = analyze_size,  
+  Assessment_Size = assessment_size,  
   RMSE_m1 = rmse_m1,
   RMSE_m2 = rmse_m2
 )
 
-# Print results
+# printing results
 print(results)
 
-# Compute average RMSE for each model
+# compute average RMSE for each model
 avg_rmse_m1 <- mean(rmse_m1)
 avg_rmse_m2 <- mean(rmse_m2)
 
@@ -729,7 +728,7 @@ The Standard Error decreased in both the cases when we use another random seed.
 
 
 
-The following code is where ANNALISE CRAMER's contribution begins:
+#  The following code is where ANNALISE CRAMER's contribution begins:
 
 First, we will combine the non-cross validated models together into a dataframe.
 ```{r}
@@ -837,3 +836,63 @@ ggplot(preds_df, aes(x = Observed)) +
   coord_cartesian(xlim = c(0, 5000), ylim = c(0, 5000)) #axes go from 0 to 5000
 
 ```
+
+
+# This section is agian contributed by PRASANGA PAUDEL ( The Author)
+
+
+Defining the model
+```{r}
+model_train <- lm(Y ~ DOSE + AGE + SEX + WT + HT, data = train_data)
+```
+
+
+Making predictions for the test data
+```{r}
+test_data$Predicted <- predict(model_train, newdata = test_data)
+```
+
+Now , we will plot the graph.
+
+```{r}
+# adding predictions for the training data 
+train_data$Predicted <- predict(model_train, newdata = train_data)
+
+# creating the plot
+ggplot() +
+  #  training data
+  geom_point(data = train_data, aes(x = Y, y = Predicted), color = "blue", size = 3, alpha = 0.7, shape = 16) +  # Training data
+  #  test data
+  geom_point(data = test_data, aes(x = Y, y = Predicted), color = "red", size = 3, alpha = 0.7, shape = 17) +  # Test data
+  #  45-degree line
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +  # 45-degree line
+  # Labels and title
+  labs(
+    x = "Observed Values",
+    y = "Predicted Values",
+    title = "Predicted vs Observed Values for Training and Test Data",
+    subtitle = "Blue: Training Data, Red: Test Data"
+  ) +
+  # Set axis limits
+  scale_x_continuous(limits = c(0, max(c(train_data$Y, test_data$Y)))) +  # Set x-axis limits
+  scale_y_continuous(limits = c(0, max(c(train_data$Predicted, test_data$Predicted)))) +  # Set y-axis limits
+  # Theme
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 12),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12)
+  )
+```
+
+We can observe that the test data is more or less close to the 45-degree line and can be assumed to follow the same distribution as the training data. Therefore our model performs well in cace of testing data as well.
+
+
+In summary,
+
+All our other models have shown to be better than a NULL model.
+
+Although the model with only DOSE gives a better result than the NULL model, the prediction is rather limited to only few values. As there is very less variation in the predictor itself. We can not encorporate all the variation that is present in real life scenario.
+
+Our model with all predictor has show the best result among the three models. We verified that the model performs well in an unseen data as well. Furthermore, the addition of different factors into the model has enabled the model to adjust for a lot of variation and the prediction has significantly improved. The difference between the original and predicted values is lowest in case of this model.

@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-55c119cbca0847612369e51c8a5413ad.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4d01e6e8a406b62be36f5785d81e4bf1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -212,11 +212,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="this-section-added-by-annalise-cramer-much-further-down-this-page" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> This section added by ANNALISE CRAMER, much further down this page</h1>
-</section>
-<section id="importing-dataset" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Importing Dataset</h1>
+<section id="importing-dataset" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Importing Dataset</h1>
 <p>We will first import our dataset from the directory.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Constructing the file path using here()</span></span>
@@ -245,11 +242,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="looking-into-the-dataset-and-preparing-for-eda" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Looking into the dataset and preparing for EDA</h1>
+<section id="looking-into-the-dataset-and-preparing-for-eda" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Looking into the dataset and preparing for EDA</h1>
 <p>In this section, we will have an initial look into the dataset and prepare a new dataset for EDA.</p>
-<section id="plotting-dv-on-y-axis-and-time-on-x-axis" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="plotting-dv-on-y-axis-and-time-on-x-axis"><span class="header-section-number">3.1</span> Plotting DV on Y-axis and TIME on X-axis</h2>
+<section id="plotting-dv-on-y-axis-and-time-on-x-axis" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="plotting-dv-on-y-axis-and-time-on-x-axis"><span class="header-section-number">2.1</span> Plotting DV on Y-axis and TIME on X-axis</h2>
 <p>Here, we will write a code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis, stratified by dose ( using a different color for each dose).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a line plot with different colors for each dose</span></span>
@@ -270,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><em>This figures show the three doses in three colors. The DOSE 37.5 is not visible in this graph, probably because it is less frequent.</em></p>
 </section>
-<section id="preparing-the-data" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="preparing-the-data"><span class="header-section-number">3.2</span> Preparing the data</h2>
+<section id="preparing-the-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="preparing-the-data"><span class="header-section-number">2.2</span> Preparing the data</h2>
 <p>As there are some individuals that seem to have received the drug more than once, we will only keep observations with OCC = 1</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#writing a code that keeps only observations with OCC = 1</span></span>
@@ -282,8 +279,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TIME <span class="sc">!=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="computing-the-total-amount-of-drug-for-each-individual-by-adding-all-the-dv-values" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="computing-the-total-amount-of-drug-for-each-individual-by-adding-all-the-dv-values"><span class="header-section-number">3.3</span> Computing the total amount of drug for each individual by adding all the DV values</h2>
+<section id="computing-the-total-amount-of-drug-for-each-individual-by-adding-all-the-dv-values" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="computing-the-total-amount-of-drug-for-each-individual-by-adding-all-the-dv-values"><span class="header-section-number">2.3</span> Computing the total amount of drug for each individual by adding all the DV values</h2>
 <p>Here, we will compute the total amount of drug for each individual by adding all the DV values.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>summarized_data <span class="ot">&lt;-</span> Mavoglurant_data_filtered <span class="sc">%&gt;%</span></span>
@@ -320,8 +317,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="creating-the-final-dataset" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="creating-the-final-dataset"><span class="header-section-number">3.4</span> Creating the final dataset</h2>
+<section id="creating-the-final-dataset" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="creating-the-final-dataset"><span class="header-section-number">2.4</span> Creating the final dataset</h2>
 <p>Writing a code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>final_data_cleaned <span class="ot">&lt;-</span> final_data <span class="sc">%&gt;%</span> <span class="fu">mutate</span> (</span>
@@ -335,11 +332,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="exploratory-data-analysis" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Exploratory Data Analysis</h1>
+<section id="exploratory-data-analysis" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Exploratory Data Analysis</h1>
 <p>Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables.</p>
-<section id="making-some-useful-summary-tables" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="making-some-useful-summary-tables"><span class="header-section-number">4.1</span> Making some useful summary tables</h2>
+<section id="making-some-useful-summary-tables" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="making-some-useful-summary-tables"><span class="header-section-number">3.1</span> Making some useful summary tables</h2>
 <p>Here, we create a summary table of all the variables we have in our final dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating summary statistics for variables</span></span>
@@ -412,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><em>This table represennts the summary statistics of the 5 variables.</em></p>
 </section>
-<section id="plotting-the-relationship-with-outcome-of-interest-y" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="plotting-the-relationship-with-outcome-of-interest-y"><span class="header-section-number">4.2</span> Plotting the relationship with outcome of interest (Y)</h2>
+<section id="plotting-the-relationship-with-outcome-of-interest-y" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="plotting-the-relationship-with-outcome-of-interest-y"><span class="header-section-number">3.2</span> Plotting the relationship with outcome of interest (Y)</h2>
 <p>Here, we will show some scatterplots or boxplots, whichever is suitable, between the main outcome of interest (total drug, Y) and other predictors. We will use box-plot if the variable is categorical.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot: Y vs DOSE</span></span>
@@ -480,8 +477,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Sex 1 on average has higher total drug.</li>
 </ol>
 </section>
-<section id="plotting-the-distribution-of-variables" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="plotting-the-distribution-of-variables"><span class="header-section-number">4.3</span> Plotting the distribution of variables</h2>
+<section id="plotting-the-distribution-of-variables" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="plotting-the-distribution-of-variables"><span class="header-section-number">3.3</span> Plotting the distribution of variables</h2>
 <p>Now, we will plot the distributions of our variables to make sure they all make sense. We will set the bin according to the values and distribution patterns within the variable</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom theme for consistent styling</span></span>
@@ -549,8 +546,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The distribution of the variables make sense in my opinion. Age, Weight, Height are all fairly normally distributed. Total drug has a somewhat uniform distribution. Other categorical variables have an unbalanced distribution among them but it is practically possible if the research is focused on specific group of people.</p>
 </section>
-<section id="pair-wise-plots" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="pair-wise-plots"><span class="header-section-number">4.4</span> Pair-wise plots</h2>
+<section id="pair-wise-plots" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="pair-wise-plots"><span class="header-section-number">3.4</span> Pair-wise plots</h2>
 <p>Here, we will plot different variables against each other to see any possible relation or pattern between the variables.</p>
 <p><em>Note: Please ignore the plots of a variable against itself as it does not make any sense.</em></p>
 <div class="cell">
@@ -577,8 +574,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and WT also show some moderate correlation.</p>
 </section>
-<section id="correlation-among-variables" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="correlation-among-variables"><span class="header-section-number">4.5</span> Correlation among variables</h2>
+<section id="correlation-among-variables" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="correlation-among-variables"><span class="header-section-number">3.5</span> Correlation among variables</h2>
 <p>Here, we will create a cross-table matrix that shows the correlation among our variable of interests.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a correlation plot</span></span>
@@ -604,11 +601,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>It is visible that HT and WT show the maximum correlation with a correlation coefficient of 0.6. Age and HT also show sloghtly weaker correlation. Dose has no correlation with WT and HT.</p>
 </section>
 </section>
-<section id="fitting-a-model-for-y-with-only-dose-and-all-predictors" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Fitting a model for Y with only DOSE, and ALL predictors</h1>
+<section id="fitting-a-model-for-y-with-only-dose-and-all-predictors" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Fitting a model for Y with only DOSE, and ALL predictors</h1>
 <p>We will now fit a linear model to the continuous outcome (Y) using the main predictor of interest to be DOSE in one case and using all predictors in another case.</p>
-<section id="fitting-a-linear-model-using-only-dose-as-the-predictor" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="fitting-a-linear-model-using-only-dose-as-the-predictor"><span class="header-section-number">5.1</span> Fitting a linear model using only DOSE as the predictor</h2>
+<section id="fitting-a-linear-model-using-only-dose-as-the-predictor" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="fitting-a-linear-model-using-only-dose-as-the-predictor"><span class="header-section-number">4.1</span> Fitting a linear model using only DOSE as the predictor</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting a linear model using only DOSE as the predictor</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>model_dose <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE, <span class="at">data =</span> final_data_cleaned)</span>
@@ -637,8 +634,8 @@ F-statistic: 125.6 on 1 and 118 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>We can observe that dose has an insignificant effect on Y.</p>
 </section>
-<section id="fitting-a-linear-model-using-all-predictor" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="fitting-a-linear-model-using-all-predictor"><span class="header-section-number">5.2</span> Fitting a linear model using all predictor</h2>
+<section id="fitting-a-linear-model-using-all-predictor" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="fitting-a-linear-model-using-all-predictor"><span class="header-section-number">4.2</span> Fitting a linear model using all predictor</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a linear model using all predictors</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>model_all <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> RACE <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> final_data_cleaned)</span>
@@ -674,8 +671,8 @@ F-statistic: 22.57 on 8 and 111 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>We can observe that SEX2 and Wt has a significant effect on Y. But majority o the predictors are insignificant in the model. This has lead to an insufficient information to predict the dependent vriable and only around 10% variation in the dependent variable is explained by the model with all predictors. With only DOSE the performance is even poorer.</p>
 </section>
-<section id="computing-rmse-and-r-squared-for-both-models" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="computing-rmse-and-r-squared-for-both-models"><span class="header-section-number">5.3</span> computing RMSE and R-squared for both models</h2>
+<section id="computing-rmse-and-r-squared-for-both-models" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="computing-rmse-and-r-squared-for-both-models"><span class="header-section-number">4.3</span> computing RMSE and R-squared for both models</h2>
 <p>Here, we will compute the RMSE and R-squared for the both the models discussed above.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creating function to compute RMSE and R-squared</span></span>
@@ -738,11 +735,11 @@ F-statistic: 22.57 on 8 and 111 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><em>This tables shows the model performance with Y as dependent variable. “All predictor” model has a lower RMSE and explains the variation in dependent variable better that the “Dose only” model.</em></p>
 </section>
 </section>
-<section id="fitting-a-logistic-model-for-sex-with-only-dose-and-all-predictors" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Fitting a Logistic model for SEX with only DOSE, and ALL predictors</h1>
+<section id="fitting-a-logistic-model-for-sex-with-only-dose-and-all-predictors" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Fitting a Logistic model for SEX with only DOSE, and ALL predictors</h1>
 <p>We will now fit a linear model to the binary outcome (SEX) using the main predictor of interest to be DOSE in one case and using all predictors in another.</p>
-<section id="fiting-a-logistic-model-using-only-dose-as-the-predictor" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="fiting-a-logistic-model-using-only-dose-as-the-predictor"><span class="header-section-number">6.1</span> Fiting a logistic model using only DOSE as the predictor</h2>
+<section id="fiting-a-logistic-model-using-only-dose-as-the-predictor" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="fiting-a-logistic-model-using-only-dose-as-the-predictor"><span class="header-section-number">5.1</span> Fiting a logistic model using only DOSE as the predictor</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensuring SEX is a binary factor</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>final_data_cleaned <span class="ot">&lt;-</span> final_data_cleaned <span class="sc">%&gt;%</span></span>
@@ -772,8 +769,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 <p>We can observe that DOSE does not significantly affect SEX.</p>
 </section>
-<section id="fitting-a-logistic-model-using-all-predictors" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="fitting-a-logistic-model-using-all-predictors"><span class="header-section-number">6.2</span> Fitting a logistic model using all predictors</h2>
+<section id="fitting-a-logistic-model-using-all-predictors" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="fitting-a-logistic-model-using-all-predictors"><span class="header-section-number">5.2</span> Fitting a logistic model using all predictors</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a logistic model using all predictors</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>logistic_all <span class="ot">&lt;-</span> <span class="fu">glm</span>(SEX <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> RACE <span class="sc">+</span> WT <span class="sc">+</span> HT <span class="sc">+</span> Y, <span class="at">data =</span> final_data_cleaned, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
@@ -811,8 +808,8 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 <p>We can observe that HT significantly affect SEX. We will need to check the Accuracy and AUC values to tell about the performance of the model.</p>
 </section>
-<section id="computing-accuracy-and-roc-auc-for-both-the-models" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="computing-accuracy-and-roc-auc-for-both-the-models"><span class="header-section-number">6.3</span> Computing accuracy and ROC-AUC for both the models</h2>
+<section id="computing-accuracy-and-roc-auc-for-both-the-models" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="computing-accuracy-and-roc-auc-for-both-the-models"><span class="header-section-number">5.3</span> Computing accuracy and ROC-AUC for both the models</h2>
 <p>Here, we will compute accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to compute accuracy and ROC-AUC</span></span>
@@ -886,8 +883,8 @@ Setting direction: controls &lt; cases</code></pre>
 <p>The table above shows the accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only slightly better than a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.The accuracy for “all predictor” model is also better.</p>
 </section>
 </section>
-<section id="module-10-model-improvement" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Module 10 (Model Improvement)</h1>
+<section id="module-10-model-improvement" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Module 10 (Model Improvement)</h1>
 <p>First, we will remove the variable RACE from our dataset, and store our seeding value <code>1234</code> as <code>rngseed</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">subset</span>(final_data_cleaned, <span class="at">select =</span> <span class="sc">-</span>RACE) <span class="co">#removing race</span></span>
@@ -956,8 +953,8 @@ Setting direction: controls &lt; cases</code></pre>
 </div>
 </div>
 <p>Comparing all three RMSE values: RMSE ( all pred) &gt; RMSE (DOSE) &gt; RMSE (NULL) Based on the RMSE values, we can conclude that Model with “all predictors” is the one that is best fitting.</p>
-<section id="setting-random-seed-1234" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="setting-random-seed-1234"><span class="header-section-number">7.1</span> Setting random seed (1234)</h2>
+<section id="setting-random-seed-1234" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="setting-random-seed-1234"><span class="header-section-number">6.1</span> Setting random seed (1234)</h2>
 <p>In this section, we will use CV technique to split the <code>train-data</code> into 90%-10% analysis dataset and assessment dataset, and compare the RMSE values.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(rngseed) <span class="co"># setting seed based on rngseed</span></span>
@@ -1065,8 +1062,8 @@ Setting direction: controls &lt; cases</code></pre>
 </div>
 <p>The standard error for both the Model are fairly acceptable, and the RMSE across the 10 folds can be considered fairly consistent.</p>
 </section>
-<section id="changing-the-random-seed-to-1212" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="changing-the-random-seed-to-1212"><span class="header-section-number">7.2</span> Changing the random seed to: 1212</h2>
+<section id="changing-the-random-seed-to-1212" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="changing-the-random-seed-to-1212"><span class="header-section-number">6.2</span> Changing the random seed to: 1212</h2>
 <p>Here, we will change the seeding value and do all the analysis again.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1212</span>) <span class="co"># setting seed based on rngseed</span></span>
@@ -1090,43 +1087,43 @@ Setting direction: controls &lt; cases</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize vectors to store RMSE results</span></span>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing vectors to store RMSE results</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>rmse_m1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>rmse_m2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>analyze_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)  <span class="co"># Corrected spelling</span></span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>assessment_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)  <span class="co"># Corrected spelling</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>analyze_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)  </span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>assessment_size <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10</span>)  </span>
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each fold</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Looping each fold</span></span>
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split data into analysis and assessment sets</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># splitting data into analysis and assessment sets</span></span>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="ot">&lt;-</span> <span class="fu">analysis</span>(folds<span class="sc">$</span>splits[[i]])  <span class="co"># 90% analysis data</span></span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  assessment_data <span class="ot">&lt;-</span> <span class="fu">assessment</span>(folds<span class="sc">$</span>splits[[i]])  <span class="co"># 10% assessment data</span></span>
 <span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Store sample sizes</span></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># storing sample sizes</span></span>
 <span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>  analyze_size[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(analysis_data)  <span class="co"># Corrected variable name</span></span>
 <span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>  assessment_size[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(assessment_data)  <span class="co"># Corrected variable name</span></span>
 <span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit Model 1 (m1): Y ~ DOSE</span></span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fitting Model 1 (m1): Y ~ DOSE</span></span>
 <span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE, <span class="at">data =</span> analysis_data)</span>
 <span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>  predictions_m1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="at">newdata =</span> assessment_data)</span>
 <span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>  rmse_m1[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((assessment_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m1)<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT</span></span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fitting Model 2 (m2): Y ~ DOSE + AGE + SEX + WT + HT</span></span>
 <span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> analysis_data)</span>
 <span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>  predictions_m2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> assessment_data)  <span class="co"># Corrected spelling</span></span>
 <span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>  rmse_m2[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((assessment_data<span class="sc">$</span>Y <span class="sc">-</span> predictions_m2)<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine results into a data frame</span></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a><span class="co"># combining results into a data frame</span></span>
 <span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">Fold =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
-<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Analyze_Size =</span> analyze_size,  <span class="co"># Corrected variable name</span></span>
-<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">Assessment_Size =</span> assessment_size,  <span class="co"># Corrected variable name</span></span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Analyze_Size =</span> analyze_size,  </span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">Assessment_Size =</span> assessment_size,  </span>
 <span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE_m1 =</span> rmse_m1,</span>
 <span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE_m2 =</span> rmse_m2</span>
 <span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a><span class="co"># printing results</span></span>
 <span id="cb58-38"><a href="#cb58-38" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Fold Analyze_Size Assessment_Size  RMSE_m1  RMSE_m2
@@ -1141,7 +1138,7 @@ Setting direction: controls &lt; cases</code></pre>
 9     9           81               9 601.9640 562.4362
 10   10           81               9 559.3245 536.5775</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average RMSE for each model</span></span>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute average RMSE for each model</span></span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>avg_rmse_m1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmse_m1)</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>avg_rmse_m2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(rmse_m2)</span>
 <span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1170,7 +1167,10 @@ Setting direction: controls &lt; cases</code></pre>
 </div>
 </div>
 <p>The Standard Error decreased in both the cases when we use another random seed.</p>
-<p>The following code is where ANNALISE CRAMER’s contribution begins:</p>
+</section>
+</section>
+<section id="the-following-code-is-where-annalise-cramers-contribution-begins" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> The following code is where ANNALISE CRAMER’s contribution begins:</h1>
 <p>First, we will combine the non-cross validated models together into a dataframe.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create data frame with obs and pred values</span></span>
@@ -1278,118 +1278,25 @@ row names were found from a short variable and have been discarded</code></pre>
 <span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a><span class="co">#obtain CIs at 95% </span></span>
 <span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> boot <span class="sc">|&gt;</span> <span class="fu">apply</span>(<span class="dv">2</span>, quantile,  <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>)) <span class="sc">|&gt;</span>  <span class="fu">t</span>()</span>
-<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>preds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          2.5%      50%    97.5%
- [1,] 3083.086 3335.818 3586.619
- [2,] 1645.772 1945.359 2232.636
- [3,] 2556.181 2764.634 2974.479
- [4,] 1722.745 2085.856 2435.738
- [5,] 2645.607 2933.091 3197.893
- [6,] 1001.184 1298.528 1547.160
- [7,] 2120.113 2427.685 2754.229
- [8,] 1582.127 1938.921 2382.916
- [9,] 1211.196 1546.862 1967.511
-[10,] 2419.820 2554.059 2744.214
-[11,] 1220.525 1565.327 2003.809
-[12,] 1680.140 1906.337 2267.653
-[13,] 1963.337 2433.874 2847.347
-[14,] 2805.593 3276.160 3690.174
-[15,] 1712.263 2001.055 2275.725
-[16,] 1982.787 2253.406 2514.165
-[17,] 3127.308 3420.669 3812.924
-[18,] 2563.626 2939.237 3316.073
-[19,] 2044.218 2409.333 2939.849
-[20,] 3014.682 3272.769 3560.038
-[21,] 3624.556 3977.786 4294.207
-[22,] 2965.955 3230.275 3549.034
-[23,]  933.337 1269.008 1660.570
-[24,] 2293.417 2804.293 3260.645
-[25,] 2950.853 3195.367 3438.080
-[26,] 2743.969 3101.260 3385.651
-[27,] 2034.561 2496.206 2902.886
-[28,] 1308.932 1506.335 1701.775
-[29,] 1535.688 1798.228 2102.847
-[30,] 1586.228 2002.149 2379.341
-[31,] 2537.498 2823.863 3059.133
-[32,] 3347.101 3561.809 3900.550
-[33,] 1773.575 2024.578 2222.251
-[34,] 1059.686 1321.917 1582.583
-[35,] 1820.529 2108.049 2432.029
-[36,] 1513.723 1712.633 2000.361
-[37,] 2838.660 3215.788 3509.323
-[38,] 3218.373 3717.095 4134.972
-[39,] 1911.348 2176.087 2459.807
-[40,] 1363.121 1760.759 2162.315
-[41,] 1782.317 1970.964 2150.304
-[42,] 2003.307 2220.161 2446.982
-[43,] 1548.409 1857.165 2191.653
-[44,] 3675.085 3919.814 4270.190
-[45,] 3072.129 3341.018 3606.820
-[46,] 3021.513 3459.574 3833.266
-[47,] 1793.185 2041.159 2297.177
-[48,] 1956.867 2204.819 2471.235
-[49,] 3224.150 3470.434 3798.170
-[50,] 3192.962 3473.038 3810.793
-[51,] 2216.630 2425.340 2666.710
-[52,] 2595.574 2895.214 3202.939
-[53,] 2004.030 2172.967 2382.039
-[54,] 3322.559 3550.942 3897.471
-[55,] 2036.120 2278.101 2551.216
-[56,] 1521.596 1699.230 1871.231
-[57,] 2558.230 2872.049 3141.289
-[58,] 1639.396 2017.845 2496.949
-[59,] 2988.066 3309.233 3597.235
-[60,] 1751.329 1975.238 2193.251
-[61,] 2896.677 3109.538 3369.313
-[62,] 1610.451 1907.352 2412.278
-[63,] 1108.359 1372.599 1648.699
-[64,] 3200.990 3372.227 3627.584
-[65,] 1423.137 1706.032 2027.035
-[66,] 2986.645 3276.261 3582.535
-[67,] 2943.836 3368.875 3827.155
-[68,] 1236.836 1467.442 1735.573
-[69,] 2226.053 2502.088 2830.382
-[70,] 1971.899 2167.275 2373.027
-[71,] 2338.638 2849.919 3353.132
-[72,] 2644.682 2902.600 3178.351
-[73,] 2034.379 2220.764 2412.259
-[74,] 2234.723 2437.686 2670.624
-[75,] 1531.289 1729.489 1923.916
-[76,] 1464.843 1703.745 1929.716
-[77,] 2832.774 3070.627 3311.516
-[78,] 2859.156 3156.651 3725.826
-[79,] 1077.987 1383.594 1732.936
-[80,] 2570.563 2865.992 3272.796
-[81,] 2086.378 2316.107 2514.098
-[82,] 2683.377 3061.010 3363.845
-[83,] 1385.736 1629.635 1899.458
-[84,] 3105.819 3611.036 4016.156
-[85,] 2608.521 2957.983 3288.563
-[86,] 1534.063 1708.330 1868.706
-[87,] 1519.443 1787.883 2056.618
-[88,] 3019.338 3243.381 3471.321
-[89,] 3181.271 3487.279 3874.731
-[90,] 3104.158 3315.270 3550.471</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make it a dataframe to plot</span></span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>preds_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Observed =</span> train_data<span class="sc">$</span>Y,</span>
-<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Original_Pred =</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> train_data),  <span class="co"># Original model predictions</span></span>
-<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Lower_CI =</span> preds[, <span class="dv">1</span>],  <span class="co"># Lower confidence interval</span></span>
-<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Median_CI =</span> preds[, <span class="dv">2</span>],  <span class="co"># Median</span></span>
-<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Upper_CI =</span> preds[, <span class="dv">3</span>]   <span class="co"># Upper confidence interval</span></span>
-<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a><span class="co">#plot observed vs. predictions with CIs</span></span>
-<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(preds_df, <span class="fu">aes</span>(<span class="at">x =</span> Observed)) <span class="sc">+</span></span>
-<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> Original_Pred), <span class="at">color =</span> <span class="st">"skyblue3"</span>, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span> <span class="co">#original predictions</span></span>
-<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> Median_CI), <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span> <span class="co">#median predictions</span></span>
-<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Lower_CI, <span class="at">ymax =</span> Upper_CI), <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">alpha=</span><span class="fl">0.6</span>) <span class="sc">+</span> <span class="co">#CIs</span></span>
-<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span> <span class="co">#45-degree line</span></span>
-<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Observed"</span>, <span class="at">y =</span> <span class="st">"Predicted"</span>) <span class="sc">+</span></span>
-<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>)) <span class="co">#axes go from 0 to 5000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a><span class="co">#make it a dataframe to plot</span></span>
+<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>preds_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">Observed =</span> train_data<span class="sc">$</span>Y,</span>
+<span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">Original_Pred =</span> <span class="fu">predict</span>(m2, <span class="at">newdata =</span> train_data),  <span class="co"># Original model predictions</span></span>
+<span id="cb77-23"><a href="#cb77-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">Lower_CI =</span> preds[, <span class="dv">1</span>],  <span class="co"># Lower confidence interval</span></span>
+<span id="cb77-24"><a href="#cb77-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">Median_CI =</span> preds[, <span class="dv">2</span>],  <span class="co"># Median</span></span>
+<span id="cb77-25"><a href="#cb77-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">Upper_CI =</span> preds[, <span class="dv">3</span>]   <span class="co"># Upper confidence interval</span></span>
+<span id="cb77-26"><a href="#cb77-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb77-27"><a href="#cb77-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-28"><a href="#cb77-28" aria-hidden="true" tabindex="-1"></a><span class="co">#plot observed vs. predictions with CIs</span></span>
+<span id="cb77-29"><a href="#cb77-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(preds_df, <span class="fu">aes</span>(<span class="at">x =</span> Observed)) <span class="sc">+</span></span>
+<span id="cb77-30"><a href="#cb77-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> Original_Pred), <span class="at">color =</span> <span class="st">"skyblue3"</span>, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span> <span class="co">#original predictions</span></span>
+<span id="cb77-31"><a href="#cb77-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> Median_CI), <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span> <span class="co">#median predictions</span></span>
+<span id="cb77-32"><a href="#cb77-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Lower_CI, <span class="at">ymax =</span> Upper_CI), <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">alpha=</span><span class="fl">0.6</span>) <span class="sc">+</span> <span class="co">#CIs</span></span>
+<span id="cb77-33"><a href="#cb77-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span> <span class="co">#45-degree line</span></span>
+<span id="cb77-34"><a href="#cb77-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Observed"</span>, <span class="at">y =</span> <span class="st">"Predicted"</span>) <span class="sc">+</span></span>
+<span id="cb77-35"><a href="#cb77-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb77-36"><a href="#cb77-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>)) <span class="co">#axes go from 0 to 5000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1398,9 +1305,63 @@ row names were found from a short variable and have been discarded</code></pre>
 </div>
 </div>
 </div>
-
-
 </section>
+<section id="this-section-is-agian-contributed-by-prasanga-paudel-the-author" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> This section is agian contributed by PRASANGA PAUDEL ( The Author)</h1>
+<p>Defining the model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>model_train <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Making predictions for the test data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>test_data<span class="sc">$</span>Predicted <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_train, <span class="at">newdata =</span> test_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now , we will plot the graph.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># adding predictions for the training data </span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>train_data<span class="sc">$</span>Predicted <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_train, <span class="at">newdata =</span> train_data)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="co"># creating the plot</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  training data</span></span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> train_data, <span class="fu">aes</span>(<span class="at">x =</span> Y, <span class="at">y =</span> Predicted), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span>  <span class="co"># Training data</span></span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  test data</span></span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> test_data, <span class="fu">aes</span>(<span class="at">x =</span> Y, <span class="at">y =</span> Predicted), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">shape =</span> <span class="dv">17</span>) <span class="sc">+</span>  <span class="co"># Test data</span></span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  45-degree line</span></span>
+<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span>  <span class="co"># 45-degree line</span></span>
+<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Labels and title</span></span>
+<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Observed Values"</span>,</span>
+<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted Values"</span>,</span>
+<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Predicted vs Observed Values for Training and Test Data"</span>,</span>
+<span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Blue: Training Data, Red: Test Data"</span></span>
+<span id="cb80-18"><a href="#cb80-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-19"><a href="#cb80-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set axis limits</span></span>
+<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="fu">c</span>(train_data<span class="sc">$</span>Y, test_data<span class="sc">$</span>Y)))) <span class="sc">+</span>  <span class="co"># Set x-axis limits</span></span>
+<span id="cb80-21"><a href="#cb80-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="fu">c</span>(train_data<span class="sc">$</span>Predicted, test_data<span class="sc">$</span>Predicted)))) <span class="sc">+</span>  <span class="co"># Set y-axis limits</span></span>
+<span id="cb80-22"><a href="#cb80-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Theme</span></span>
+<span id="cb80-23"><a href="#cb80-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb80-24"><a href="#cb80-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb80-25"><a href="#cb80-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb80-26"><a href="#cb80-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb80-27"><a href="#cb80-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb80-28"><a href="#cb80-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb80-29"><a href="#cb80-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fitting-exercise_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can observe that the test data is more or less close to the 45-degree line and can be assumed to follow the same distribution as the training data. Therefore our model performs well in cace of testing data as well.</p>
+<p>In summary,</p>
+<p>All our other models have shown to be better than a NULL model.</p>
+<p>Although the model with only DOSE gives a better result than the NULL model, the prediction is rather limited to only few values. As there is very less variation in the predictor itself. We can not encorporate all the variation that is present in real life scenario.</p>
+<p>Our model with all predictor has show the best result among the three models. We verified that the model performs well in an unseen data as well. Furthermore, the addition of different factors into the model has enabled the model to adjust for a lot of variation and the prediction has significantly improved. The difference between the original and predicted values is lowest in case of this model.</p>
+
+
 </section>
 
 </main> <!-- /main -->
