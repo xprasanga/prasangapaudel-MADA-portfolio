@@ -126,6 +126,7 @@ final_data_cleaned <- final_data %>% mutate (
 )
 
 dim(final_data_cleaned)
+saveRDS(final_data_cleaned, here("ml-models-exercise", "data", "data.rds"))
 ```
 
 
@@ -288,6 +289,9 @@ combined_plots
 ```
 
 The distribution of the variables make sense in my opinion. Age, Weight, Height are all fairly normally distributed. Total drug has a somewhat uniform distribution. Other categorical variables have an unbalanced distribution among them but it is practically possible if the research is focused on specific group of people.
+
+
+
 
 ## Pair-wise plots
 

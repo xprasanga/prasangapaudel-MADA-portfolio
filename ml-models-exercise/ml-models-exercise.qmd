@@ -1,0 +1,506 @@
+---
+title: "ml-models-exercise"
+author: "prasanga paudel"
+editor: visual
+---
+
+At first, we will load the libraries.
+
+```{r}
+library(tidymodels)
+library(ggplot2)
+library(GGally)
+library(dplyr)
+library(here)
+library(randomForest)
+```
+
+Then we will set a random seed of 1234 as rngseed.
+
+```{r}
+rngseed <- 1234
+```
+
+
+Next, we will load the data into R.
+
+```{r}
+data <- readRDS(here("ml-models-exercise", "data", "data.rds"))
+```
+
+
+Now, we will process the data as required.
+
+# More processing
+
+We will recode RACE and combine the values 7 and 88 into a single value of 3.
+
+```{r}
+data$RACE <- ifelse(data$RACE %in% c(7, 88), 3, data$RACE)
+```
+
+# Pairwise correlation
+
+Here, we will create the correlation plot for continuous variables "HT", "WT", "AGE", and "Y"
+
+```{r}
+ggpairs(data, columns =c ("HT", "WT", "AGE", "Y"))
+```
+
+The maximum correlation that we can observe is 0.6, between height and weight. So collinearity is not much problem for us.
+
+# Feature engineering
+
+We will assume that weight is in (kg) and height is in (meters). Although the weight is mostly around 70- 90 kg, we will assume this to be normal.
+
+```{r}
+data <- data %>% mutate(BMI = WT/(HT^2))
+```
+
+Unit of BMI: kg per meter squared
+
+# Model building
+
+
+We will now build three models:
+
+1. Linear regression
+2. LASSO regression
+3. Random Forest
+
+
+## Linear Regression 
+
+
+Here, we will focus on Linear Regression.
+
+
+```{r}
+# First, we will define the recipe
+rcp <- recipe(Y ~ ., data = data)  
+
+# defining model
+lm_model <- linear_reg() %>% 
+  set_engine("lm") %>%
+  set_mode("regression")
+
+#workflow
+lm_wf <- workflow() %>% 
+  add_recipe(rcp) %>% 
+  add_model(lm_model)
+
+#model fitting
+lm_fit <- fit(lm_wf, data)
+
+# generating predictions
+pred_data <- predict(lm_fit, new_data = data) %>%  # Store predictions
+  bind_cols(data %>% select(Y)) %>%                # binding true values
+  rename(.pred = .pred, truth = Y)                      
+
+#calculate metrics
+lm_metrics <- metrics(pred_data, truth = truth, estimate = .pred)
+print(lm_metrics)
+
+```
+
+The RMSE value for Linear Regression is 581.42
+
+
+Now, lets observe how the Linear regression line fits the data.
+```{r}
+# plotting 
+ggplot(pred_data, aes(x = truth, y = .pred)) +
+  geom_point(color = "darkblue", alpha = 0.7) +
+  geom_abline(slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Observed vs Predicted Values") +
+  theme_bw()
+```
+
+The Linear model fits the data well but we can still see that the datapoints are far from the 45 degree line in general.
+
+## LASSO Regression
+
+Now, we will focus on LASSO Regression.
+
+
+```{r}
+#updating recipe as required
+rcp <- recipe(Y ~ ., data = data) %>%
+  step_mutate(SEX = as.numeric(as.character(SEX)))
+
+#defining model
+ls_model <- linear_reg(penalty = 0.1) %>% 
+  set_engine("glmnet") %>% 
+  set_mode("regression")
+
+
+# using existing workflow
+ls_wf <- workflow() %>% 
+  add_model(ls_model) %>% 
+  add_recipe(rcp)
+
+#fitting model
+model2 <- ls_wf %>% fit(data = data)
+
+# generating predictions
+pred_data <- predict(model2, new_data = data) %>%  
+  bind_cols(data %>% select(Y)) %>%                
+  rename(.pred = .pred, truth = Y)
+
+#calculate metrics
+lm_metrics <- metrics(pred_data, truth = truth, estimate = .pred)
+print(lm_metrics)
+```
+
+The RMSE value for the LASSO Model is 581.47 This is similar to the results observed for the Linear Model.
+
+Now, we will observe how the original and predicted values are distributed for LASSO MODEL.
+
+```{r}
+# Plot Observed vs Predicted Values
+ggplot(pred_data, aes(x = truth, y = .pred)) +
+  geom_point(color = "orange", alpha = 0.7) +
+  geom_abline(slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Observed vs Predicted Values (GLMNET Model)",
+       x = "Observed Values (Truth)",
+       y = "Predicted Values") +
+  theme_bw()
+```
+The datapoints are still far away from the 45-degree line as observed in Linear Regression Model.
+
+
+##  Random Forest
+
+Now, we will test the random forest model.
+
+```{r}
+# defining the model
+rf_model <- rand_forest() %>% 
+  set_engine("ranger", seed = 1234) %>% 
+  set_mode("regression")
+
+# defining workflow
+rf_wf <- workflow() %>% 
+  add_model(rf_model) %>% 
+  add_recipe(rcp)
+
+#defining model
+model3 <- rf_wf %>% fit(data = data)
+
+# getting RMSE
+results3 <- predict(model3, data) %>%
+  bind_cols(data) %>%
+  metrics(truth = Y, estimate = .pred) %>%
+  print()
+
+# getting the predicted values
+pred_model3 <- predict(model3, data) %>%
+  bind_cols(data["Y"])
+colnames(pred_model3) <- c("pred", "Y")
+
+```
+
+
+We can observe that the RMSE value has dropped to 362, which is a great improvement from the previous RMSE=581 in both the other models. We can say that the random forest model has performed better than the LASSO Model and the Linear Regression model.
+
+Now, lets observe the distribution of predicted values and original values for Random Forest model.
+
+
+```{r}
+# Random Forest Plot 
+ggplot(pred_model3, aes(x = Y, y = pred)) +
+  geom_point(color = "darkgreen", alpha = 0.7) +
+  geom_abline(slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Random Forest: Observed vs Predicted Values",
+       x = "Observed Value", 
+       y = "Predicted Value") +
+  theme_bw() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  )
+```
+
+Here, it is clearly visible that the space between the datapoints and the 45-degree line has greatly reduced and the datapoints now lie very close to the line which implies that our prediction are more or less close to the original value. Hence, ramndom forest is a bettr model.
+
+# Tuning without CV
+
+Here, we will fit the model to the same data without cross-validation.
+
+
+## Tuning Linear Regression without CV
+
+
+```{r}
+#  converting SEX to numeric as required
+data_numeric <- data %>% 
+  mutate(SEX = as.numeric(as.character(SEX)))
+
+#creating new recipe for the numeric data
+rcp_numeric <- recipe(Y ~ ., data = data_numeric)
+
+#defining parameter grid 
+ls_grid <- tibble(penalty = 10^seq(-5, 2, length.out = 50))
+
+ 
+ls_tune <- linear_reg(penalty = tune()) %>% 
+  set_engine("glmnet") %>%  
+  set_mode("regression")
+
+# creating workflow
+ls_wf <- workflow() %>%
+  add_model(ls_tune) %>%
+  add_recipe(rcp_numeric)
+
+# tuning
+ls_tune_result <- ls_wf %>%
+  tune_grid(
+    resamples = apparent(data_numeric),
+    grid = ls_grid,
+    metrics = metric_set(rmse)  # 
+  )
+
+#extracting the metrics
+ls_tune_metrics <- as.data.frame(ls_tune_result$.metrics)
+
+# plotting using ggplot
+ggplot(ls_tune_metrics, aes(x = penalty, y = .estimate)) +
+  geom_line(linewidth = 1, color = "blue") +
+  scale_x_log10() +
+  labs(x = "Log(penalty)", y = "RMSE") +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(size = 15, color = "black", face = "bold"),
+    axis.title.y = element_text(size = 15, color = "black", face = "bold"),
+    axis.text.x = element_text(color = "black", size = 20, vjust = 0),
+    axis.text.y = element_text(color = "black", size = 20, hjust = 1),
+    legend.position = "top",
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 14, vjust = 0)
+  )
+```
+
+We can observe that, as the penalty value is increased, the RMSE value shoots upward in a sharp way. This might be because as more as the predictor variable present in the model are penalized and perhaps maybe dropped, the model loses the power of explaining the dependent variables and the errors increase.
+
+
+## Tuning Random Forest without CV
+
+Now, we will tune RANDOM FOREST model without CV.
+
+```{r}
+# setting rngseed again to avoid errors
+rngseed <- 1234
+set.seed(rngseed)
+
+# preparing data with SEX as factor as required for ranger
+data_rf <- data %>% 
+  mutate(SEX = factor(SEX)) %>%  # converting SEX to factor
+  mutate(across(c(DOSE, HT, WT, AGE, BMI), as.numeric))  #  other vars are numeric
+
+# creating simple recipe again :( 
+rcp_rf <- recipe(Y ~ ., data = data_rf)
+
+#defining parameter grid
+rf_grid <- grid_regular(
+  mtry(range = c(1, 7)),
+  min_n(range = c(1, 21)),
+  levels = 7
+)
+
+#Random Forest model setup
+rf_model <- rand_forest(
+  mtry = tune(),
+  min_n = tune(),
+  trees = 300
+) %>% 
+  set_engine("ranger", 
+             seed = rngseed,
+             importance = "none") %>%  # Remove if you want importance
+  set_mode("regression")
+
+#workflow
+rf_wf <- workflow() %>% 
+  add_model(rf_model) %>% 
+  add_recipe(rcp_rf)
+
+#tuning with apparent resampling
+rf_tune_result <- rf_wf %>% 
+  tune_grid(
+    resamples = apparent(data_rf),
+    grid = rf_grid,
+    metrics = metric_set(rmse),
+    control = control_grid(verbose = FALSE)  # dont shows progress
+  )
+
+#extracting metrics
+rf_tune_result_df <- rf_tune_result %>% 
+  select(.metrics) %>% 
+  unnest(.metrics) %>% 
+  filter(.metric == "rmse")
+
+#creating heatmap plot
+ggplot(rf_tune_result_df, aes(x = mtry, y = min_n, fill = .estimate)) +
+  geom_tile() +
+  scale_fill_viridis_c(name = "RMSE") +
+  labs(
+    x = "mtry (Number of predictors sampled)",
+    y = "min_n (Minimum node size)",
+    title = "Random Forest Tuning Results without CV"
+  ) +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(size = 15, color = "black", face = "bold"),
+    axis.title.y = element_text(size = 15, color = "black", face = "bold"),
+    axis.text.x = element_text(color = "black", size = 15, vjust = 0),
+    axis.text.y = element_text(color = "black", size = 15, hjust = 1),
+    legend.position = "top",
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 15, vjust = 0),
+    plot.title = element_text(size = 25, face = "bold", hjust = 0.5)
+  )
+```
+
+Here, we can observe that "low- number of predictor sampled" results in an increase of RMSE value across all minimum node sizes. Also, if we increase the minimum node sizes within a particular number of predictors sampled, the RMSE increases. This implies that more number of predictors and smaller values for minimum nodes give better performing results.
+
+# Tuning with cross validation
+
+Now, we will perform tuning using cross-validation approach.
+
+
+## Random Forest model with CV
+
+Here, we will look at the random forest model tuning with cross-validation.
+
+
+```{r}
+
+#setting random seed which is basically "rngseed"
+set.seed(1234)
+
+# converting SEX to factor
+data_rf <- data %>% 
+  mutate(SEX = factor(SEX))
+
+#creating recipe for RF 
+rcp_rf <- recipe(Y ~ ., data = data_rf)
+
+#parameter grid
+rf_grid <- grid_regular(
+  mtry(range = c(1, 7)),
+  min_n(range = c(1, 21)),
+  levels = 7
+)
+
+#Random Forest model setup
+rf_model <- rand_forest(
+  mtry = tune(),
+  min_n = tune(),
+  trees = 300
+) %>% 
+  set_engine("ranger", seed = 1234) %>% 
+  set_mode("regression")
+
+# workflow
+rf_wf <- workflow() %>% 
+  add_model(rf_model) %>% 
+  add_recipe(rcp_rf)
+
+# 5-fold CV
+data_cv <- vfold_cv(data_rf, v = 5)
+
+# tuning with CV
+rf_tune_result <- rf_wf %>% 
+  tune_grid(
+    resamples = data_cv,
+    grid = rf_grid,
+    metrics = metric_set(rmse)
+  )
+
+# autoplot for RF model
+autoplot(rf_tune_result) +
+  labs(
+    title = "Random Forest Tuning (5-Fold CV)",
+    x = "mtry",
+    y = "min_n",
+    fill = "RMSE"
+  ) +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(size = 15, color = "black", face = "bold"),
+    axis.title.y = element_text(size = 15, color = "black", face = "bold"),
+    axis.text.x = element_text(color = "black", size = 10, vjust = 0),
+    axis.text.y = element_text(color = "black", size = 10, hjust = 1),
+    legend.position = "top",
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 18, vjust = 0),
+    plot.title = element_text(size = 15, face = "bold", hjust = 0.5)
+  ) +
+  scale_fill_viridis_c()
+```
+
+We can observe that across all minimum node sizes the RMSE drops as we increse the number of predictors. The individual perfrmance however is varying across the combinations.
+
+
+## Tuning LASSO Regression using CV
+
+First, we will look at the LASSO Regression.
+
+```{r}
+#converting SEX to numeric
+data_numeric <- data %>% 
+  mutate(SEX = as.numeric(as.character(SEX)))
+
+#defining recipe
+rcp_numeric <- recipe(Y ~ ., data = data_numeric)
+
+#defining parameter grid
+ls_grid <- tibble(penalty = 10^seq(-5, 2, length.out = 50))
+
+# setting up LASSO model
+ls_tune <- linear_reg(penalty = tune(), mixture = 1) %>% 
+  set_engine("glmnet") %>% 
+  set_mode("regression")
+
+#workflow
+ls_wf <- workflow() %>%
+  add_model(ls_tune) %>%
+  add_recipe(rcp_numeric)
+
+#5-fold CV with 5 repeats
+data_cv <- vfold_cv(data_numeric, v = 5, repeats = 5)
+
+# tuning with CV
+ls_tune_result_cv <- ls_wf %>% 
+  tune_grid(
+    resamples = data_cv,
+    grid = ls_grid,
+    metrics = metric_set(rmse)
+  )
+
+autoplot(ls_tune_result_cv) +
+  scale_x_log10() +
+  labs(
+    title = "LASSO Tuning with 5-Fold CV",
+    x = "Penalty (log)",
+    y = "RMSE"
+  ) +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(size = 15, color = "black", face = "bold"),
+    axis.title.y = element_text(size = 15, color = "black", face = "bold"),
+    axis.text.x = element_text(color = "black", size = 10, vjust = 0),
+    axis.text.y = element_text(color = "black", size = 10, hjust = 1),
+    legend.position = "top",
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 18, vjust = 0),
+    plot.title = element_text(size = 15, face = "bold", hjust = 0.5)
+  )
+
+```
+
+We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the panelty is increased.
+
+
+
+
