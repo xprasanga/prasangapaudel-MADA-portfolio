@@ -1,7 +1,8 @@
 ---
-title: "ml-models-exercise"
-author: "prasanga paudel"
+title: "Machine Learning Exercise I"
+author: "Prasanga Paudel"
 editor: visual
+date: 2025-3-26
 ---
 
 At first, we will load the libraries.
@@ -58,6 +59,19 @@ data <- data %>% mutate(BMI = WT/(HT^2))
 ```
 
 Unit of BMI: kg per meter squared
+
+```{r}
+library(ggplot2)
+
+# Density plot with semi-transparent fill
+ggplot(data, aes(x = BMI)) +
+  geom_density(fill = "skyblue", alpha = 0.3) +  # Density curve
+  geom_rug(aes(x = BMI), color = "red") +  # Add "rug" marks for observations
+  labs(title = "Density Plot with Observation Marks (Rug Plot)") +
+  theme_bw()
+```
+The density plot of BMI shows that it is somewhat normally distributed as expected although somewhat skewed. Our new variable therefore seems practical.
+
 
 # Model building
 
@@ -499,7 +513,7 @@ autoplot(ls_tune_result_cv) +
 
 ```
 
-We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the panelty is increased.
+We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the penalty is increased.
 
 
 
