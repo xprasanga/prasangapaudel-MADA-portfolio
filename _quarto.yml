@@ -23,7 +23,7 @@ website:
           - text: "Model Fitting Exercise"
             file: fitting-exercise/fitting-exercise.qmd
           - text: "Machine Learning"
-            file: ml-models-exercise.qmd
+            file: ml-models-exercise/ml-models-exercise.qmd
     right:
       - icon: github
         href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio
