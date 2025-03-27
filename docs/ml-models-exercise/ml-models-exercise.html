@@ -9,7 +9,7 @@
 <meta name="author" content="Prasanga Paudel">
 <meta name="dcterms.date" content="2025-03-26">
 
-<title>Machine Learning Exercise I – Prasanga Paudel's Data Analysis Portfolio</title>
+<title>Machine Learning Exercise I – Prasanga Paudel’s Data Analysis Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::filter()  masks stats::filter()
 ✖ dplyr::lag()     masks stats::lag()
 ✖ recipes::step()  masks stats::step()
-• Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
+• Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -456,7 +456,7 @@ Attaching package: 'randomForest'</code></pre>
 </div>
 </div>
 </div>
-<p>The datapoints are still far away from the 45-degree line as observed in Linear Regression Model.</p>
+<p>The datapoints are still far away from the 45-degree line as observed in Linear Regression Model. This maybe because the linear regression model already consists of relevant predictors, or the penalty value is too small to shrink the coefficients to zero.</p>
 </section>
 <section id="random-forest" class="level2">
 <h2 class="anchored" data-anchor-id="random-forest">Random Forest</h2>
@@ -586,6 +586,7 @@ Attaching package: 'randomForest'</code></pre>
 </div>
 </div>
 <p>We can observe that, as the penalty value is increased, the RMSE value shoots upward in a sharp way. This might be because as more as the predictor variable present in the model are penalized and perhaps maybe dropped, the model loses the power of explaining the dependent variables and the errors increase.</p>
+<p>At the lowest penalty, the RMSE is the same as RMSE of the linear model. As penalty term is more closer to zero, LASSO becomes more similar to OLS which gives the gives the lowest possible RMSE on the training data.</p>
 </section>
 <section id="tuning-random-forest-without-cv" class="level2">
 <h2 class="anchored" data-anchor-id="tuning-random-forest-without-cv">Tuning Random Forest without CV</h2>
@@ -816,7 +817,8 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
 </div>
 </div>
 </div>
-<p>We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the penalty is increased.</p>
+<p>We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the penalty is increased. But, the lowest RMSE value achieved has now increased to over 615. This might be because we are using different data using CV compared to fitting the same data repeatedly in our earlier method</p>
+<p>As, LASSO has a lower RMSE, it should be considered as a better model</p>
 
 
 </section>

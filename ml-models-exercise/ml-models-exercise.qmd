@@ -22,13 +22,11 @@ Then we will set a random seed of 1234 as rngseed.
 rngseed <- 1234
 ```
 
-
 Next, we will load the data into R.
 
 ```{r}
 data <- readRDS(here("ml-models-exercise", "data", "data.rds"))
 ```
-
 
 Now, we will process the data as required.
 
@@ -70,24 +68,20 @@ ggplot(data, aes(x = BMI)) +
   labs(title = "Density Plot with Observation Marks (Rug Plot)") +
   theme_bw()
 ```
-The density plot of BMI shows that it is somewhat normally distributed as expected although somewhat skewed. Our new variable therefore seems practical.
 
+The density plot of BMI shows that it is somewhat normally distributed as expected although somewhat skewed. Our new variable therefore seems practical.
 
 # Model building
 
-
 We will now build three models:
 
-1. Linear regression
-2. LASSO regression
-3. Random Forest
+1.  Linear regression
+2.  LASSO regression
+3.  Random Forest
 
-
-## Linear Regression 
-
+## Linear Regression
 
 Here, we will focus on Linear Regression.
-
 
 ```{r}
 # First, we will define the recipe
@@ -119,8 +113,8 @@ print(lm_metrics)
 
 The RMSE value for Linear Regression is 581.42
 
-
 Now, lets observe how the Linear regression line fits the data.
+
 ```{r}
 # plotting 
 ggplot(pred_data, aes(x = truth, y = .pred)) +
@@ -135,7 +129,6 @@ The Linear model fits the data well but we can still see that the datapoints are
 ## LASSO Regression
 
 Now, we will focus on LASSO Regression.
-
 
 ```{r}
 #updating recipe as required
@@ -166,7 +159,7 @@ lm_metrics <- metrics(pred_data, truth = truth, estimate = .pred)
 print(lm_metrics)
 ```
 
-The RMSE value for the LASSO Model is 581.47 This is similar to the results observed for the Linear Model.
+The RMSE value for the LASSO Model is 581.47 This is similar to the results observed for the Linear Model. 
 
 Now, we will observe how the original and predicted values are distributed for LASSO MODEL.
 
@@ -180,10 +173,10 @@ ggplot(pred_data, aes(x = truth, y = .pred)) +
        y = "Predicted Values") +
   theme_bw()
 ```
-The datapoints are still far away from the 45-degree line as observed in Linear Regression Model.
 
+The datapoints are still far away from the 45-degree line as observed in Linear Regression Model. This maybe because the linear regression model already consists of relevant predictors, or the penalty value is too small to shrink the coefficients to zero.
 
-##  Random Forest
+## Random Forest
 
 Now, we will test the random forest model.
 
@@ -214,11 +207,9 @@ colnames(pred_model3) <- c("pred", "Y")
 
 ```
 
-
 We can observe that the RMSE value has dropped to 362, which is a great improvement from the previous RMSE=581 in both the other models. We can say that the random forest model has performed better than the LASSO Model and the Linear Regression model.
 
 Now, lets observe the distribution of predicted values and original values for Random Forest model.
-
 
 ```{r}
 # Random Forest Plot 
@@ -242,9 +233,7 @@ Here, it is clearly visible that the space between the datapoints and the 45-deg
 
 Here, we will fit the model to the same data without cross-validation.
 
-
 ## Tuning Linear Regression without CV
-
 
 ```{r}
 #  converting SEX to numeric as required
@@ -295,7 +284,9 @@ ggplot(ls_tune_metrics, aes(x = penalty, y = .estimate)) +
   )
 ```
 
-We can observe that, as the penalty value is increased, the RMSE value shoots upward in a sharp way. This might be because as more as the predictor variable present in the model are penalized and perhaps maybe dropped, the model loses the power of explaining the dependent variables and the errors increase.
+We can observe that, as the penalty value is increased, the RMSE value shoots upward in a sharp way. This might be because as more as the predictor variable present in the model are penalized and perhaps maybe dropped, the model loses the power of explaining the dependent variables and the errors increase. 
+
+At the lowest penalty, the RMSE is the same as RMSE of the linear model. As penalty term is more closer to zero, LASSO becomes more similar to OLS which gives the gives the lowest possible RMSE on the training data.
 
 
 ## Tuning Random Forest without CV
@@ -381,11 +372,9 @@ Here, we can observe that "low- number of predictor sampled" results in an incre
 
 Now, we will perform tuning using cross-validation approach.
 
-
 ## Random Forest model with CV
 
 Here, we will look at the random forest model tuning with cross-validation.
-
 
 ```{r}
 
@@ -455,7 +444,6 @@ autoplot(rf_tune_result) +
 
 We can observe that across all minimum node sizes the RMSE drops as we increse the number of predictors. The individual perfrmance however is varying across the combinations.
 
-
 ## Tuning LASSO Regression using CV
 
 First, we will look at the LASSO Regression.
@@ -513,8 +501,7 @@ autoplot(ls_tune_result_cv) +
 
 ```
 
-We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the penalty is increased.
+We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the penalty is increased. But, the lowest RMSE value achieved has now increased to over 615. This might be because we are using different data using CV compared to fitting the same data repeatedly in our earlier method
 
 
-
-
+As, LASSO has a lower RMSE, it should be considered as a better model
