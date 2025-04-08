@@ -1,0 +1,523 @@
+---
+title: "tidytuesday-exercise"
+format:
+  html:
+    toc: false
+    number-sections: true
+    highlight-style: github
+---
+
+# Loading the libraries
+
+```{r}
+library(here)
+library(dplyr)
+```
+
+
+# Importing dataset
+
+We will import the dataset directly from Github using readr.
+
+```{r}
+care_state <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-04-08/care_state.csv')
+```
+
+Now, we will look at the uppermost observations from tha dataset.
+
+```{r}
+head(care_state)
+```
+
+The variables are coded in the correct way. But we will modify them according to our needs if required.
+
+# Exploratory Data Analysis
+
+The dates look interesting, we might be able to use the duration from start to end as an information in our research. We will first look if there are multiple start dates and end dates or if all the dates are same.
+
+```{r}
+
+care_state %>%
+  count(start_date, name = "frequency") %>%
+  arrange(desc(frequency)) %>%  # Sort by most frequent
+  print(n = Inf)  # Show all rows
+
+```
+
+We can observe that there are only four start dates.
+
+```{r}
+# Count occurrences of each end_date
+care_state %>%
+  count(end_date, name = "frequency") %>%
+  arrange(desc(frequency)) %>%  # Sort by most frequent
+  print(n = Inf)  # Show all rows
+```
+
+There are only two end dates.
+
+So there is not much information in this variables for exploration.
+ 
+ 
+## Checking the most frequent condition in each state
+
+Now we will see which of the condition is most frequent in each of the state.
+
+```{r}
+library(tidyverse)
+library(usmap)
+
+# 1. Find most frequent condition per state
+top_conditions <- care_state %>%
+  count(state, condition) %>%
+  group_by(state) %>%
+  slice_max(n, n = 1) %>%
+  ungroup()
+
+# 2. Create basic map
+plot_usmap(data = top_conditions, values = "condition") +
+  scale_fill_brewer(palette = "Set2", 
+                   name = "Most Common Condition",
+                   na.value = "gray") +
+  labs(title = "Most Frequent Admission Condition by State") +
+  theme(legend.position = "right")
+```
+
+We can see that for every state Emergency is the most frequent condition.
+
+## Checking the frequencies of different measures.
+
+
+Now, we will observe the freqency of different values under the variable `measure_name`.
+
+```{r}
+library(tidyverse)
+
+#getting frequency counts for measure_name
+measure_counts <- care_state %>%
+  count(measure_name, sort = TRUE)  # sorting by most frequent
+
+#showing the full table
+print(measure_counts, n = Inf)  #n= all rows
+
+```
+
+We can observe that all the unique values have 56 observations, except the first value which has double observations.
+
+## Average time patients spent in the emergency department before being sent home
+
+Creating a dataset to plot "Average time patients spent in the emergency department before being sent home" across states.
+
+```{r}
+library(tidyverse)
+
+#creating filtered dataframe
+avgtime <- care_state %>%
+  filter(str_detect(measure_name, 
+                   regex("Average time patients spent in the emergency department before being sent home", 
+                        ignore_case = TRUE)))
+```
+
+
+Plotting the "Average time patients spent in the emergency department before being sent home" across states.
+
+```{r}
+library(tidyverse)
+library(usmap)
+
+#calculating average time by state
+state_avg_time <- avgtime %>% 
+  group_by(state) %>%
+  summarise(average_time_spent = mean(score, na.rm = TRUE)) %>%
+  ungroup()
+
+#creating the map visualization
+plot_usmap(data = state_avg_time, values = "average_time_spent", color = "white") +
+  scale_fill_viridis_c(
+    name = "Average Time (minutes)", 
+    option = "plasma",
+    direction = -1,
+    na.value = "grey90"
+  ) +
+  labs(
+    title = "Average ER Wait Time Before Discharge",
+    subtitle = "Time spent in emergency department before being sent home"
+  ) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+
+```
+
+We can observe that there is variation across states.
+
+
+## Influenza Vaccination Rates Among Healthcare Workers across states.
+
+```{r}
+library(tidyverse)
+library(usmap)
+
+#filtering vaccination data
+flu_vax <- care_state %>%
+  filter(str_detect(measure_name, 
+                   "Healthcare workers given influenza vaccination")) %>%
+  group_by(state) %>%
+  summarise(vaccination_rate = mean(score, na.rm = TRUE))
+
+#creating the map 
+plot_usmap(data = flu_vax, 
+           values = "vaccination_rate",
+           color = "white") +
+  scale_fill_distiller(
+    name = "Vaccination Rate (%)",
+    palette = "Spectral",
+    direction = -1,  # Red = low, Green = high
+    na.value = "grey90",
+    limits = c(0, 100)  # Force 0-100% scale
+  ) +
+  labs(title = "Influenza Vaccination Rates Among Healthcare Workers",
+       subtitle = "Higher percentages indicate better coverage") +
+  theme(legend.position = "right")
+```
+
+We an observe that there is variation across different states.
+
+#  Analysis 
+
+We observed that the start date and end dates do not vary much across the observations and are quite similar. There are four categories of start date and two categories of end date. We will create a variable "days" using the start date and the end date.
+
+```{r}
+care_state <- care_state %>%
+  mutate(days = as.numeric(end_date - start_date))
+```
+
+```{r}
+#preparing the modeling dataset
+data <- care_state %>%
+  select(score, days, state, condition, measure_name) %>%
+  mutate(
+    days = as.numeric(days),  # Ensure numeric
+    across(c(state, condition, measure_name), as.factor)  #converting categoricals to factors
+  ) %>%
+  drop_na()  #removing rows with missing values
+```
+
+
+Splitting the data into train/train.
+
+```{r}
+library(tidymodels)  # rsample for splitting
+
+#performing the 75/25 split
+set.seed(123)  # For reproducibility
+data_split <- initial_split(data, prop = 3/4)
+
+#creating the training and train sets
+train_data <- training(data_split)
+test_data <- testing(data_split)
+```
+
+We will now use "days", "state", "condition", "measure_name" to predict the "score". We will use "Regression", "Lasso" and "Random Forest" models in the next sections.
+
+## Regression
+
+```{r}
+library(tidymodels)
+
+#fitting linear regression
+lm_fit <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(score ~ days + state + condition + measure_name, 
+      data = train_data)
+
+#getting model summary
+tidy(lm_fit) %>% 
+  arrange(p.value)  # Show most significant predictors first
+
+#making predictions on train data
+train_results <- train_data %>% 
+  bind_cols(predict(lm_fit, new_data = train_data))
+
+#evaluating performance
+metrics <- train_results %>% 
+  metrics(truth = score, estimate = .pred)
+
+#showing performance metrics
+print(metrics)
+
+# Observed vs Predicted plot
+ggplot(train_results, aes(x = score, y = .pred)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, linetype = "dashed") +
+  labs(title = "Linear Regression Performance",
+       x = "Observed Scores", 
+       y = "Predicted Scores") +
+  theme_minimal()
+```
+
+
+
+```{r}
+library(tidymodels)
+library(glmnet)  # Lasso implementation
+
+#setting up Lasso model specification
+lasso_spec <- linear_reg(
+  penalty = 0.1,  # Regularization strength 
+  mixture = 1     # 1 = Lasso, 0 = Ridge
+) %>% 
+  set_engine("glmnet")
+
+#fitting Lasso model
+lasso_fit <- lasso_spec %>% 
+  fit(score ~ days + state + condition + measure_name, 
+      data = train_data)
+
+# coefficients (non-zero ones only)
+tidy(lasso_fit) %>% 
+  filter(estimate != 0) %>% 
+  arrange(desc(abs(estimate)))
+
+#making predictions
+train_results <- train_data %>% 
+  bind_cols(predict(lasso_fit, new_data = train_data))
+
+#evaluating performance
+lasso_metrics <- train_results %>% 
+  metrics(truth = score, estimate = .pred)
+
+#print result
+cat("Lasso Performance:\n")
+print(lasso_metrics)
+
+#Observed vs Predicted plot
+ggplot(train_results, aes(x = score, y = .pred)) +
+  geom_point(alpha = 0.5, color = "darkorange") +
+  geom_abline(slope = 1, linetype = "dashed") +
+  labs(title = "Lasso Regression Performance",
+       subtitle = paste("Penalty =", lasso_fit$spec$args$penalty),
+       x = "Observed Scores", 
+       y = "Predicted Scores") +
+  theme_minimal()
+```
+
+
+```{r}
+library(tidymodels)
+library(ranger)  #  random forest
+
+#setting up and fit Random Forest
+rf_spec <- rand_forest(
+  mtry = floor(sqrt(ncol(train_data))),  # sqrt of predictors
+  trees = 500,
+  min_n = 5
+) %>% 
+  set_engine("ranger", importance = "impurity") %>% 
+  set_mode("regression")
+
+rf_fit <- rf_spec %>% 
+  fit(score ~ days + state + condition + measure_name, 
+      data = train_data)
+
+#extracting variable importance 
+importance_df <- rf_fit$fit$variable.importance %>% 
+  enframe(name = "variable", value = "importance") %>% 
+  arrange(desc(importance))
+
+#plotting importance 
+ggplot(importance_df, aes(x = reorder(variable, importance), y = importance)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(x = NULL, y = "Importance", 
+       title = "Random Forest Variable Importance") +
+  theme_minimal()
+
+#making predictions and evaluate
+rf_results <- train_data %>% 
+  bind_cols(predict(rf_fit, new_data = train_data))
+
+rf_metrics <- rf_results %>% 
+  metrics(truth = score, estimate = .pred)
+
+#comparing all models
+bind_rows(
+  linear_reg = metrics,
+  lasso = lasso_metrics,
+  random_forest = rf_metrics,
+  .id = "model"
+) %>% 
+  select(model, .metric, .estimate) %>% 
+  pivot_wider(names_from = .metric, values_from = .estimate)
+
+# Observed vs Predicted plot
+ggplot(rf_results, aes(x = score, y = .pred)) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_abline(slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Random Forest: Observed vs Predicted",
+       x = "Actual Score", y = "Predicted Score") +
+  theme_minimal()
+```
+
+# CV approach
+
+```{r}
+#creating CV folds from training data (10-fold by default)
+set.seed(123)
+cv_folds <- vfold_cv(train_data, v = 5)  # 5-fold CV
+
+#defining recipe (preprocessing)
+model_recipe <- recipe(score ~ days + state + condition + measure_name, 
+                      data = train_data) %>%
+  step_dummy(all_nominal_predictors()) %>%  # Convert factors to dummy variables
+  step_normalize(all_numeric_predictors())  # Center/scale numeric predictors
+
+#model specifications
+# Linear Regression
+lm_spec <- linear_reg() %>% 
+  set_engine("lm")
+
+# Lasso Regression
+lasso_spec <- linear_reg(penalty = 0.1, mixture = 1) %>% 
+  set_engine("glmnet")
+
+# Random Forest
+rf_spec <- rand_forest(mtry = 3, trees = 500) %>% 
+  set_engine("ranger") %>% 
+  set_mode("regression")
+
+# Workflows
+lm_wf <- workflow() %>%
+  add_recipe(model_recipe) %>%
+  add_model(lm_spec)
+
+lasso_wf <- workflow() %>%
+  add_recipe(model_recipe) %>%
+  add_model(lasso_spec)
+
+rf_wf <- workflow() %>%
+  add_recipe(model_recipe) %>%
+  add_model(rf_spec)
+
+#fitting Models with CV
+lm_res <- fit_resamples(
+  lm_wf,
+  resamples = cv_folds,
+  metrics = metric_set(rmse, rsq, mae)
+)
+
+lasso_res <- fit_resamples(
+  lasso_wf,
+  resamples = cv_folds,
+  metrics = metric_set(rmse, rsq, mae)
+)
+
+rf_res <- fit_resamples(
+  rf_wf,
+  resamples = cv_folds,
+  metrics = metric_set(rmse, rsq, mae)
+)
+
+
+```
+
+
+Compare Model Performance ----
+
+```{r}
+collect_metrics(lm_res)
+```
+
+```{r}
+collect_metrics(lasso_res)
+```
+
+```{r}
+collect_metrics(rf_res)
+```
+
+
+
+# Test dataset
+ 
+ Regression Test
+
+```{r}
+#making predictions on test data
+test_results <- test_data %>% 
+  bind_cols(predict(lm_fit, new_data = test_data))
+
+#  performance
+test_metrics <- test_results %>% 
+  metrics(truth = score, estimate = .pred)
+
+#  performance metrics
+print(test_metrics)
+
+# Observed vs Predicted plot
+ggplot(test_results, aes(x = score, y = .pred)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, linetype = "dashed") +
+  labs(title = "Linear Regression Performance",
+       x = "Observed Scores", 
+       y = "Predicted Scores") +
+  theme_minimal()
+```
+
+
+LASSO TEST
+
+
+```{r}
+#  predictions
+test_results <- test_data %>% 
+  bind_cols(predict(lasso_fit, new_data = test_data))
+
+#  performance
+lasso_metrics_test <- test_results %>% 
+  metrics(truth = score, estimate = .pred)
+
+# print performance
+cat("Lasso Performance (Test data):\n")
+print(lasso_metrics_test)
+
+# Observed vs Predicted plot
+ggplot(test_results, aes(x = score, y = .pred)) +
+  geom_point(alpha = 0.5, color = "darkorange") +
+  geom_abline(slope = 1, linetype = "dashed") +
+  labs(title = "Lasso Regression Performance on test data",
+       subtitle = paste("Penalty =", lasso_fit$spec$args$penalty),
+       x = "Observed Scores", 
+       y = "Predicted Scores") +
+  theme_minimal()
+```
+
+```{r}
+#  predictions 
+rf_results_test <- test_data %>% 
+  bind_cols(predict(rf_fit, new_data = test_data))
+
+rf_metrics_test <- rf_results_test %>% 
+  metrics(truth = score, estimate = .pred)
+
+# Comparing all three models
+bind_rows(
+  linear_reg = test_metrics,
+  lasso = lasso_metrics_test,
+  random_forest = rf_metrics_test,
+  .id = "model"
+) %>% 
+  select(model, .metric, .estimate) %>% 
+  pivot_wider(names_from = .metric, values_from = .estimate)
+
+# Observed vs Predicted plot
+ggplot(rf_results_test, aes(x = score, y = .pred)) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_abline(slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Random Forest: Observed vs Predicted",
+       x = "Actual Score", y = "Predicted Score") +
+  theme_minimal()
+```
+
