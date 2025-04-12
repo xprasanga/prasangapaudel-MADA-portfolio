@@ -682,4 +682,4 @@ performance_summary %>%
 
 # Conclusion
 
-Based on the results we can conclude that the both the Linear regression model and the LASSO model show a very similar result and can be considered same. Although the Random Forest model showed a better performance in the train model, the CV results and the results from the test dataset speaks against the RF model. Therefore, we will conclude that Linear regression is a better model although the LASSO also shows an equally competititive result.
+Based on the results we can conclude that the both the Linear regression model and the LASSO model show a very similar result and can be considered same. Although the Random Forest model showed a better performance in the train model, the CV results and the results from the test dataset speaks against the RF model. Therefore, we will conclude that Linear regression is a better model although the LASSO also shows an equally competititive result. The results from our Random Forest model showed that measure name, state and duration days had an impact on the score with measure name showing the greatest impact.
