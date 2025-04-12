@@ -1,11 +1,18 @@
 ---
-title: "tidytuesday-exercise"
+title: "tidytuesday Exercise"
+author: Prasanga Paudel
+date: April 11, 2025
 format:
   html:
     toc: false
     number-sections: true
     highlight-style: github
 ---
+
+
+# Summary
+
+Quantitattive metrics of healthcare quality offer vital information about hospital performance and patient outcomes.The `care_state` dataset from TidyTuesday (April 8), which includes state-level hospital care quality metrics for various medical diseases, is analysed in this exercise.  The dataset will provide an understanding of healthcare performance in the US by incorporating characteristics like patient scores, admission circumstances, measurement kinds, and time periods.
 
 # Loading the libraries
 
@@ -153,6 +160,7 @@ plot_usmap(data = state_avg_time, values = "average_time_spent", color = "white"
 We can observe that there is variation across states with central US states showing a low time spent in emergency department before being sent home.
 
 
+
 ## Influenza Vaccination Rates Among Healthcare Workers across states.
 
 ```{r}
@@ -183,6 +191,51 @@ plot_usmap(data = flu_vax,
 ```
 
 We an observe that there is variation across different states.
+
+```{r}
+condition_corr <- care_state %>%
+  group_by(condition) %>%
+  summarise(mean_score = mean(score, na.rm = TRUE)) %>%
+  arrange(desc(mean_score))
+
+ggplot(condition_corr, aes(x = reorder(condition, mean_score), y = mean_score)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = round(mean_score, 1)), vjust = -0.5) +
+  labs(title = "Average Score by Medical Condition",
+       x = "Condition",
+       y = "Average Score") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+We can observe that medical condition and scores are also related to each other.
+
+
+```{r}
+library(ggplot2)
+
+#days to numeric
+care_state <- care_state %>% 
+  mutate(days = as.numeric(end_date - start_date))
+
+#creatig the plot days vs score
+ggplot(care_state, aes(x = days, y = score)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Correlation Between Score and Duration (Days)",
+       x = "Duration (Days)", 
+       y = "Score") +
+  theme_minimal()
+```
+
+The duration days also show some relation with the score.
+
+
+# Hypothesis
+
+We observed that there is a significant relation between states and scores. Also, we observed that days, measure name and conditions also show some relation with the score.
+
+We hypothesize that the factors "measure name" "days", "state" and "condition" influence the score.
 
 #  Analysis 
 
@@ -573,6 +626,59 @@ ggplot(rf_results_test, aes(x = score, y = .pred)) +
 ```
 
 We can observe that the random model also shows agood fit for the datapoints.
+
+# Comparision Table
+
+```{r}
+#creating comprehensive comparison table with fixed CV metrics
+performance_summary <- bind_rows(
+  #training results
+  bind_rows(
+    linear_reg = metrics,
+    lasso = lasso_metrics,
+    random_forest = rf_metrics,
+    .id = "model"
+  ) %>% mutate(data = "Training"),
+  
+  # CV results
+  bind_rows(
+    linear_reg = show_best(lm_res, metric = "rmse") %>% slice(1) %>% mutate(.metric = "rmse"),
+    linear_reg = show_best(lm_res, metric = "rsq") %>% slice(1) %>% mutate(.metric = "rsq"),
+    linear_reg = show_best(lm_res, metric = "mae") %>% slice(1) %>% mutate(.metric = "mae"),
+    lasso = show_best(lasso_res, metric = "rmse") %>% slice(1) %>% mutate(.metric = "rmse"),
+    lasso = show_best(lasso_res, metric = "rsq") %>% slice(1) %>% mutate(.metric = "rsq"),
+    lasso = show_best(lasso_res, metric = "mae") %>% slice(1) %>% mutate(.metric = "mae"),
+    random_forest = show_best(rf_res, metric = "rmse") %>% slice(1) %>% mutate(.metric = "rmse"),
+    random_forest = show_best(rf_res, metric = "rsq") %>% slice(1) %>% mutate(.metric = "rsq"),
+    random_forest = show_best(rf_res, metric = "mae") %>% slice(1) %>% mutate(.metric = "mae"),
+    .id = "model"
+  ) %>% 
+    select(model, mean, .metric) %>% 
+    rename(.estimate = mean) %>% 
+    mutate(data = "CV"),
+  
+  # Test results
+  bind_rows(
+    linear_reg = test_metrics,
+    lasso = lasso_metrics_test,
+    random_forest = rf_metrics_test,
+    .id = "model"
+  ) %>% mutate(data = "Test")
+) %>% 
+  select(model, data, .metric, .estimate) %>% 
+  pivot_wider(names_from = .metric, values_from = .estimate) %>% 
+  arrange(model, data)
+
+#printing the formatted table
+performance_summary %>% 
+  gt::gt() %>% 
+  gt::fmt_number(columns = c(rmse, rsq, mae), decimals = 2) %>% 
+  gt::tab_header(
+    title = "Model Performance Summary",
+    subtitle = "Comparison across training, cross-validation and test sets"
+  )
+```
+
 
 # Conclusion
 
