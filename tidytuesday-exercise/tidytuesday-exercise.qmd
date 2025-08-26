@@ -21,6 +21,11 @@ library(here)
 library(dplyr)
 ```
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+```
+
 
 # Importing dataset
 
@@ -72,6 +77,7 @@ Now we will see which of the condition is most frequent in each of the state and
 
 ```{r}
 library(tidyverse)
+install.packages("usmap")
 library(usmap)
 
 #finding most frequent condition per state

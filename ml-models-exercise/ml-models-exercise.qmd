@@ -159,7 +159,7 @@ lm_metrics <- metrics(pred_data, truth = truth, estimate = .pred)
 print(lm_metrics)
 ```
 
-The RMSE value for the LASSO Model is 581.47 This is similar to the results observed for the Linear Model. 
+The RMSE value for the LASSO Model is 581.47 This is similar to the results observed for the Linear Model.
 
 Now, we will observe how the original and predicted values are distributed for LASSO MODEL.
 
@@ -284,10 +284,9 @@ ggplot(ls_tune_metrics, aes(x = penalty, y = .estimate)) +
   )
 ```
 
-We can observe that, as the penalty value is increased, the RMSE value shoots upward in a sharp way. This might be because as more as the predictor variable present in the model are penalized and perhaps maybe dropped, the model loses the power of explaining the dependent variables and the errors increase. 
+We can observe that, as the penalty value is increased, the RMSE value shoots upward in a sharp way. This might be because as more as the predictor variable present in the model are penalized and perhaps maybe dropped, the model loses the power of explaining the dependent variables and the errors increase.
 
 At the lowest penalty, the RMSE is the same as RMSE of the linear model. As penalty term is more closer to zero, LASSO becomes more similar to OLS which gives the gives the lowest possible RMSE on the training data.
-
 
 ## Tuning Random Forest without CV
 
@@ -502,6 +501,5 @@ autoplot(ls_tune_result_cv) +
 ```
 
 We can observe that, even with CV, we get a similar result that we observed without CV. The RMSE value shows a sharp rise as the penalty is increased. But, the lowest RMSE value achieved has now increased to over 615. This might be because we are using different data using CV compared to fitting the same data repeatedly in our earlier method
-
 
 As, LASSO has a lower RMSE, it should be considered as a better model

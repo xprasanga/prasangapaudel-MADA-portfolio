@@ -19,6 +19,12 @@ library(dslabs) # loading dslabs package as we will use gapminder dataset from i
 library(tidyverse) # loading tidyverse package 
 ```
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+```
+
+
 {{< pagebreak >}}
 # Data Aquisition
 In this section we will acquire data from gapminder, and have an initial look at it.
@@ -182,6 +188,7 @@ The data set includes men and women that reported their heights in inches. We ar
 
 We are going to assign the data set a name. Lets say heights_data.
 ```{r}
+install.packages("naniar")
 library(naniar) # this package will help us know where there are any missing values in the data
 
 heights_data<-heights
