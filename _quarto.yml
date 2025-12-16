@@ -32,7 +32,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: darkly
     highlight: zenburn
     css: styles.css
     toc: false

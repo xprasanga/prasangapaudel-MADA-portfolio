@@ -2,23 +2,77 @@
 title: "Welcome!"
 ---
 
-![Hello! My name is Prasanga Paudel.](assets/images/unnamed.jpg)
+<div class="intro-container">
+
+<div class="intro-text">
+
+## Introduction
+
+Hello! My name is **Prasanga Paudel**, and I am passionate about applying data analysis and economic principles to solve real-world problems. I enjoy exploring data-driven insights that can inform better decisions in agriculture, health, and environmental policy.
+
+-ll
+
+-ll
+
+-ll
+
+-ll
+
+-ll
+
+-ll
+
+</div>
+
+<div class="intro-photo">
+
+<img src="assets/images/unnamed.jpg" alt="Prasanga Paudel" class="profile-pic">
+
+</div>
+
+</div>
+
+---
 
 ## Education
 
 I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.
 
+-ll
+
+-ll
+
+-ll
+
+-ll
+
+-ll
+
+-ll
+
+---
+
 ## Programming Experience
 
-I have experience with the following programming tools: - **SAS** - **STATA** - **MATLAB**
+I have experience with the following programming tools:
+- **SAS**
+- **STATA**
+- **MATLAB**
+
+---
 
 ## Research Interests
 
-My research interests include:  **Food Economics**, **Environmental Economics**, **Policy Analysis** ,**Health Economics**
+My research interests include:
+**Food Economics**, **Environmental Economics**, **Policy Analysis**, **Health Economics**
+
+---
 
 ## Expectations from This Course
 
 Through this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields.
+
+---
 
 ## Something Interesting About Me
 

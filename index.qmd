@@ -1,14 +1,11 @@
 ---
-title: "My website and data analysis portfolio"
+title: "Personal Website."
 ---
 
-**This is a website I created for the MADA course**
+*Hi, my name is Prasanga Paudel, and I'd like to welcome you to my website.*
 
-# Hello
+*I am a first year PhD student in Agriculture and Applied Economics at Texas Tech University, Lubbock and this is a website I created to publish about myself and my data analytics projects.*
 
-### My name is Prasanga Paudel.
+## Want to know more about me?
 
-Welcome to **my website** and *data analysis portfolio.*
-
--   Please use the `Menu Bar` above to look around.
--   Have fun!
+If you want to know more about me please feel free to navigate through this website. The `About Me` section will direct you to my personal information webpage. Clicking on `Projects` will lead you to different data analytics and data handling projects that I have been part of.

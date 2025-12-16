@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f8dc6eab18fde03278982b0b35885446.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-55c119cbca0847612369e51c8a5413ad.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f45b3d6da37906b7f28871549e53ffd3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -221,24 +221,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Placeholder file for the future R coding exercise.</p>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'ggplot2' was built under R version 4.4.3</code></pre>
-</div>
-</div>
 <div style="page-break-after: always;"></div>
 <section id="data-importing" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Data Importing</h1>
 <p>In this section we will import the data we acquired from fivethirtyeight, and have an initial look at it. The link to the graphical presentation and the actual data is: <a href="https://fivethirtyeight.com/features/most-police-dont-live-in-the-cities-they-serve/" class="uri">https://fivethirtyeight.com/features/most-police-dont-live-in-the-cities-they-serve/</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Constructing the file path using here()</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"presentation-exercise"</span>,<span class="st">"data"</span>, <span class="st">"police-locals.csv"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing the Excel file fromthe file path</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(file_path)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing the uppermost data of the imported dataset</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(police_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Constructing the file path using here()</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"presentation-exercise"</span>,<span class="st">"data"</span>, <span class="st">"police-locals.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing the Excel file fromthe file path</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(file_path)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing the uppermost data of the imported dataset</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(police_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          city police_force_size       all      white non.white       black
 1     New York             32300 0.6179567 0.44638656 0.7644189 0.770891365
@@ -269,27 +264,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="directly-running-the-code-provided-by-chatgpt-without-providing-actual-data" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Directly running the code provided by chatGPT (without providing actual data)</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample data</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">city =</span> <span class="fu">c</span>(<span class="st">"Laredo, Texas"</span>, <span class="st">"Chicago"</span>, <span class="st">"Corpus Christi, Texas"</span>, <span class="st">"El Paso, Texas"</span>, <span class="st">"Philadelphia"</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">police_force_size =</span> <span class="fu">c</span>(<span class="dv">1435</span>, <span class="dv">12120</span>, <span class="dv">770</span>, <span class="dv">2260</span>, <span class="dv">6045</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">all =</span> <span class="fu">runif</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">70</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">white =</span> <span class="fu">runif</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">65</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">non_white =</span> <span class="fu">runif</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">65</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(police_force_size))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"all"</span>, <span class="st">"white"</span>, <span class="st">"non_white"</span>), <span class="at">names_to =</span> <span class="st">"category"</span>, <span class="at">values_to =</span> <span class="st">"percentage"</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_long, <span class="fu">aes</span>(<span class="at">x =</span> percentage, <span class="at">y =</span> <span class="fu">reorder</span>(city, police_force_size), <span class="at">color =</span> category)) <span class="sc">+</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0%"</span>, <span class="st">"25%"</span>, <span class="st">"50%"</span>, <span class="st">"75%"</span>, <span class="st">"100%"</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percentage of Police Officers Living in the City"</span>, <span class="at">y =</span> <span class="st">"City"</span>, <span class="at">title =</span> <span class="st">"Percentage of Police Officers Living in the City"</span>) <span class="sc">+</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> police_force_size, <span class="at">x =</span> <span class="dv">105</span>), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">data =</span> data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate sample data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">city =</span> <span class="fu">c</span>(<span class="st">"Laredo, Texas"</span>, <span class="st">"Chicago"</span>, <span class="st">"Corpus Christi, Texas"</span>, <span class="st">"El Paso, Texas"</span>, <span class="st">"Philadelphia"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">police_force_size =</span> <span class="fu">c</span>(<span class="dv">1435</span>, <span class="dv">12120</span>, <span class="dv">770</span>, <span class="dv">2260</span>, <span class="dv">6045</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">all =</span> <span class="fu">runif</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">70</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">white =</span> <span class="fu">runif</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">65</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">non_white =</span> <span class="fu">runif</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">65</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(police_force_size))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"all"</span>, <span class="st">"white"</span>, <span class="st">"non_white"</span>), <span class="at">names_to =</span> <span class="st">"category"</span>, <span class="at">values_to =</span> <span class="st">"percentage"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_long, <span class="fu">aes</span>(<span class="at">x =</span> percentage, <span class="at">y =</span> <span class="fu">reorder</span>(city, police_force_size), <span class="at">color =</span> category)) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0%"</span>, <span class="st">"25%"</span>, <span class="st">"50%"</span>, <span class="st">"75%"</span>, <span class="st">"100%"</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percentage of Police Officers Living in the City"</span>, <span class="at">y =</span> <span class="st">"City"</span>, <span class="at">title =</span> <span class="st">"Percentage of Police Officers Living in the City"</span>) <span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> police_force_size, <span class="at">x =</span> <span class="dv">105</span>), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">data =</span> data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
 (`geom_text()`).</code></pre>
@@ -309,42 +304,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="4"><span class="header-section-number">4</span> Final version of the code after repeated iterations</h1>
 <p>After going through multiple edits and back-and-forth conversation with chatGPT, the following code was obtained:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting character columns to numeric where necessary</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(all, white, non.white), as.numeric))  <span class="co"># Focusing only on 'all', 'white', 'non.white'</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshaping data to long format, including only relevant categories</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span> </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"all"</span>, <span class="st">"white"</span>, <span class="st">"non.white"</span>), </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"category"</span>, </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"percentage"</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the plot</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data_long, <span class="fu">aes</span>(<span class="at">x =</span> percentage, <span class="at">y =</span> <span class="fu">reorder</span>(city, percentage), <span class="at">color =</span> category, <span class="at">fill =</span> category)) <span class="sc">+</span>  <span class="co"># Ordering cities by 'percentage'</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">stroke =</span> <span class="fl">0.5</span>) <span class="sc">+</span>  <span class="co"># Increasing stroke size</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.25</span>),  <span class="co"># Adjusting breaks for decimal values</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>),  <span class="co"># Formatting as percentages</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),  <span class="co"># Adjusting limits for decimal values</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                     <span class="at">position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"City"</span>, <span class="at">title =</span> <span class="st">"Percentage of Police Officers Living in the City"</span>) <span class="sc">+</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"all"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>, <span class="st">"white"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"non.white"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>)) <span class="sc">+</span>  <span class="co"># Adjust color for categories</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"all"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>, <span class="st">"white"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"non.white"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>)) <span class="sc">+</span>  <span class="co"># Fill colors for shape 21</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">60</span>)  <span class="co"># Increasing left margin for y-axis labels</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> police_force_size, <span class="at">x =</span> <span class="fl">1.05</span>), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>, </span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> data_long <span class="sc">%&gt;%</span> <span class="fu">filter</span>(category <span class="sc">==</span> <span class="st">"all"</span>)) <span class="sc">+</span>  <span class="co"># Useing data_long filtered for 'all' category</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>))) <span class="sc">+</span>  <span class="co"># Adding spacing to y-axis</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>)  <span class="co"># Allowing labels to go outside the plot area</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the plot as a JPEG file</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">here</span>(<span class="st">"presentation-exercise"</span>, <span class="st">"images"</span>, <span class="st">"police_officers_plot.jpeg"</span>), </span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> p, <span class="at">width =</span> <span class="fl">6.2</span>, <span class="at">height =</span> <span class="fl">10.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">limitsize =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting character columns to numeric where necessary</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(all, white, non.white), as.numeric))  <span class="co"># Focusing only on 'all', 'white', 'non.white'</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshaping data to long format, including only relevant categories</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"all"</span>, <span class="st">"white"</span>, <span class="st">"non.white"</span>), </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"category"</span>, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"percentage"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the plot</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data_long, <span class="fu">aes</span>(<span class="at">x =</span> percentage, <span class="at">y =</span> <span class="fu">reorder</span>(city, percentage), <span class="at">color =</span> category, <span class="at">fill =</span> category)) <span class="sc">+</span>  <span class="co"># Ordering cities by 'percentage'</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">stroke =</span> <span class="fl">0.5</span>) <span class="sc">+</span>  <span class="co"># Increasing stroke size</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.25</span>),  <span class="co"># Adjusting breaks for decimal values</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>),  <span class="co"># Formatting as percentages</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),  <span class="co"># Adjusting limits for decimal values</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                     <span class="at">position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"City"</span>, <span class="at">title =</span> <span class="st">"Percentage of Police Officers Living in the City"</span>) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"all"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>, <span class="st">"white"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"non.white"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>)) <span class="sc">+</span>  <span class="co"># Adjust color for categories</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"all"</span> <span class="ot">=</span> <span class="st">"dodgerblue"</span>, <span class="st">"white"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"non.white"</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>)) <span class="sc">+</span>  <span class="co"># Fill colors for shape 21</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">60</span>)  <span class="co"># Increasing left margin for y-axis labels</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> police_force_size, <span class="at">x =</span> <span class="fl">1.05</span>), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> data_long <span class="sc">%&gt;%</span> <span class="fu">filter</span>(category <span class="sc">==</span> <span class="st">"all"</span>)) <span class="sc">+</span>  <span class="co"># Useing data_long filtered for 'all' category</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>))) <span class="sc">+</span>  <span class="co"># Adding spacing to y-axis</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>)  <span class="co"># Allowing labels to go outside the plot area</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the plot as a JPEG file</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">here</span>(<span class="st">"presentation-exercise"</span>, <span class="st">"images"</span>, <span class="st">"police_officers_plot.jpeg"</span>), </span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> p, <span class="at">width =</span> <span class="fl">6.2</span>, <span class="at">height =</span> <span class="fl">10.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">limitsize =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
 data's colour values.</code></pre>
@@ -353,8 +348,8 @@ data's colour values.</code></pre>
 <pre><code>Warning: Removed 75 rows containing missing values or values outside the scale range
 (`geom_text()`).</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendering the plot</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendering the plot</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: No shared levels found between `names(values)` of the manual scale and the
 data's colour values.
@@ -373,99 +368,99 @@ Removed 75 rows containing missing values or values outside the scale range
 <p><img src="../presentation-exercise/images/police_officers_plot.jpeg" class="img-fluid" alt="This is the image that has been saved to the directory: presentation-exercise/images"> <em>Renaming variable for consistency</em></p>
 <p>Before moving into tabulation, we will rename our variable if they have strange characters in their name.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">non_white =</span> non.white)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">non_white =</span> non.white)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="tabulation" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Tabulation</h1>
 <p>In this section, we will create an advance table based on the same data we collected for the above graph.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting percentage columns to numeric</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(all, white, non_white, black, hispanic, asian), <span class="sc">~</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(.)))) <span class="sc">%&gt;%</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="at">all =</span> <span class="dv">0</span>, <span class="at">white =</span> <span class="dv">0</span>, <span class="at">non_white =</span> <span class="dv">0</span>, <span class="at">black =</span> <span class="dv">0</span>, <span class="at">hispanic =</span> <span class="dv">0</span>, <span class="at">asian =</span> <span class="dv">0</span>))</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Defining a function to map values to appropriate RGBA colors</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>color_transparency <span class="ot">&lt;-</span> <span class="cf">function</span>(value) {</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(value <span class="sc">&lt;</span> <span class="fl">0.25</span>, <span class="st">"rgba(255,165,0,0.25)"</span>,  <span class="co"># 75% transparent</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">ifelse</span>(value <span class="sc">&lt;</span> <span class="fl">0.50</span>, <span class="st">"rgba(255,165,0,0.50)"</span>,  <span class="co"># 50% transparent</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(value <span class="sc">&lt;</span> <span class="fl">0.75</span>, <span class="st">"rgba(255,165,0,0.75)"</span>,  <span class="co"># 25% transparent</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"rgba(255,165,0,1.00)"</span>)))  <span class="co"># Fully opaque</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarizing police data</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>police_summary <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(police_force_size)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)  <span class="co"># Keeping the top 10 largest police forces for a concise table</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating averages for the summary</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>averages <span class="ot">&lt;-</span> police_summary <span class="sc">%&gt;%</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">city =</span> <span class="st">"Average"</span>,</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">police_force_size =</span> <span class="fu">mean</span>(police_force_size, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">all =</span> <span class="fu">mean</span>(all, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">white =</span> <span class="fu">mean</span>(white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">non_white =</span> <span class="fu">mean</span>(non_white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">black =</span> <span class="fu">mean</span>(black, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">hispanic =</span> <span class="fu">mean</span>(hispanic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">asian =</span> <span class="fu">mean</span>(asian, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Combining the summary and averages</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>police_summary_with_averages <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(police_summary, averages)</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the formatted table</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(police_summary_with_averages) <span class="sc">%&gt;%</span></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**Police Force Residency and Demographics**"</span>),</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">md</span>(<span class="st">"*Percentage of police officers living in the city they serve, broken down by race*"</span>)</span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Percentage of Officers Living in the City"</span>,</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(all, white, non_white, black, hispanic, asian)</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(all, white, non_white, black, hispanic, asian, police_force_size),</span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(all, white, non_white, black, hispanic, asian),</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(x) <span class="fu">sapply</span>(x, color_transparency)  <span class="co"># Applying the color function</span></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">city =</span> <span class="st">"City"</span>,</span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">police_force_size =</span> <span class="st">"Total Officers"</span>,</span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">all =</span> <span class="st">"Total (%)"</span>,</span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">white =</span> <span class="st">"White (%)"</span>,</span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">non_white =</span> <span class="st">"Non-White (%)"</span>,</span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">black =</span> <span class="st">"Black (%)"</span>,</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">hispanic =</span> <span class="st">"Hispanic (%)"</span>,</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">asian =</span> <span class="st">"Asian (%)"</span></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(</span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">footnote =</span> <span class="st">"Data represents the available statistics on police force residency based on FiveThirtyEight."</span>,</span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_title</span>(<span class="at">groups =</span> <span class="st">"title"</span>)</span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">"Table 1: Residency rates of police officers by race across 10 major U.S. cities."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting percentage columns to numeric</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>police_data <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(all, white, non_white, black, hispanic, asian), <span class="sc">~</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(.)))) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="at">all =</span> <span class="dv">0</span>, <span class="at">white =</span> <span class="dv">0</span>, <span class="at">non_white =</span> <span class="dv">0</span>, <span class="at">black =</span> <span class="dv">0</span>, <span class="at">hispanic =</span> <span class="dv">0</span>, <span class="at">asian =</span> <span class="dv">0</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Defining a function to map values to appropriate RGBA colors</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>color_transparency <span class="ot">&lt;-</span> <span class="cf">function</span>(value) {</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(value <span class="sc">&lt;</span> <span class="fl">0.25</span>, <span class="st">"rgba(255,165,0,0.25)"</span>,  <span class="co"># 75% transparent</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">ifelse</span>(value <span class="sc">&lt;</span> <span class="fl">0.50</span>, <span class="st">"rgba(255,165,0,0.50)"</span>,  <span class="co"># 50% transparent</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(value <span class="sc">&lt;</span> <span class="fl">0.75</span>, <span class="st">"rgba(255,165,0,0.75)"</span>,  <span class="co"># 25% transparent</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"rgba(255,165,0,1.00)"</span>)))  <span class="co"># Fully opaque</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarizing police data</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>police_summary <span class="ot">&lt;-</span> police_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(police_force_size)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)  <span class="co"># Keeping the top 10 largest police forces for a concise table</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating averages for the summary</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>averages <span class="ot">&lt;-</span> police_summary <span class="sc">%&gt;%</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">city =</span> <span class="st">"Average"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">police_force_size =</span> <span class="fu">mean</span>(police_force_size, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">all =</span> <span class="fu">mean</span>(all, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">white =</span> <span class="fu">mean</span>(white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">non_white =</span> <span class="fu">mean</span>(non_white, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">black =</span> <span class="fu">mean</span>(black, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">hispanic =</span> <span class="fu">mean</span>(hispanic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">asian =</span> <span class="fu">mean</span>(asian, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Combining the summary and averages</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>police_summary_with_averages <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(police_summary, averages)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the formatted table</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(police_summary_with_averages) <span class="sc">%&gt;%</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**Police Force Residency and Demographics**"</span>),</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">md</span>(<span class="st">"*Percentage of police officers living in the city they serve, broken down by race*"</span>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Percentage of Officers Living in the City"</span>,</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(all, white, non_white, black, hispanic, asian)</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(all, white, non_white, black, hispanic, asian, police_force_size),</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(all, white, non_white, black, hispanic, asian),</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(x) <span class="fu">sapply</span>(x, color_transparency)  <span class="co"># Applying the color function</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">city =</span> <span class="st">"City"</span>,</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">police_force_size =</span> <span class="st">"Total Officers"</span>,</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">all =</span> <span class="st">"Total (%)"</span>,</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">white =</span> <span class="st">"White (%)"</span>,</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">non_white =</span> <span class="st">"Non-White (%)"</span>,</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">black =</span> <span class="st">"Black (%)"</span>,</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">hispanic =</span> <span class="st">"Hispanic (%)"</span>,</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">asian =</span> <span class="st">"Asian (%)"</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">footnote =</span> <span class="st">"Data represents the available statistics on police force residency based on FiveThirtyEight."</span>,</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_title</span>(<span class="at">groups =</span> <span class="st">"title"</span>)</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">"Table 1: Residency rates of police officers by race across 10 major U.S. cities."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="lvvqqwniui" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lvvqqwniui table {
+<div id="hiwgvjpolx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hiwgvjpolx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lvvqqwniui thead, #lvvqqwniui tbody, #lvvqqwniui tfoot, #lvvqqwniui tr, #lvvqqwniui td, #lvvqqwniui th {
+#hiwgvjpolx thead, #hiwgvjpolx tbody, #hiwgvjpolx tfoot, #hiwgvjpolx tr, #hiwgvjpolx td, #hiwgvjpolx th {
   border-style: none;
 }
 
-#lvvqqwniui p {
+#hiwgvjpolx p {
   margin: 0;
   padding: 0;
 }
 
-#lvvqqwniui .gt_table {
+#hiwgvjpolx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -491,12 +486,12 @@ Removed 75 rows containing missing values or values outside the scale range
   border-left-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_caption {
+#hiwgvjpolx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lvvqqwniui .gt_title {
+#hiwgvjpolx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -508,7 +503,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-width: 0;
 }
 
-#lvvqqwniui .gt_subtitle {
+#hiwgvjpolx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -520,7 +515,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-top-width: 0;
 }
 
-#lvvqqwniui .gt_heading {
+#hiwgvjpolx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -532,13 +527,13 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_bottom_border {
+#hiwgvjpolx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_col_headings {
+#hiwgvjpolx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -553,7 +548,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_col_heading {
+#hiwgvjpolx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -573,7 +568,7 @@ Removed 75 rows containing missing values or values outside the scale range
   overflow-x: hidden;
 }
 
-#lvvqqwniui .gt_column_spanner_outer {
+#hiwgvjpolx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -585,15 +580,15 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 4px;
 }
 
-#lvvqqwniui .gt_column_spanner_outer:first-child {
+#hiwgvjpolx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lvvqqwniui .gt_column_spanner_outer:last-child {
+#hiwgvjpolx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lvvqqwniui .gt_column_spanner {
+#hiwgvjpolx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -605,11 +600,11 @@ Removed 75 rows containing missing values or values outside the scale range
   width: 100%;
 }
 
-#lvvqqwniui .gt_spanner_row {
+#hiwgvjpolx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lvvqqwniui .gt_group_heading {
+#hiwgvjpolx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -635,7 +630,7 @@ Removed 75 rows containing missing values or values outside the scale range
   text-align: left;
 }
 
-#lvvqqwniui .gt_empty_group_heading {
+#hiwgvjpolx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -650,15 +645,15 @@ Removed 75 rows containing missing values or values outside the scale range
   vertical-align: middle;
 }
 
-#lvvqqwniui .gt_from_md > :first-child {
+#hiwgvjpolx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lvvqqwniui .gt_from_md > :last-child {
+#hiwgvjpolx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lvvqqwniui .gt_row {
+#hiwgvjpolx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -677,7 +672,7 @@ Removed 75 rows containing missing values or values outside the scale range
   overflow-x: hidden;
 }
 
-#lvvqqwniui .gt_stub {
+#hiwgvjpolx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -690,7 +685,7 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#lvvqqwniui .gt_stub_row_group {
+#hiwgvjpolx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -704,15 +699,15 @@ Removed 75 rows containing missing values or values outside the scale range
   vertical-align: top;
 }
 
-#lvvqqwniui .gt_row_group_first td {
+#hiwgvjpolx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lvvqqwniui .gt_row_group_first th {
+#hiwgvjpolx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lvvqqwniui .gt_summary_row {
+#hiwgvjpolx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -722,16 +717,16 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#lvvqqwniui .gt_first_summary_row {
+#hiwgvjpolx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_first_summary_row.thick {
+#hiwgvjpolx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lvvqqwniui .gt_last_summary_row {
+#hiwgvjpolx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -741,7 +736,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_grand_summary_row {
+#hiwgvjpolx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -751,7 +746,7 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#lvvqqwniui .gt_first_grand_summary_row {
+#hiwgvjpolx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -761,7 +756,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-top-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_last_grand_summary_row_top {
+#hiwgvjpolx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -771,11 +766,11 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_striped {
+#hiwgvjpolx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lvvqqwniui .gt_table_body {
+#hiwgvjpolx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -784,7 +779,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-bottom-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_footnotes {
+#hiwgvjpolx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -798,7 +793,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_footnote {
+#hiwgvjpolx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -807,7 +802,7 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#lvvqqwniui .gt_sourcenotes {
+#hiwgvjpolx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -821,7 +816,7 @@ Removed 75 rows containing missing values or values outside the scale range
   border-right-color: #D3D3D3;
 }
 
-#lvvqqwniui .gt_sourcenote {
+#hiwgvjpolx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -829,72 +824,72 @@ Removed 75 rows containing missing values or values outside the scale range
   padding-right: 5px;
 }
 
-#lvvqqwniui .gt_left {
+#hiwgvjpolx .gt_left {
   text-align: left;
 }
 
-#lvvqqwniui .gt_center {
+#hiwgvjpolx .gt_center {
   text-align: center;
 }
 
-#lvvqqwniui .gt_right {
+#hiwgvjpolx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lvvqqwniui .gt_font_normal {
+#hiwgvjpolx .gt_font_normal {
   font-weight: normal;
 }
 
-#lvvqqwniui .gt_font_bold {
+#hiwgvjpolx .gt_font_bold {
   font-weight: bold;
 }
 
-#lvvqqwniui .gt_font_italic {
+#hiwgvjpolx .gt_font_italic {
   font-style: italic;
 }
 
-#lvvqqwniui .gt_super {
+#hiwgvjpolx .gt_super {
   font-size: 65%;
 }
 
-#lvvqqwniui .gt_footnote_marks {
+#hiwgvjpolx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lvvqqwniui .gt_asterisk {
+#hiwgvjpolx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lvvqqwniui .gt_indent_1 {
+#hiwgvjpolx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lvvqqwniui .gt_indent_2 {
+#hiwgvjpolx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lvvqqwniui .gt_indent_3 {
+#hiwgvjpolx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lvvqqwniui .gt_indent_4 {
+#hiwgvjpolx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lvvqqwniui .gt_indent_5 {
+#hiwgvjpolx .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lvvqqwniui .katex-display {
+#hiwgvjpolx .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lvvqqwniui div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#hiwgvjpolx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1045,8 +1040,8 @@ Percentage of Officers Living in the City
 <td class="gt_row gt_right" headers="hispanic" style="background-color: rgba(255,165,0,0.50); color: #000000">0.5</td>
 <td class="gt_row gt_right" headers="asian" style="background-color: rgba(255,165,0,0.50); color: #000000">0.3</td>
 </tr>
-</tbody><tfoot class="gt_footnotes">
-<tr class="odd">
+</tbody><tfoot>
+<tr class="gt_footnotes odd">
 <td colspan="8" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Data represents the available statistics on police force residency based on FiveThirtyEight.</td>
 </tr>
 </tfoot>
