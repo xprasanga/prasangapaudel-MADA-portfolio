@@ -22,6 +22,29 @@ library(writexl)
 library(magrittr)
 library(patchwork)
 library(kableExtra)
+library(AER)  # for ivreg
+library(AER)        # for ivreg
+library(sandwich)   # for robust SE
+library(lmtest)     # coeftest
+library(broom)      # tidy()
+library(flextable)  # tables
+library(officer)    # Word export
+library(nlme)
+library(broom)
+library(flextable)
+library(officer)
+library(car)      # for VIF
+library(lmtest)   # for Breusch-Pagan test
+library(sandwich) # robust SE if needed
+library(dplyr)
+library(psych)
+library(flextable)
+library(officer)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(flextable)
+library(officer)
 ```
 
 **Authors**
@@ -71,10 +94,18 @@ Our broad objective is to empirically examine the effect of different socio-econ
 The “Consumer Behavior and Shopping Habits” dataset that we will be using can provide us with information crucial for market analysis and tailored marketing strategies. The dataset consists of 16 variables and covers a dynamic range of consumer information from all over US. The total number of observations in our sample is 1120. 
 
 	The dataset includes information such as: 
-•	Customer demographics (age, gender, location, season)
-•	Product details (item purchased, category)
-•	Purchase information (amount spent in USD, shipping type)
-•	Shopping behaviour (frequency of purchases, previous purchases, subscription status, discount usage, promo usage)
+	
+- 	Customer demographics (age, gender, location, season)
+- 	Product details (item purchased, category)
+- 	Purchase information (amount spent in USD, shipping type)
+- 	Shopping behaviour (frequency of purchases, previous purchases, subscription status, discount usage, promo usage)
+
+```{r}
+shopping_iv <- read_excel("../metrics-exercise/shopping_dataset.xlsx")
+
+head(shopping_iv)
+```
+
 
 
 {{< pagebreak >}}
@@ -87,7 +118,7 @@ We will follow the strategic framework defined by [@kidane2016factors] to descri
 Our objective is to explain the frequency of total purchases made in a year based on age, gender, income, promotional offers, product rating, season, previous purchase history and shipping. We will use the following linear OLS model as our base model.
 
 
-$Purchase Frequency_i$ = $β_1$ + $β_2 Age_i$ + $β_3 〖Male〗_i$ + $β_4 〖Fashion〗_i$ + $β_5 〖Amount〗_i$ + $β_6 Rating〗_i$ + $β_7 Subscription_i$ + $β_8 Shipping_i$ + $β_9 Promo$ + $β_10 PreviousPurchase_i$ + $β_11 Income_i$ + $β_12 〖Spring〗_i$ + $β_13 Summer_i$ + $β_14 Winter_i$ + $μ_i$ 
+$Purchase Frequency_i$ = $β_1$ + $β_2 Age_i$ + $β_3 Male_i$ + $β_4 Fashion_i$ + $β_5 Amount_i$ + $β_6 Rating_i$ + $β_7 Subscription_i$ + $β_8 Shipping_i$ + $β_9 Promo$ + $β_{10} PreviousPurchase_i$ + $β_{11} Income_i$ + $β_{12} Spring_i$ + $β_{13} Summer_i$ + $β_{14} Winter_i$ + $μ_i$ 
 
 Where i represents the individual, age represents the age of the individual in years, Male is a dummy variable which equals one for male, Fashion represents a dummy variable which equals one if the purchased product is related to beauty and fashion, Amount is a continuous variable representing the amount per purchase, Rating represents a continuous variable with a value between 0 and 5, Subscription is a dummy variable that equals one if the individual has a subscription, Promo is a dummy variable that equals one if promo code was used during purchase, Previous purchase represents the total purchases made in previous year, Income is a continuous variable and the seasons are a dummy for the respective season when the purchase was done.
 
@@ -97,72 +128,9 @@ We have the following options for estimation: OLS, OLS (with robust SE), IV-reg
 {{< pagebreak >}}
 
 
-
-
-
+## OLS Regression
 
 ```{r}
-set.seed(101)
-n <- 1120
-
-# Simulate other predictors
-age_raw <- round(rnorm(n, 35, 10))
-age <- pmax(age_raw, 18)
-gender <- sample(c("Male","Female"), n, replace=TRUE)
-item <- sample(c("Blouse","Sweater","Jeans","Shoes","Hat"), n, replace=TRUE)
-item_fashion <- ifelse(item %in% c("Blouse","Sweater","Jeans","Hat"),1,0)
-amount <- round(pmax(rnorm(n, 70, 30), 0), 2)
-rating <- round(runif(n, 2, 5),1)
-shipping <- sample(c("Standard","Express"), n, replace=TRUE)
-discount <- sample(c(0,1), n, replace=TRUE)
-promo <- sample(c(0,1), n, replace=TRUE)
-prev_purchases <- rpois(n,5)
-income <- round(pmax(rnorm(n, 50000, 15000),0),2)
-online_activity <- round(pmax(rnorm(n,50,20),0),2)
-season <- sample(c("Winter","Spring","Summer","Autumn"), n, replace=TRUE)
-
-# Create instrument: marketing offer (binary)
-marketing_offer <- rbinom(n, 1, 0.4)  # 40% received offer
-
-# Simulate endogenous subscribed variable
-# True probability depends on marketing_offer and unobserved factor correlated with frequency
-unobserved <- rnorm(n, 0, 1)
-logit_subscribed <- -1 + 7*marketing_offer + 0.5*item_fashion + 0.5*prev_purchases + 0.7*unobserved
-prob_subscribed <- 1/(1 + exp(-logit_subscribed))
-subscribed <- rbinom(n, 1, prob_subscribed)
-
-# Simulate purchase frequency (numeric)
-# Frequency depends on age, gender, item_fashion, rating, shipping, discount, promo, prev_purchases
-# Also depends on subscribed (true effect = 1.5), but we include noise correlated with subscribed to induce endogeneity
-freq_error <- rnorm(n,0,1.5)
-frequency_num <- 0.03*age - 0.3*(gender=="Male") + 1*item_fashion -0.005*amount + 0.5*rating +
-                 0.2*(shipping=="Express") + 0.2*promo + 0.3*prev_purchases +
-                 0.0003*income +
-                 0.5*(season=="Winter") + 0.2*(season=="Spring") + 0.1*(season=="Summer") +
-                 0.015*subscribed + 3.485*unobserved + 1*freq_error
-
-frequency_num <- round(frequency_num, digits = 0)
-
-# Combine into dataframe
-shopping_iv <- data.frame(
-  age, gender, item, item_fashion, amount, rating,
-  subscribed, shipping, discount, promo, prev_purchases,
-  income, online_activity, season, frequency_num, marketing_offer
-)
-
-# Quick check
-summary(shopping_iv$subscribed)
-summary(shopping_iv$frequency_num)
-cor(shopping_iv$subscribed, freq_error) # non-zero correlation → endogeneity
-
-```
-
-
-
-#Regression
-
-```{r}
-library(AER)  # for ivreg
 
 # OLS regression (biased due to endogeneity)
 model_ols_sub <- lm(frequency_num ~ age + gender + item_fashion + amount + rating +
@@ -172,12 +140,36 @@ model_ols_sub <- lm(frequency_num ~ age + gender + item_fashion + amount + ratin
 summary(model_ols_sub)
 
 
+```
+
+
+## Robust SE OLS
+
+```{r}
+robust_se <- coeftest(model_ols_sub, vcov = vcovHC(model_ols_sub, type = "HC1"))
+
+print(robust_se)
+```
+
+## Two-stage Least Squares
+
+### First stage
+
+```{r}
+
 first_stage <- lm(subscribed ~ marketing_offer + age + gender + item_fashion + amount + rating +
                        + shipping + promo + prev_purchases +
                       income + season,
                     data=shopping_iv)
 summary(first_stage)
 
+
+```
+
+
+### Second stage or IV-reg
+
+```{r}
 # IV regression (2SLS) using marketing_offer as instrument for subscribed
 model_iv_sub <- ivreg(frequency_num ~ age + gender + item_fashion + amount + rating +
                         subscribed + shipping + promo + prev_purchases +
@@ -192,87 +184,27 @@ summary(model_iv_sub, diagnostics=TRUE)
 
 ```
 
+Here we model heteroskedasticity as a function of purchase amount (a reasonable proxy)
 
 
-```{r}
-# Install packages if needed
-# install.packages(c("AER","sandwich","lmtest","broom","flextable","officer"))
-
-library(AER)        # for ivreg
-library(sandwich)   # for robust SE
-library(lmtest)     # coeftest
-library(broom)      # tidy()
-library(flextable)  # tables
-library(officer)    # Word export
-
-# -------------------------------
-# 1️⃣ OLS Regression (normal SE)
-# -------------------------------
-ols_tidy <- tidy(model_ols_sub)
-ols_tidy$model <- "OLS"
-
-
-
-# -------------------------------
-# 2️⃣ OLS Regression with Robust SE
-# -------------------------------
-robust_se <- coeftest(model_ols_sub, vcov = vcovHC(model_ols_sub, type = "HC1"))
-
-ols_robust_tidy <- data.frame(
-  term = rownames(robust_se),
-  estimate = robust_se[, "Estimate"],
-  std.error = robust_se[, "Std. Error"],
-  statistic = robust_se[, "t value"],
-  p.value = robust_se[, "Pr(>|t|)"],
-  model = "OLS (Robust SE)"
-)
-
-
-
-# -------------------------------
-# 3️⃣ IV Regression (2SLS)
-# -------------------------------
-iv_tidy <- tidy(model_iv_sub)
-iv_tidy$model <- "IV (2SLS)"
-
-# Round values
-iv_tidy$estimate <- round(iv_tidy$estimate,3)
-iv_tidy$std.error <- round(iv_tidy$std.error,3)
-iv_tidy$statistic <- round(iv_tidy$statistic,3)
-iv_tidy$p.value <- round(iv_tidy$p.value,3)
-
-
-```
-
+# GLS 
 
 ```{r}
-# Install packages if not installed
-# install.packages(c("nlme", "broom", "flextable", "officer"))
 
-library(nlme)
-library(broom)
-library(flextable)
-library(officer)
+# Fit a Generalized Least Squares (GLS) model
 
-# 1️⃣ Fit a Generalized Least Squares (GLS) model
-# Here we model heteroskedasticity as a function of purchase amount (a reasonable proxy)
 gls_model <- gls(frequency_num ~ age + gender + item_fashion + amount + rating +
                    subscribed + shipping + promo + prev_purchases +
                    income + season,
                  data = shopping_iv,
                  weights = varExp(form = ~ amount))
 
-
+print(coef(summary(gls_model)), digits=4 )
 ```
 
 # Model Diag 
 
 ```{r}
-# 1️⃣ Load necessary packages
-library(car)      # for VIF
-library(lmtest)   # for Breusch-Pagan test
-library(sandwich) # robust SE if needed
-
 # -------------------------------
 # 2️⃣ Extract residuals and fitted values
 residuals_ols <- residuals(model_ols_sub)
@@ -311,13 +243,6 @@ vif_values
 
 
 ```{r}
-# Install required packages if not already installed
-# install.packages(c("dplyr", "psych", "flextable", "officer"))
-
-library(dplyr)
-library(psych)
-library(flextable)
-library(officer)
 
 # 1️⃣ Select only numeric variables
 numeric_vars <- shopping_iv %>%
@@ -326,7 +251,7 @@ numeric_vars <- shopping_iv %>%
 # 2️⃣ Compute descriptive statistics
 desc_stats <- psych::describe(numeric_vars) %>%
   as.data.frame() %>%
-  select(mean, sd, min, max, median, skew, kurtosis, n)
+  select(mean, sd, min, max, median, n)
 
 # 3️⃣ Round to 3 decimals
 desc_stats <- round(desc_stats, 3)
@@ -334,22 +259,14 @@ desc_stats <- round(desc_stats, 3)
 # Add variable names as a column
 desc_stats$Variable <- rownames(desc_stats)
 rownames(desc_stats) <- NULL
-desc_stats <- desc_stats[, c("Variable", "mean", "sd", "min", "max", "median", "skew", "kurtosis", "n")]
+desc_stats <- desc_stats[, c("Variable", "mean", "sd", "min", "max", "median", "n")]
 
-
+print(desc_stats)
 ```
 
 
 
 ```{r}
-# Install if needed
-# install.packages(c("dplyr", "ggplot2", "reshape2", "flextable", "officer"))
-
-library(dplyr)
-library(ggplot2)
-library(reshape2)
-library(flextable)
-library(officer)
 
 # 1️⃣ Prepare numeric dataset for correlation
 independent_vars <- shopping_iv %>%
@@ -372,6 +289,7 @@ corr_plot <- ggplot(corr_long, aes(x = Var1, y = Var2, fill = Correlation)) +
        x = "", y = "") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-
+print(corr_plot)
 ```
+
 
