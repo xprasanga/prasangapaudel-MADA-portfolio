@@ -7,6 +7,8 @@ format:
     embed-resources: true
     number-sections: true
     highlight-style: github
+    bibliography: ../cite/dataanalysis-references.bib
+    csl: ../cite/vancouver-author-date.csl
 ---
 
 
@@ -49,9 +51,9 @@ _Keywords: customer behavior, promos, purchase frequency_
 
 # Introduction
 
-Understanding about the dynamic consumer behaviour, specially the patterns underlying their repeated purchase is a key component to the success of any industry and business sector. Consumers sometimes act like creatures of habit, automatically repeating past behavior with little regard to current goals and valued outcomes (Wood & Neal, 2009). Purchase and consumption behaviors in daily life often are repetitive and performed in customary places, leading consumers to develop habits (Ji & Wood, 2007). If a business firm manages to understand the reason behind why consumers act in certain way, then it might open a gateway into more consumer persuasion and increase in revenue. Studies on the effect of demographic factors (age, gender, income) on consumption and purchase frequency have been conducted repeatedly in the past. (Saleh, 2013) for instance, performed a cross-sectional study analyzing the effect of gender, age, and income on consumer’s purchasing responsiveness to free product samples. Results showed that young consumers and females tend to be more responsive to such promotions and income had an insignificant effect. On the other hand, a study by (Ullah et al., 2019) report that there is a weak or no relationship between consumer’s purchase decisions and their demographic attributes, depending on the context.
+Understanding about the dynamic consumer behaviour, specially the patterns underlying their repeated purchase is a key component to the success of any industry and business sector. Consumers sometimes act like creatures of habit, automatically repeating past behavior with little regard to current goals and valued outcomes [@Wood2009-qr]. Purchase and consumption behaviors in daily life often are repetitive and performed in customary places, leading consumers to develop habits [@Ji2007-te]. If a business firm manages to understand the reason behind why consumers act in certain way, then it might open a gateway into more consumer persuasion and increase in revenue. Studies on the effect of demographic factors (age, gender, income) on consumption and purchase frequency have been conducted repeatedly in the past. [@saleh2013impact] for instance, performed a cross-sectional study analyzing the effect of gender, age, and income on consumer’s purchasing responsiveness to free product samples. Results showed that young consumers and females tend to be more responsive to such promotions and income had an insignificant effect. On the other hand, a study by [@Ihsan_Ullah2021-gr] report that there is a weak or no relationship between consumer’s purchase decisions and their demographic attributes, depending on the context.
 
-Business are always trying to come up with new ideas to generate more revenue and profit, but not all attempts are equally fruitful. Promo coupons are also one of such widely used in service establishments, even though little is known about a coupon’s impact on consumer behavior (Taylor, 2001). Recent studies show that coupons and promotions can significantly influence purchase behavior, particularly in prompting repeat or earlier-than-planned purchase decisions (Balakrishnan et al., 2020). A recent study by (Poisson, 2018) studied the effectiveness of coupons on the restaurant consumers’ purchase decision and another study by (Mishra et al., 2024) studied  the impact of sales promotion on consumer buying behavior in the apparel industry. Digital era studies of online shoppers have also found that spending and purchase frequency often vary with age, income, and prior shopping patterns (Kooti et al., 2015). Similary, (Hu et al., 2008) argues that online reviews and rating affect the purchase of that product although it tends to diminish over time. One might think that purchase decisions are also influenced by the seasonal patterns of offers such as Black Friday, Cyber Monday, Summer sales, etc. Ignoring seasonal patterns in consumer’s expectations leads to biased demand estimates (Soysal & Krishnamurthi, 2012). And while (Iyengar et al., 2022) report that subscription leads to increase in consumer purchases, two third of the effect is reported to be due to non-economic benefit of the subscription. On the other hand, critiques of subscription sales such as (Chen, 2024) argue that effect of subscription is endogenous and it may not always increase sales as there is also a common trend of enrolling into certain subscription just because of peer influence and not much motivation to purchase.
+Business are always trying to come up with new ideas to generate more revenue and profit, but not all attempts are equally fruitful. Promo coupons are also one of such widely used in service establishments, even though little is known about a coupon’s impact on consumer behavior [@Taylor2001-qy]. Recent studies show that coupons and promotions can significantly influence purchase behavior, particularly in prompting repeat or earlier-than-planned purchase decisions [@Balakrishnan2020-oi]. A recent study by [@Poisson2018-zg] studied the effectiveness of coupons on the restaurant consumers’ purchase decision and another study by [@Mishra2024-hd] studied  the impact of sales promotion on consumer buying behavior in the apparel industry. Digital era studies of online shoppers have also found that spending and purchase frequency often vary with age, income, and prior shopping patterns [@Kooti2015-us]. Similary, [@Hu2008-ao] argues that online reviews and rating affect the purchase of that product although it tends to diminish over time. One might think that purchase decisions are also influenced by the seasonal patterns of offers such as Black Friday, Cyber Monday, Summer sales, etc. Ignoring seasonal patterns in consumer’s expectations leads to biased demand estimates [@Soysal2012-le]. And while [@Iyengar2022-ze] report that subscription leads to increase in consumer purchases, two third of the effect is reported to be due to non-economic benefit of the subscription. On the other hand, critiques of subscription sales such as [@Chen2024-mq] argue that effect of subscription is endogenous and it may not always increase sales as there is also a common trend of enrolling into certain subscription just because of peer influence and not much motivation to purchase.
 
 There has been limited work combining a comprehensive set of determinants: demographic variables, purchase history, product attributes, incentives, and seasonal/contextual factors in a single model to explain purchase frequency. Following their previous studies, we want to study various consumer behaviour with detailed insights into consumer responses and shopping patterns across various demographics, locations, and product categories.
 
@@ -80,7 +82,7 @@ The “Consumer Behavior and Shopping Habits” dataset that we will be using ca
 # Methods
 
 
-We will follow the strategic framework defined by (Kidane & Sharma, 2016) to describe how consumer’s  purchasing decision is affected by different factors such as shipping methods, services, social and individual attributes, satisfactions. We will assume that the consumer purchase decisions, specifically, consumer’s purchase frequency is defined by the following regression model.
+We will follow the strategic framework defined by [@kidane2016factors] to describe how consumer’s  purchasing decision is affected by different factors such as shipping methods, services, social and individual attributes, satisfactions. We will assume that the consumer purchase decisions, specifically, consumer’s purchase frequency is defined by the following regression model.
 
 Our objective is to explain the frequency of total purchases made in a year based on age, gender, income, promotional offers, product rating, season, previous purchase history and shipping. We will use the following linear OLS model as our base model.
 
@@ -92,202 +94,8 @@ Where i represents the individual, age represents the age of the individual in y
 We have the following options for estimation: OLS, OLS (with robust SE), IV-reg
 
 
-
 {{< pagebreak >}}
 
-# Results
-
-In this section, we will we will explore the data and perform analysis based on ordinary least squares and random forest model.
-
-## Descriptive analysis
-
-Here, we will now use a combination of tables and figues to have a look into the data.
-
-As this is a time series data, it is quite difficult to visualize all the variables across the years for all the countries. So, we will try to keep it simple and see simple relations between variables within a year or trend of a particular variable for some countries across the years or the average trend.
-
-### Trends of Development Indicators
-
-In @fig-development-indicators-trends, we will explore differenct variables of interest by observing the average trends across the countries. We can observe that average life expectancy has been increasing consistently through 2010 to 2020. The average physicians per 1000 people shows an upward trend. However, hospital beds show a decreasing trend. The average government effectiveness seems to be dereasing across the countries. The unemployment rate in the OECD countries seems to be consistently decreasing. Finally, if we observe the average Gross Domestic Product(GDP) , we can see that the GDP of OECD countries are somewhat consistent except for the last year 2018.
-
-
-
-### Trends of health expenditure
-
-
-@fig-combined-health-expenditure-plot shows how "Health Expenditure as a Percentage of GDP Over Time (2010–2020)" and "Current Per Capita Health Expenditure (2010-2020)" are distributed over the years for top 5 OECD countries. We can observe that among the two factors, Health Expenditure as a percentage of GDP is relatively more consistent across the years. Per capita health expenditure across the countries, on the other hand, shows variation across times. It is evident that per capaita health expenditure is more sensitive to external factors and shows immediate response through each years. Our objective is to explain this variation in expenditure.
-
-
-
-## Basic statistical analysis
-
-### Preparing a model
-
-To help finalize our model, we first tried to look at the relation between our dependent variable "Health Expenditure Per Capita $USD" with other variables from a specific category. Specifically, we picked the most useful variables from the large pool of 1400+ variables in our dataset, and we then categorized these variables based on the aspects they cover. For example, if there is a variable named "Annual GDP growth", we will categorize it as an "Economic" variable. Similarly, if there is a variable named "Unemployment rate" or "Total population", we will categorize them as "Social" variable
-
-We then ran our initial regression with "Health Expenditure Per Capita (USD)" as dependent variable, and variables from each of the category as independent variables in separate regressions. The motivation here was to find the most influential factor from each category. The regression results for this preliminary test can be found in  [ GitHub](https://github.com/xprasanga/PAUDEL-MADA-project). After observing the relation of almost 60 important variables with our variable of interest "Health Expenditure Per Capita $USD", we filtered few variables worth pursuing, and we will discuss them in the sections that will come.
-
-### Observing the relationship with dependent variable
-
-@fig-correlation-p1 shows the correlation of per capita health expenditure with different variables for the year 2010. This fugure shows the pattern present in the dataset for the year 2010, with all the countries treated as cross-sectional units. We are only using the information from one year, year 2010, because visualization across years can be quite complex as we would also have to consider for the trends of each country across years.
-
-
-
-@fig-correlation-p1 shows that income share held by lowest 20% of the population is positively correlated with the per capita health expenditure. Similary, estimate of control of corruption and life expectancy at birth also show positive correlation. Annual GDP growth on the other hand shows a low but negative correlation.
-
-We will check few other relation in @fig-correlation-p2.
-
-
-
-It can be seen that most of the variables seem to have a moderate and positive correlation with our variable of interest. Although some variables lack observations, we must recall that this is just for the year 2010, and the whole dataset might have a different distribution pattern.
-
-### Proposed Model for the research {#model}
-
-Based on the informations obtained from our preliminary results, we have selected variable that would best explain our dependent variable. The model is as follow:
-
-
-
-## Full analysis
-
-### Regression Results
-
-We ran the regression based on our primary model described in the section  of this article. The results obtained from the regression analysis are presented by @tbl-primary-regression-results.
-
-
-
-The result shows that annual GDP growth of a country has statistically significant negative impact on the per capita health expenditure of the country at 1% level of significance. Specifically, one percentage oint growth in annual GDP decreases the per capita health expenditure by 117.468 US dollars. Similarly, the estimate for the control of corruption in a country has a statistically significant negative effect at 1% level of significance. Specifically, one unit increase in control increases the per capita health expenditure by 1822 US dollars. The level of unemployment among youth population out of the total labor force population had a statistically significant negative effect at 1% level of significance. To be precise, one percent increase in unemployment rate among youth decreases the per capita health expenditure by 25 US dollars. Similarly, foreign direct investment (FDI) had a positive but very low magnitude effect on the health expenditure at 1% level of significance. Life expectancy at birth had a statistically significant positive effect on the health expenditure at 1% significance level, with increase in health expectancy by one year resulting in an increase in per capita health expenditure by 208 US dollars. Factors such as income share held by the lowest 20-percent population, trade as a percentage of GDP, access to electricity among rural popuation, and age dependency ration had no statistical significant impact on the health expenditure.
-
-
-The model showed a "good" descriptive performance based on it's adjusted R-squared value of 74.3%. The RMSE value for our model (RMSE=1213) is also quite lower compared to the NULL Model which showed a RMSE value of 2364.
-
-
-#### Autocorrelation Test
-
-We performed the Durbin Watson autocorrelation test for our model. The results from the DW test, presented by @tbl-DW-test-results, confirms the absence of autocorrelation, therefore we can move forward with our model. 
-
-
-
-#### ADF unit root test
-
-We also performed the Fisher-type Augmented Dickey Fuller (ADF) test for presence of unit root. The results confirmed that the not all series in our panel data are non-stationary.
-
-
-
-Since there is no significant presence of correlation and unit root, we will claim our model to be a valid model. Next, we will test the robustness of our OLS results throuh various machine learning techniques.
-
-#### Cross-Validation of OLS results
-
-In this section, we will observe how our model will perform across different subsets of datasets within our train dataset.As this is time-series dataset, we will consider the fact that the values across different years are correlated with each other. We, therefore, use three different subset of years with five years within each subset as training data within the train dataset. We will use the year after the training dataset as a testing dataset. Therefore, we ended up with three subsets of training data and three testing data.
-
-
-
-It can be observed that the RMSE values across the different combinations of train/test dataset show a somewhat consistent result. The RMSE value for the primary dataset was 1213. The results from CV, as observed in @tbl-ols-cv-results, show even less RMSE in some cases. This is a good thing as our model performs consistently better in cross-validation.
-
-
-If we observe the mean RMSE across the three cross-validation subsets, the mean is lower than our primary dataset with a small standard deviation.
-
-
-### Random Forest model as an Alternative
-
-Next, we will perform our analyses with a different technique other than ordinary least squares method. We will use a Random Forest (RF) model to explain per capita health expenditure of a country. we will use a tree size of 300, and mtry value equal to 3. The motivation behind using a random forest model is to check if we are being able to capture the relation between per capita health expenditure and our predictors variable well enough using the OLS model. The non-linear effects, if present, would be captured better by the RF model.
-
-#### Random Forest Results
-
-@tbl-rf-importance-results represents the importance factor obtained from the random forest model. It can be observed that the variables that were found to have a significant and high impact on the per capita health expenditure in the OLS model also show a high importance in the random forest model as well, although results are different from OLS as well.
-
-
-#### Performance of RF model
-
-The performance of our random forest model is quite exciting. The R-squared value obtained is quite high (0.988. The RMSE value is also 288, which is almost 1000 less than the RMSE value (1213) obtained from our OLS model. This shows that RF can explain our data way more appropriately than an OLS model.
-
-However, we need to test if this result is consistent across various dataset.
-
-
-
-#### Cross-validation of RF model
-
-In this section, we will try to see how our RF performs across various cross-validation datasets. We will perform cv based on the same combination of datasets we used for our OLS model. There are three different subsets of training dataset with five years in each dataset. Also, there will be a one year test dataset for the year immediately coming after the last year of testing dataset.
-
-
-
-
-
-The results obtained from the cross-validation as observed in @tbl-rf-cv-results show that the RMSE values have more than doubled in the cross-validation sets. Infact, the highest RMSE value observed in cv is as high as 2.6 times more than the RMSE obtained in the primary train dataset.
-
-
-
-The mean RMSE, 644, despite showing a standard deviation comparable to the OLS model, has a significantly higher value compared to RMSE (288) obtained with the train dataset. This means that our RF model is performing poorly in the case of different subsections of datasets.
-
-### Visual inspection of the two models in train dataset
-
-Finally, in this section, we will try to visually observe the performance of the two models (OLS and Random Forest) in our train dataset that we discussed and worked on till now.
-
-
-
-It can be observed in @fig-pred-vs-obs-train that the Random Forest clearly out-performs the OLS model in correctly predicting the outcomes. The datapoints for OLS regression are comparitively very hapazardly distributed compared to the datapoints of RF model.
-
-However, we should remember that although the RF model had an outstanding performance in our primary train dataset with RMSE almost 1000 less than RMSE observed in the OLS model, the cross-validation results showed significant fluctuations, due to which robustness of our RF model can be questioned.
-
-
-### Test dataset
-
-
-#### Perfrormance of OLS on test dataset
-
-
-We also performed the analysis on test dataset. The regression result obtained for the testing dataset is as follows.
-
-
-
-We can observe that the variables in general show some common pattern between the two datasets. The difference is acceptable as they are based on entirely different time frames. If we observe the model performance, it is evident that the model performance is weaker than obtined in the train dataset. The RMSE has increased by 383 from 1213 to 1596, however this is still 768 lower than the NULL model. The adjusted R-squared in our test dataset has also dropped by 12.3% to 62%.
-
-
-#### Performance of Random Forest on test dataset
-
-We also ran our Random Forest model with the train test dataset. The performance metrics obtained from the model are presented in @tbl-rf-test-perform.
-
-
-
-
-We can observe that the RMSE value has again largely increased. The RMSE from test dataset is now as large as 4.6 times more than the RMSE obtained in the primary train dataset. This value is also double than the mean RMSE obtained from cross-validations. Therefore, there is a high suspicion that our our primary RF model sufferes from overfitting, although it performs relatively better than our OLS model.
-
-But, as of now, as our OLS model showed a consistent and robust result across all our datasets and robustness tests, we can conclude that OLS model should be preferred over the Random Forest model despite RF performs better than OLS. Our conclusion is that the RF model can not be trusted because of it's inconsistency and suspicious results.
-
-
-#### Visual inspection in test dataset
-
-Finally, we will visually observe the performance of both the models in the test dataset. @fig-pred-vs-obs-test shows the distribution of observed values and predicted values using test dataset for both the models.
-
-
-
-
-As expected based on the RMSE values, the RF model does perform better than our OLS model, However, due to inconsistency, we will prefer our OLS model over the RF model.
-
-One thing that should be noted is that the RF model should be optimized and formulated in an efficient manner because it clearly outperformed the OLS model in every comparision across different datasets despite the inconsistency.
-
-{{< pagebreak >}}
-
-
-
-# Discussion
-
-Our results show that annual GDP growth, control of corruption, life expectancy at birth, unemployment rate, and FDI all have a statistically significant effect on the per capita health expenditure of a country. [@Nghiem2017] also found evidence that annual GDP and unemployment rate have a significant effect on the health expenditures, however the variables used in the studies are different. Similarly, [@Factor2015] has found that country with high level of corruption have a lower spending on health care as a percentage of GDP. In a similar study, [@Giammanco2019] have found that FDI is positively related to factors related to public health. Therefore, our result somewhat follow the general trend of findings in the field of health economics. In another study, [@Wang2015] argues that the impact of health expenditures on economic growth is somewhat ambiguous.
-
-Our study showed that factors such as income share held by the lowest 20-percent population, trade as a percentage of GDP, access to electricity among rural popuation, and age dependency ration had no statistical significant impact on the health expenditure. Among these variables, age dependency ratio was expected to have a significant impact as higher pressure on the working population to support the non-active population reduces the chances of surplus revenues to invest in different sectors of the economy. 
-
-
-# Conclusions and Policy implications
-
-The results from our study concludes that corruption GDP growth, control of corruption, and  unemployment rate have a significant and an important role in determining the amount of money spent on health sector by the country. Therefore, if we are to improve the investment on health sectors and therefore improve the citizen's access to the heath services we also need to consider the unemployment rate, corruption and the GDP growth as well. This information could be handy for donor agencies and INGO's who work to improve access of health cervice in different nations. 
-
-A special consideration should be given to nations that have an increasing GDP, high corruption, and high unemployment rate, as these nations have lower investments in health sectors. These type of countries should therefore be priotized by world bank, World Health Organization, and other institutions who allocate their resources to help countries while also considering the fact that corruption and high unemployment should also be addressed as they show causal effect.
-
-# Limitations
-
-Our analysis covers 2010-2020, excluding the full impact of the COVID-19 pandemic, which dramatically altered health expenditure patterns worldwide. Our OLS approach assumes linear relationships that may not capture complex interactions present in health systems, and although we employ Random Forest to address this, the "black box" nature of machine learning models limits policy interpretability. As with time-series datasets for countries, our datasets had a lot of missing values for a lot of variables across different countries. This is quite common as countries differ in their time and duration of census and surveys and not all countries folllow the same procedure to collect informations. Also, not all countries would collect the same set of information. We had to drop the missing values due to which we lost a lot of information which coould have been a valuable source of information.
-
-# Data aquisition
-
-The data for this research is available at the official World Bank- Data Bank website accessible [here. ](https://databank.worldbank.org/source/world-development-indicators/Type/TABLE/preview/on#) It is a free database managed by world bank group and can be accessed anytime. We can apply various filters as per our need and export the data as a .CSV or an .xlsx file.
 
 
 
