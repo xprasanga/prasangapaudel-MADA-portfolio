@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/xprasanga/prasangapaudel-MADA-portfolio"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/xprasanga/prasangapaudel-portfolio"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -334,7 +334,7 @@ date (2): start_date, end_date
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/yx/x_hgd5y52px8zm3krl7r6hb40000gn/T//RtmpoN8OEU/downloaded_packages</code></pre>
+    /var/folders/yx/x_hgd5y52px8zm3krl7r6hb40000gn/T//RtmpZlg2m9/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usmap)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -925,9 +925,7 @@ There were issues with some computations   A: x10   B: x5</code></pre>
 <pre><code>→ A | warning: !  The following columns have zero variance so scaling cannot be used:
                  state_AS, state_GU, state_MP, and state_VI.
                ℹ Consider using ?step_zv (`?recipes::step_zv()`) to remove those columns
-                 before normalizing.
-There were issues with some computations   A: x2
-There were issues with some computations   A: x5</code></pre>
+                 before normalizing.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>rf_res <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  rf_wf,</span>
@@ -938,7 +936,9 @@ There were issues with some computations   A: x5</code></pre>
 <pre><code>→ A | warning: !  The following columns have zero variance so scaling cannot be used:
                  state_AS, state_GU, state_MP, and state_VI.
                ℹ Consider using ?step_zv (`?recipes::step_zv()`) to remove those columns
-                 before normalizing.</code></pre>
+                 before normalizing.
+There were issues with some computations   A: x3
+There were issues with some computations   A: x5</code></pre>
 </div>
 </div>
 <p>Comparing Model Performance —-</p>

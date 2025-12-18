@@ -26,7 +26,7 @@ website:
             file: pricetheory-exercise/pricetheory.qmd
     right:
       - icon: github
-        href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio
+        href: https://github.com/xprasanga/prasangapaudel-portfolio
 
 format:
   html:
