@@ -134,10 +134,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
         <li>
-    <a class="dropdown-item" href="../cdcdata-exercise/cdcdata-exercise.html">
- <span class="dropdown-text">Data Analysis Exercise</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="../presentation-exercise/presentation-exercise.html">
  <span class="dropdown-text">Presentation Exercise</span></a>
   </li>  
@@ -217,20 +213,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This exercise is based on CDC dataset.</p>
 <div style="page-break-after: always;"></div>
-<section id="data-acquisition" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Data Acquisition</h1>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>This is an excercise performed as a requirement for course Modern Applied Data Analytics.</p>
+<p><em>This exercise is based on CDC dataset.</em></p>
+</section>
+<section id="data-acquisition" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Data Acquisition</h1>
 <p>In this section we will acquire data from the directory, and have an initial look at it. This data on tax burden across different state was obtained from the annual compendium on tobacco revenue and industry statistics. These datasets are reported on an annual basis, and they include federal and state-level information regarding taxes applied to the price of a pack of cigarettes. The data was last updated on March 22, 2021.</p>
 <p>The dataset can be assessed from this link: <a href="https://data.cdc.gov/Policy/Table-of-Gross-Cigarette-Tax-Revenue-Per-State-Orz/rkpp-igza/about_data" class="uri">https://data.cdc.gov/Policy/Table-of-Gross-Cigarette-Tax-Revenue-Per-State-Orz/rkpp-igza/about_data</a></p>
 <div style="page-break-after: always;"></div>
-<p>#Data Importing</p>
+</section>
+<section id="importing-data" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Importing Data</h1>
 <p>We will now import the data from our repository using the here command. We can observe that there are 2550 observations with 14 variables. The variables some observations can be viewed using the head() command.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Constructing the file path using here()</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"cdcdata-exercise"</span>,<span class="st">"cigarette-tax.xlsx"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing the Excel file fromthe file path</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing the Excel file from the file path</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cdc_dataset <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(file_path)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Viewing the uppermost data of the imported dataset</span></span>
@@ -252,8 +254,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div style="page-break-after: always;"></div>
 </section>
-<section id="data-cleaning" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Data Cleaning</h1>
+<section id="data-cleaning" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Data Cleaning</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values within the cdc_dataset</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cdc_dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -307,8 +309,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We have one (continuous) numeric variable in out dataset under that name “Data_Value”. This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable “Year” which represents the year of data collection has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables. The variable “LocationDesc” represents the name of the States.</p>
-<section id="checking-for-missing-values" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="checking-for-missing-values"><span class="header-section-number">2.1</span> Checking for missing values</h2>
+<section id="checking-for-missing-values" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="checking-for-missing-values"><span class="header-section-number">4.1</span> Checking for missing values</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values (NA) within the dataset</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(cdc_dataset))</span>
@@ -324,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can observe that there are 14 variables altogether and there are no missing values in the dataset. We will further check for any missing values coded as 9999 for any numeric variable. We will also use scatterplot to see if there is any such replacement for missing value which can be observed as an outlier. This can be observed later during the analysis.</p>
 </section>
-<section id="confirming-the-structure-of-the-dataset-through-observation-across-states" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="confirming-the-structure-of-the-dataset-through-observation-across-states"><span class="header-section-number">2.2</span> Confirming the structure of the dataset through observation across States</h2>
+<section id="confirming-the-structure-of-the-dataset-through-observation-across-states" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="confirming-the-structure-of-the-dataset-through-observation-across-states"><span class="header-section-number">4.2</span> Confirming the structure of the dataset through observation across States</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Counting the number of observations per State</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>state_counts <span class="ot">&lt;-</span> cdc_dataset <span class="sc">%&gt;%</span></span>
@@ -354,8 +356,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="page-break-after: always;"></div>
 <p>#Preparing the dataset for replicable properties As the raw data itself is quite messy, we will try to make it as simple as possible to learn about their distribution. As this is a time-series data, we will focus on the “trend” rather than the distribution as normal. We will try to clean the data as much as possible so that we can observe consisteny in the result, making it easier to learn about the properties of the dataset.</p>
 </section>
-<section id="filtering-out-five-states-to-make-the-analysis-easy." class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="filtering-out-five-states-to-make-the-analysis-easy."><span class="header-section-number">2.3</span> Filtering out Five states to make the analysis easy.</h2>
+<section id="filtering-out-five-states-to-make-the-analysis-easy." class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="filtering-out-five-states-to-make-the-analysis-easy."><span class="header-section-number">4.3</span> Filtering out Five states to make the analysis easy.</h2>
 <p>We will filter five states from the dataset and make a new dataset based on these states, The next phases of analysis will include these states only: Georgia, Kansas, Idaho, Alabama and Nebraska.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter dataset for selected states</span></span>
@@ -380,8 +382,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="filtering-out-the-variables-of-interest" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="filtering-out-the-variables-of-interest"><span class="header-section-number">2.4</span> Filtering out the variables of interest</h2>
+<section id="filtering-out-the-variables-of-interest" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="filtering-out-the-variables-of-interest"><span class="header-section-number">4.4</span> Filtering out the variables of interest</h2>
 <p>In this section, we will filter out only five variables so that we can look through the dataset more easily. We will set the name to this dataset as “dataset”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select only the required columns</span></span>
@@ -405,11 +407,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="visualizing-the-data" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Visualizing the data</h1>
+<section id="visualizing-the-data" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Visualizing the data</h1>
 <p>We will use multiple techniques to visualize and summarize the dataset so that it will be easy for other classmates to understand the structure behind the data..</p>
-<section id="scatter-plot-of-revenue-across-time-for-our-five-states." class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-our-five-states."><span class="header-section-number">3.1</span> Scatter plot of Revenue across time for our five states.</h2>
+<section id="scatter-plot-of-revenue-across-time-for-our-five-states." class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-our-five-states."><span class="header-section-number">5.1</span> Scatter plot of Revenue across time for our five states.</h2>
 <p>We will first use scatter plot to observe the property of our numeric variable Data_Value.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Defining the custom colors for each state so it is easy for us to observe</span></span>
@@ -441,8 +443,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="further-cleaning-of-the-dataset" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Further Cleaning of the dataset</h1>
+<section id="further-cleaning-of-the-dataset" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Further Cleaning of the dataset</h1>
 <p>We will create a new datset based on year 1970 to 2000 which because they show somewhat consistent trend among the data_valuei.e revenue value</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering dataset for years less than 2001</span></span>
@@ -484,11 +486,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Here, we can observe we have 31 observations for each State across 1970-2000</p>
 <div style="page-break-after: always;"></div>
 </section>
-<section id="association-of-variables-in-final-dataset" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Association of variables in final Dataset</h1>
+<section id="association-of-variables-in-final-dataset" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Association of variables in final Dataset</h1>
 <p>This section will talk about the association of revenue within the five state across the year 1970-2000. We will use few figures and a regression analysis to get some idea of the relationship.</p>
-<section id="scatter-plot-of-revenue-across-time-for-our-five-states.-1" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-our-five-states.-1"><span class="header-section-number">5.1</span> Scatter plot of Revenue across time for our five states.</h2>
+<section id="scatter-plot-of-revenue-across-time-for-our-five-states.-1" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-our-five-states.-1"><span class="header-section-number">7.1</span> Scatter plot of Revenue across time for our five states.</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Data_Value, <span class="co">#setting the axes</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> LocationDesc)) <span class="sc">+</span></span>
@@ -512,8 +514,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This figure clearly shows the relation between the variables across time and States. This relation will be more clear if we use gregression analysis to calculate the slope. We will do that in next step. The scatter plot also confirms that there is no such missing value as encoded as 9999 otherwise we would have seen it as an outlier in our scatterplots.</p>
 </section>
-<section id="calculating-slope-or-association-through-regression" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="calculating-slope-or-association-through-regression"><span class="header-section-number">5.2</span> Calculating Slope or association through Regression</h2>
+<section id="calculating-slope-or-association-through-regression" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="calculating-slope-or-association-through-regression"><span class="header-section-number">7.2</span> Calculating Slope or association through Regression</h2>
 <p>We will now try to express the relation of revenue over time for Georgia.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering data for Georgia</span></span>
@@ -578,8 +580,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 <p>From the two regression models above, the relation can be clearly observed and the properties of the datasets are clearly expressed.</p>
 </section>
-<section id="summary-of-revenue-across-the-five-states-of-the-final-dataset" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="summary-of-revenue-across-the-five-states-of-the-final-dataset"><span class="header-section-number">5.3</span> Summary of Revenue across the five states of the final dataset</h2>
+<section id="summary-of-revenue-across-the-five-states-of-the-final-dataset" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="summary-of-revenue-across-the-five-states-of-the-final-dataset"><span class="header-section-number">7.3</span> Summary of Revenue across the five states of the final dataset</h2>
 <p>We will will now provide the full statistical summary of revenue based on the States present in our dataset including the mean, meadian, maximum and the minimums.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarizing Data Value for five selected states</span></span>
@@ -609,8 +611,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 </div>
 </section>
-<section id="summary-of-variables" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="summary-of-variables"><span class="header-section-number">5.4</span> Summary of variables</h2>
+<section id="summary-of-variables" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="summary-of-variables"><span class="header-section-number">7.4</span> Summary of variables</h2>
 <p>This table provides the overall summary of the final datset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -633,8 +635,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 <p>This section contributed by Mohammed Zuber</p>
 </section>
-<section id="load-required-libraries" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="load-required-libraries"><span class="header-section-number">5.5</span> Load Required Libraries</h2>
+<section id="load-required-libraries" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="load-required-libraries"><span class="header-section-number">7.5</span> Load Required Libraries</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries for data processing and visualization</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)  <span class="co"># For reading Excel files</span></span>
@@ -645,8 +647,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-the-original-data" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="load-the-original-data"><span class="header-section-number">5.6</span> Load the Original Data</h2>
+<section id="load-the-original-data" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="load-the-original-data"><span class="header-section-number">7.6</span> Load the Original Data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the path to the dataset</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the dataset is in the working directory</span></span>
@@ -675,8 +677,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 <p>We will now import the data from our repository using the here command. We can observe that there are 2550 observations with 14 variables. The variables some observations can be viewed using the head() command.</p>
 </section>
-<section id="generate-synthetic-data--llm-ai-tools-were-used-to-help-write-the-code" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="generate-synthetic-data--llm-ai-tools-were-used-to-help-write-the-code"><span class="header-section-number">5.7</span> Generate Synthetic Data- LLM AI tools were used to help write the code</h2>
+<section id="generate-synthetic-data--llm-ai-tools-were-used-to-help-write-the-code" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="generate-synthetic-data--llm-ai-tools-were-used-to-help-write-the-code"><span class="header-section-number">7.7</span> Generate Synthetic Data- LLM AI tools were used to help write the code</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the original dataset to preserve its structure</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>synthetic_df <span class="ot">&lt;-</span> df</span>
@@ -709,8 +711,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 <p>I created a synthetic dataset by copying the structure of the original dataset and replacing the Data_Value column with randomly sampled values within its original range. This ensures that the synthetic data maintains a similar distribution while removing any real-world patterns. While the minimum and maximum values are preserved, the randomness may not reflect trends or correlations present in the original data.</p>
 </section>
 </section>
-<section id="data-cleaning-for-synthetic-data" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Data Cleaning for Synthetic Data</h1>
+<section id="data-cleaning-for-synthetic-data" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Data Cleaning for Synthetic Data</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values and summary statistics</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(synthetic_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -848,8 +850,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 </div>
 <p>To focus on key information, I selected only the most relevant variables from the filtered dataset using the select() function from dplyr. The chosen columns—LocationDesc (state name), LocationAbbr (state abbreviation), Year, Data_Value (cigarette sales/revenue), and GeoLocation (state coordinates)—are essential for analyzing trends over time.</p>
-<section id="scatter-plot-of-revenue-across-time-for-selected-states" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-selected-states"><span class="header-section-number">6.1</span> Scatter Plot of Revenue Across Time for Selected States</h2>
+<section id="scatter-plot-of-revenue-across-time-for-selected-states" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="scatter-plot-of-revenue-across-time-for-selected-states"><span class="header-section-number">8.1</span> Scatter Plot of Revenue Across Time for Selected States</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define custom colors for each state</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>custom_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Georgia"</span> <span class="ot">=</span> <span class="st">"red"</span>, </span>
@@ -897,8 +899,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 <p>To focus on historical trends, I filtered the dataset to include only records from years before 2001 using the filter() function. This step ensures that the analysis captures a consistent time period, especially if later years exhibit different trends or irregularities. By restricting the data to 1970-2000, I aim to observe stable patterns without the potential disruptions seen in later years.</p>
 </section>
-<section id="confirming-observations-per-state" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="confirming-observations-per-state"><span class="header-section-number">6.2</span> Confirming Observations Per State</h2>
+<section id="confirming-observations-per-state" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="confirming-observations-per-state"><span class="header-section-number">8.2</span> Confirming Observations Per State</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Counting the number of observations per state again.</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>state_counts2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">count</span>(LocationDesc)</span>
@@ -918,8 +920,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 <p>To verify the distribution of observations across states after filtering, I used the count() function again to tally the number of records per state in the refined dataset. This step ensures that all selected states (Georgia, Kansas, Idaho, Alabama, and Nebraska) maintain a balanced representation after restricting the data to years before 2001.</p>
 </section>
-<section id="association-of-variables-scatter-plot-with-trend-line" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="association-of-variables-scatter-plot-with-trend-line"><span class="header-section-number">6.3</span> Association of Variables: Scatter Plot with Trend Line</h2>
+<section id="association-of-variables-scatter-plot-with-trend-line" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="association-of-variables-scatter-plot-with-trend-line"><span class="header-section-number">8.3</span> Association of Variables: Scatter Plot with Trend Line</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Data_Value, <span class="at">color =</span> LocationDesc)) <span class="sc">+</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
@@ -942,8 +944,8 @@ F-statistic: 132.4 on 1 and 48 DF,  p-value: 2.117e-15</code></pre>
 </div>
 <p>The key difference between my plot and my classmate’s is that my trend lines appear flatter, while theirs show a clear upward trajectory over time. This is because my synthetic Data_Value was generated randomly, removing any inherent growth patterns present in the original dataset. My classmate’s plot maintains a structured increase, indicating that revenue values naturally rise over time rather than fluctuating randomly.</p>
 </section>
-<section id="regression-analysis-relationship-over-time" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="regression-analysis-relationship-over-time"><span class="header-section-number">6.4</span> Regression Analysis: Relationship Over Time</h2>
+<section id="regression-analysis-relationship-over-time" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="regression-analysis-relationship-over-time"><span class="header-section-number">8.4</span> Regression Analysis: Relationship Over Time</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering data for Georgia</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>georgia_data <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span> <span class="fu">filter</span>(LocationDesc <span class="sc">==</span> <span class="st">"Georgia"</span>)</span>

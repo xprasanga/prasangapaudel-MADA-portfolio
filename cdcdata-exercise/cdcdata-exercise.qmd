@@ -9,7 +9,6 @@ format:
     highlight-style: github
 ---
 
-This exercise is based on CDC dataset.
 
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
@@ -22,6 +21,14 @@ library(readxl) #loading readxl package
 ```
 
 {{< pagebreak >}}
+
+# Introduction
+
+ This is an excercise performed as a requirement for course Modern Applied Data Analytics. 
+ 
+ _This exercise is based on CDC dataset._
+
+
 # Data Acquisition
 In this section we will acquire data from the directory, and have an initial look at it. This data on tax burden across different state was obtained from the annual compendium on tobacco revenue and industry statistics. These datasets are reported on an annual basis, and they include federal and state-level information regarding taxes applied to the price of a pack of cigarettes.
 The data was last updated on March 22, 2021.
@@ -30,7 +37,7 @@ The dataset can be assessed from this link: <https://data.cdc.gov/Policy/Table-o
 
 {{< pagebreak >}}
 
-#Data Importing
+# Importing Data
 
 We will now import the data from our repository using the here command. We can observe that there are 2550 observations with 14 variables. The variables some observations can be viewed using the head() command.
 
@@ -38,7 +45,7 @@ We will now import the data from our repository using the here command. We can o
 # Constructing the file path using here()
 file_path <- here("cdcdata-exercise","cigarette-tax.xlsx")
 
-# Importing the Excel file fromthe file path
+# Importing the Excel file from the file path
 cdc_dataset <- read_excel(file_path)
 
 # Viewing the uppermost data of the imported dataset
@@ -55,6 +62,7 @@ head(cdc_dataset)
 summary(cdc_dataset)
 str(cdc_dataset)
 ```
+
 We have one (continuous) numeric variable in out dataset under that name "Data_Value". This variable actually represents the dollar amount of the revenue generated from cigarette sales. Another variable "Year" which represents the year of data collection has also been coded as numeric. The rest of the variables are coded as character as they have alphabets as values including the TopicID and MeasureId variables. The variable "LocationDesc" represents the name of the States.
 
 ## Checking for missing values

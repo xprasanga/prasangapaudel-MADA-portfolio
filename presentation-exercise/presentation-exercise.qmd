@@ -1,5 +1,5 @@
 ---
-title: "Presentation Exercise"
+title: "Data visualization through complex diagrams"
 author: Prasanga Paudel
 date: February 11, 2025
 format:
@@ -9,7 +9,6 @@ format:
     highlight-style: github
 ---
 
-Placeholder file for the future R coding exercise.
 
 ```{r, echo=FALSE, message=FALSE}
 # loading R packages
@@ -23,9 +22,23 @@ library(ggplot2)
 library(tidyr)
 ```
 
+# Introduction
+
+_Note: This project was completed as a requirement for course BIOS 7010: Modern Applied Data Analytics._
+
+In this project, I will try to replicate some complex data visualization techniques. Complex in a sense that these techniques will include incorporating multiple informations about an observation or group of observation. But, the ultimate goal would be to present the data in a form that is as simple to understand as possible.
+
+For this project, I have identified an article from the popular website fivethirtyeight.com. The article is titled "Most Police Don’t Live In The Cities They Serve" and it basically looks into the data of polica officers across multiple states to check how the choices among police officers are distributed.
+
+For more information please visit:
+<https://fivethirtyeight.com/features/most-police-dont-live-in-the-cities-they-serve/>
+
+
 {{< pagebreak >}}
-# Data Importing
-In this section we will import the data we acquired from fivethirtyeight, and have an initial look at it. The link to the graphical presentation and the actual data is: <https://fivethirtyeight.com/features/most-police-dont-live-in-the-cities-they-serve/>
+
+# Data Acquisition
+
+First, we will import the data we acquired from fivethirtyeight, and have an initial look at it. The link to the graphical presentation and the actual data is provided in the introduction section.
 
 ```{r}
 # Constructing the file path using here()
@@ -34,6 +47,11 @@ file_path <- here("presentation-exercise","data", "police-locals.csv")
 # Importing the Excel file fromthe file path
 police_data <- read.csv(file_path)
 
+```
+
+In the above code, we imported the already downloaded dataset from our local directory. Now, we will look into some of the observations from the dataset. The head() function allows us to extract the first six observation in our dataset. The result is as follow:
+
+```{r}
 # Viewing the uppermost data of the imported dataset
 head(police_data)
 ```
@@ -41,69 +59,65 @@ head(police_data)
 
 {{< pagebreak >}}
 
-# Asking ChatGPT to create a graph based on original gaph
+# Preview of the original graph
 
-I took a screenshot of the graph from the website as it was a fairly long and I instructed chatGPT to follow some instruction so that it creates the graph that I want.
+Below, I have attached a screenshot of the original graph from the website posted by the original aurthur Nate Silver. The graph has elegantly expressed the information on population proportion of police officers belonging to different racial groups across different states. The states are sorted in an ordered style with states with higher total percentage of officers living in the city at higher positions.
+
 ![Graph Screenshot](../presentation-exercise/images/image.JPEG)
-
-The initial prompt is as follow:
-
-I want to create this type of visualization,I have the following variables
-Header	Definition
-city:	U.S. city
-police_force_size:	Number of police officers serving that city
-all:	Percentage of the total police force that lives in the city
-white:	Percentage of white (non-Hispanic) police officers who live in the city
-non-white:	Percentage of non-white police officers who live in the city
-black:	Percentage of black police officers who live in the city
-hispanic:	Percentage of Hispanic police officers who live in the city
-asian:	Percentage of Asian police officers who live in the city
-
-I want you to follow these instruction if it helps:
-1. place the name of the cities to the left
-2. then place the size of the corresponding police force to the right
-3. then in the middle place a scale where you will show what percentage of the officers who live in the city, ( make three categories: All, White, and others and plot their corresponding percent in the scale you created.
-4. mark the scales only at 0%, 25%, 50%, 75%, and 100%
-5. generate data yourself if required
 
 {{< pagebreak >}}
 
-# Directly running the code provided by chatGPT (without providing actual data)
+# Replication of the visualization
 
+Before starting to work on the actual dataset, let's take a few minutes to simplify our objective. We can create a simple dataset with few observations and variables of interest and try to replicate the original graph in a simple form.
+
+We have informations on city names, police force sizes, percentage of police officers living in the city, and their races. Now, lets go ahead and create those variables.
 
 ```{r}
-
-
 # Generate sample data
 data <- data.frame(
   city = c("Laredo, Texas", "Chicago", "Corpus Christi, Texas", "El Paso, Texas", "Philadelphia"),
   police_force_size = c(1435, 12120, 770, 2260, 6045),
   all = runif(5, 10, 70),
   white = runif(5, 5, 65),
-  non_white = runif(5, 5, 65)
-)
+  non_white = runif(5, 5, 65))
 
 data <- data %>% arrange(desc(police_force_size))
 
 data_long <- data %>% 
   pivot_longer(cols = c("all", "white", "non_white"), names_to = "category", values_to = "percentage")
 
+```
+
+Now that we have the simulated dataset, we can work on our graph. We need the cities on the Y-axis (left), and percentage of police officers living in the city on the X-axis. The original graph also plots the information on the total number of police officers in the city on the Y-axis located at the right side. Since, R didnt support two different axes on the same graph,  I used an extended x-axis to plot the total number of police officers for the respective cities.
+
+```{r}
 ggplot(data_long, aes(x = percentage, y = reorder(city, police_force_size), color = category)) +
   geom_point(size = 3) +
-  scale_x_continuous(breaks = c(0, 25, 50, 75, 100), labels = c("0%", "25%", "50%", "75%", "100%"), limits = c(0, 100)) +
-  labs(x = "Percentage of Police Officers Living in the City", y = "City", title = "Percentage of Police Officers Living in the City") +
+  scale_x_continuous(breaks = c(0, 25, 50, 75, 100), 
+                     labels = c("0%", "25%", "50%", "75%", "100%"),
+                     limits = c(0, 110)) +
+  labs(x = "Percentage of Police Officers Living in the City",
+  y = "City", 
+  title = "Simulated Percentage of Police Officers Who Live In The City") +
   theme_minimal() +
-  theme(legend.title = element_blank()) +
-  geom_text(aes(label = police_force_size, x = 105), hjust = 0, size = 3, color = "black", data = data)
+  theme(legend.title = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 20))) +
+  geom_text(aes(label = police_force_size, x = 106), hjust = 0, size = 3, color = "black", data = data)
 
 ```
-This is the figure that was obtained after I ran the code provided by chatGPT, I think chatGPT did a very good job here.
+
+So, I was able to simplify my final objective through few lines of code. Now, I will apply this same strategy on the original website data.
 
 {{< pagebreak >}}
 
 # Final version of the code after repeated iterations
  
-After going through multiple edits and back-and-forth conversation with chatGPT, the following code was obtained:
+After going through multiple edits and back-and-forth modification of the graph, I ended up with the following code which helped me reach closest to the original graph:
+
+## Data Cleaning
+
+At first, I reworked on the dataset to modify it into a form that will ease further analysis.
 
 ```{r}
 # Converting character columns to numeric where necessary
@@ -116,23 +130,34 @@ data_long <- police_data %>%
                names_to = "category", 
                values_to = "percentage")
 
+```
+
+
+After a quick modification, we are now able to plot the graph. We are just applying the same technique of graphing that we used for our simulated dataset.
+
+```{r}
+
 # Creating the plot
 p <- ggplot(data_long, aes(x = percentage, y = reorder(city, percentage), color = category, fill = category)) +  # Ordering cities by 'percentage'
-  geom_point(shape = 21, colour = "black", size = 2, stroke = 0.5) +  # Increasing stroke size
+  geom_point(shape = 21, colour = "black", size = 2, stroke = 0.5) +  
   scale_x_continuous(breaks = seq(0, 1, by = 0.25),  # Adjusting breaks for decimal values
                      labels = scales::percent_format(accuracy = 1),  # Formatting as percentages
-                     limits = c(0, 1),  # Adjusting limits for decimal values
+                     limits = c(0, 1.10),  # Adjusting limits for decimal values
                      position = "top") +
-  labs(x = "", y = "City", title = "Percentage of Police Officers Living in the City") +
+  labs(x = "", y = "", title = "Percentage of Police Officers Living in the City") +
   scale_color_manual(values = c("all" = "dodgerblue", "white" = "black", "non.white" = "forestgreen")) +  # Adjust color for categories
   scale_fill_manual(values = c("all" = "dodgerblue", "white" = "black", "non.white" = "forestgreen")) +  # Fill colors for shape 21
   theme_minimal() +
   theme(
     legend.title = element_blank(),
+    plot.title = element_text(hjust=0.5, margin = margin(b = 20), face = "bold", size = 12.5),
     axis.title.x = element_blank(),
     axis.text.x = element_text(hjust = 0.5),
     plot.margin = margin(10, 10, 10, 60)  # Increasing left margin for y-axis labels
   ) +
+  annotate("text", x = 0, y = Inf, label = "Cities", fontface = "bold", hjust = 2, vjust = -2.3) +
+  annotate("text", x = 1.05, y = Inf, label = "Number of Police", fontface = "bold", hjust = 0.1, vjust = -2.3) +
+  
   geom_text(aes(label = police_force_size, x = 1.05), hjust = 0, size = 3, color = "black", 
             data = data_long %>% filter(category == "all")) +  # Useing data_long filtered for 'all' category
   scale_y_discrete(expand = expansion(add = c(0.5, 0.5))) +  # Adding spacing to y-axis
@@ -143,23 +168,17 @@ p <- ggplot(data_long, aes(x = percentage, y = reorder(city, percentage), color 
 ggsave(here("presentation-exercise", "images", "police_officers_plot.jpeg"), 
        plot = p, width = 6.2, height = 10.2, dpi = 300, limitsize = FALSE)
 
-
-
-# Rendering the plot
-print(p)
-
-
 ```
 
-_I could not load the exact image in R but the saved file shows that the created image is a vertical image with enough spacing between the y-axis components. I also tried placing the total size of the police force at the right side but it seems that ggplot2 is unable to create multiple axes (like two y-axis side by side) R does have options to create multiple axes using par() but i could not make it work_
+_As we can observe, the graph I created is mostly identical to the original plot except some differences in shape fill objects and scale of the image. I was able to successfully place the values on x-axis and on both sides of the y-axis as the original author did. I placed the legend for categories on the right side to avoid over-crowding at the top._
 
 
-![This is the image that has been saved to the directory: presentation-exercise/images](../presentation-exercise/images/police_officers_plot.jpeg)
-*Renaming variable for consistency*
+![Fig: Replication of the original graph published by Nate Silver ](../presentation-exercise/images/police_officers_plot.jpeg)
+
+Now, as we have successfully replicated the graph, we will also try to represent the data in a tabular form. But, before moving into tabulation, we will rename our variable if they have strange characters in their name.
 
 
-Before moving into tabulation, we will rename our variable if they have strange characters in their name.
-
+One of such variable was "non.white". We modified it accordingly.
 ```{r}
 police_data <- police_data %>%
   rename(non_white = non.white)
@@ -170,9 +189,9 @@ police_data <- police_data %>%
 
 In this section, we will create an advance table based on the same data we collected for the above graph.
 
+We will first analyse the data and filter out only the top 10 cities with largets police force as considering all the 100+ cities would make tables visually complex and difficult to read.
 
 ```{r}
-
 # Converting percentage columns to numeric
 police_data <- police_data %>%
   mutate(across(c(all, white, non_white, black, hispanic, asian), ~ suppressWarnings(as.numeric(.)))) %>%
@@ -206,6 +225,13 @@ averages <- police_summary %>%
 
 # Combining the summary and averages
 police_summary_with_averages <- bind_rows(police_summary, averages)
+
+```
+
+
+Now that we have found out the averages and top 10 cities with largest police forces, we will go ahead and plot a table with colors representing the intensity or the percentage of police officers living in different cities. 
+
+```{r}
 
 # Creating the formatted table
 gt(police_summary_with_averages) %>%
@@ -241,8 +267,9 @@ gt(police_summary_with_averages) %>%
   ) %>%
   tab_caption("Table 1: Residency rates of police officers by race across 10 major U.S. cities.")
 ```
-Once I obtained the table, I asked chatGPT to color code the cells by using the prompt:
-_fix this code such that the values if below 25% show 75% transparent orange, if 25%-50% show 50% transparent orange, 50-75 show 25%, and 75 over show 100% opaque color_
+
+
+The cells are formatted according to the values with larger proportion or larger percentage being assigned a darker color. This means that a city or race with comparatively higher proportion of police force living in the city will showw up with a darker color. For example, Among the top 10 cities with largest police force, New York, Chicago and Philadelphia have comparatively greater proportion of police officers living in the city across all races.
 
 
 

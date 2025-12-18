@@ -10,8 +10,6 @@ website:
         file: aboutme.qmd
       - text: "Projects"
         menu:
-          - text: "Data Analysis Exercise"
-            file: cdcdata-exercise/cdcdata-exercise.qmd
           - text: "Presentation Exercise"
             file: presentation-exercise/presentation-exercise.qmd
           - text: "Model Fitting Exercise"

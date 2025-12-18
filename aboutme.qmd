@@ -117,6 +117,11 @@ My research interests include:
 *“Hospitality and Food Industry Human Resource Management” – HFIM 3150*
 
 ⤷ Assisted faculty in developing course plan, and in grading projects and presentations.
+
+**2025 Research Assistant, Department of Agriculture & Applied Economics, Texas Tech University**
+
+⤷ I am currently working as a research assistant under the project "Texas Produced Water Consortium (TxPWC)" assisting the economics team in identifying the best alternative for usage of treated produced water in Texas.
+
 :::
 
 ------------------------------------------------------------------------
@@ -136,7 +141,6 @@ My research interests include:
 
 -   “Applied Linear Algebra, MATH-3300” by University of Georgia
 -   “Applied Calculus” by HarvardX, Harvard University
--   “A Crash Course in Data Science” by Johns Hopkins University
 -   “Applied Machine Learning in Python” by University of Michigan
 -   “Assessing Risk in Agriculture” by United Nations FAO e-learning Academy
 -   “Bayesian Statistics: Techniques and Models” by University of California, Santa Cruz
