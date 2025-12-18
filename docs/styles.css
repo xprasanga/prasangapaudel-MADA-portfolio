@@ -9,42 +9,237 @@ a:hover {
 }
 
 
-/* Two-column intro layout */
+/* === Base layout === */
+body {
+  font-family: 'Inter', 'Open Sans', sans-serif;
+  background-color: #f9fafc;
+  color: #333;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+/* === Section card style === */
+.section-box {
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+  border-left: 6px solid #2c3e50; /* accent stripe */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* === Intro Section Layout === */
 .intro-container {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2em;
-  gap: 2em;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Text column */
 .intro-text {
-  flex: 1 1 55%;
-  min-width: 250px;
+  flex: 1 1 60%;
+  min-width: 280px;
 }
 
-/* Photo column */
 .intro-photo {
   flex: 1 1 35%;
-  text-align: center;
+  text-align: right;
 }
 
 .profile-pic {
-  width: 300px;
+  width: 250px;
+  height: 290px;
   border-radius: 5%;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  margin: 0 auto;
+  object-fit: cover;
+  border: 3px solid #636363;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* Make it mobile-friendly */
-@media (max-width: 768px) {
-  .intro-container {
-    flex-direction: column;
-    text-align: center;
-  }
-  .intro-photo {
-    margin-top: 1em;
-  }
+/* === Lists and Sections === */
+ul {
+  list-style-type: none;
+  padding: 0;
 }
+ul li::before {
+  content: "• ";
+  color: #2980b9;
+  font-weight: bold;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+/* === Links === */
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* === Footer (optional) === */
+footer {
+  text-align: center;
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 3rem;
+}
+
+
+.intro-container {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* === Fix heading numbering color === */
+h1 > span.header-section-number,
+h2 > span.header-section-number,
+h3 > span.header-section-number,
+h4 > span.header-section-number {
+  color: #2c3e50 !important; /* dark blue/black instead of grey */
+  font-weight: 600;
+}
+
+
+/* === Remove grey background from code blocks === */
+pre, pre code {
+  background-color: #2c3e50 !important;  /* pure white */
+  color: #e0e0e0 !important;             /* black text */
+  border: 1px solid #e0e0e0;             /* optional soft border */
+  border-radius: 6px;
+  padding: 1rem;
+  box-shadow: none !important;
+}
+
+
+/* === Fix References background and text color === */
+.references {
+  background-color: #ffffff !important;  /* make background white */
+  color: #000000 !important;             /* make text black */
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #2c3e50; /* same accent as your other boxes */
+}
+
+.references h2 {
+  color: #2c3e50 !important;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+/* Fix links inside references */
+.references a {
+  color: #2980b9;
+  text-decoration: none;
+}
+
+.references a:hover {
+  text-decoration: underline;
+}
+
+
+/* === References section styling === */
+#refs,
+.references,
+.csl-bib-body,
+.csl-entry {
+  background-color: #ffffff !important;  /* white background */
+  color: #000000 !important;             /* black text */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: none !important;
+  border-left: 6px solid #2c3e50;       /* optional accent stripe */
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+/* Heading */
+.references h2,
+#references,
+h2#references {
+  background-color: transparent !important;
+  color: #2c3e50 !important;
+  padding: 0;
+  margin-top: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* Links inside References */
+.references a,
+#refs a,
+.csl-entry a,
+.csl-bib-body a {
+  color: #2980b9 !important;           /* link color */
+  text-decoration: none;
+  background: transparent !important;   /* remove hover background */
+}
+
+/* Remove hover background for links */
+.references a:hover,
+#refs a:hover,
+.csl-entry a:hover,
+.csl-bib-body a:hover {
+  background: transparent !important;   /* no black box */
+  color: #6cc0e5 !important;           /* optional hover color */
+}
+
+
+/* === Fix black background bar above References section === */
+
+/* Quarto sometimes wraps references in a .quarto-appendix or .callout */
+#refs,
+.references,
+div#refs,
+div.references,
+div.quarto-appendix,
+div.callout,
+section#references,
+div.section#references {
+  background: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Remove the dark top band (theme panel background) */
+#refs::before,
+.references::before,
+div#refs::before,
+section#references::before,
+div.callout::before,
+div.quarto-appendix::before {
+  content: none !important;
+  background: none !important;
+}
+
+/* Reset heading color */
+#references h2,
+.references h2,
+h2#references {
+  background:  #ffffff !important;
+  color: #2c3e50 !important;
+  border: none;
+  box-shadow: none;
+}
+

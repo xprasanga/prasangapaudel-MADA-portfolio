@@ -10,12 +10,6 @@ website:
         file: aboutme.qmd
       - text: "Projects"
         menu:
-          - text: "Starter Analysis Exercise"
-            file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
-          - text: "R Coding Exercise"
-            file: coding-exercise/coding-exercise.qmd
-          - text: "Synthetic Data Generation"
-            file: data-excercise/synthetic-data.qmd
           - text: "Data Analysis Exercise"
             file: cdcdata-exercise/cdcdata-exercise.qmd
           - text: "Presentation Exercise"
@@ -26,6 +20,10 @@ website:
             file: ml-models-exercise/ml-models-exercise.qmd
           - text: "Tidy Tuesday Exercise"
             file: tidytuesday-exercise/tidytuesday-exercise.qmd
+          - text: "Shopping Behavior"
+            file: metrics-exercise/metrics.qmd
+          - text: "Milk Elasticity"
+            file: pricetheory-exercise/pricetheory.qmd
     right:
       - icon: github
         href: https://github.com/xprasanga/prasangapaudel-MADA-portfolio

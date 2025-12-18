@@ -1,79 +1,163 @@
 ---
-title: "Welcome!"
+title: "Prasanga Paudel"
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: false
+    number-sections: false
+    smooth-scroll: true
+    embed-resources: true
 ---
 
-<div class="intro-container">
-
-<div class="intro-text">
-
+::::: intro-container
+::: intro-text
 ## Introduction
 
-Hello! My name is **Prasanga Paudel**, and I am passionate about applying data analysis and economic principles to solve real-world problems. I enjoy exploring data-driven insights that can inform better decisions in agriculture, health, and environmental policy.
+Hello! My name is **Prasanga Paudel**, and I am a student of Applied Economics. I am passionate about applying my analytical skills and economic understanding to solve real-world problems. I enjoy exploring data-driven insights that can inform better decisions in business, health, environment and energy sectors.
 
--ll
+A short description of myself:
 
--ll
+-   Name: Prasanga Paudel
+-   Phone: 762-728-1339
+-   E-mail: praspaud\@ttu.edu
+-   Residence: Lubbock, Texas
+-   Current employment: Research Assistant at TTU
 
--ll
 
--ll
+:::
 
--ll
+::: intro-photo
+<img src="assets/images/unnamed.jpg" alt="Prasanga Paudel" class="profile-pic"/>
+:::
+:::::
 
--ll
+------------------------------------------------------------------------
 
-</div>
-
-<div class="intro-photo">
-
-<img src="assets/images/unnamed.jpg" alt="Prasanga Paudel" class="profile-pic">
-
-</div>
-
-</div>
-
----
-
+::: section-box
 ## Education
 
-I am currently pursuing an MS in Agricultural and Applied Economics at the University of Georgia. I completed my undergraduate degree in Agricultural Science in Nepal. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.
+I am a first year PhD student in Agriculture and Applied Economics at Texas Tech University (TTU), Lubbock, Texas. I completed my undergraduate degree in Agricultural Science in Nepal, and my masters degree in Applied Economics at the University of Georgia, Athens, Georgia. My academic journey is driven by a strong motivation to address real-world challenges in applied fields through rigorous quantitative analysis.
 
--ll
+My academic history:
 
--ll
+📚 **PhD in Agriculture and Applied Economics (Texas Tech University, Lubbock)**
 
--ll
+-   Grade: 4/4 (in progress)
+-   Thesis: undecided
 
--ll
+📚 **Masters of Science in Agriculture and Applied Economics (University of Georgia, Athens)**
 
--ll
+-   Grade: 3.65/4
+-   Thesis: US Citizen’s willingness to pay for gasoline tax.
 
--ll
+📚 **Bachelor of Science in Agriculture (Tribhuvan University, Kathmandu)**
 
----
+-   Average Grade: 73/100
+-   Thesis: Assessment of Covid-19 Shocks in Dairy Market of Chitwan.
+:::
 
+------------------------------------------------------------------------
+
+::: section-box
 ## Programming Experience
 
 I have experience with the following programming tools:
-- **SAS**
-- **STATA**
-- **MATLAB**
 
----
+⌖  MATLAB (6 month, academic)
 
+⌖ SAS (2 years, academic and research)
+
+⌖  STATA (1 year, academic and research)
+
+⌖  Python (6 months, academic)
+
+⌖  R-studio (2 years, academic and research)
+
+⌖  SPSS (1 year, research)
+:::
+
+------------------------------------------------------------------------
+
+::: section-box
 ## Research Interests
 
 My research interests include:
-**Food Economics**, **Environmental Economics**, **Policy Analysis**, **Health Economics**
 
----
+-   Business Economics
+-   Environmental Economics
+-   Policy Analysis
+-   Health Economics
+-   Energy Economics
+:::
 
-## Expectations from This Course
+------------------------------------------------------------------------
 
-Through this course, I hope to learn data analysis techniques and skills that are directly applicable to biological and applied economics fields.
+::: section-box
+## Work Experience
 
----
+**2021 CIMMYT International, Kathmandu**
 
-## Something Interesting About Me
+⤷ Collaborated in multiple projects of National Rice Survey 2021 as an enumerator and on-field technical representative.
 
-I love watching soccer and cricket. My favorite club is **FC Bayern Munich**, a club from Germany. My favorite players from Bayern are Thomas Müller, Manuel Neuer, and Jamal Musiala.
+**2023 Research Assistant, Department of Agriculture & Applied Economics, UGA**
+
+⤷ Contributed to data analysis and economic assessment of the research project “Sustaining soybean production in the southeast United States through Integrated Soil Health Management System” as an RA.
+
+**2024 Teaching Assistant, Department of Agriculture & Applied Economics, UGA**
+
+*“Financial Management” - HFIM 3210*
+
+⤷ Facilitated class sessions and provided academic support including grading exams, assignments, and projects, providing feedback to improve student performance.
+
+**2024 Teaching Assistant, Department of Agriculture & Applied Economics, UGA**
+
+*“Hospitality and Food Industry Human Resource Management” – HFIM 3150*
+
+⤷ Assisted faculty in developing course plan, and in grading projects and presentations.
+:::
+
+------------------------------------------------------------------------
+
+::: section-box
+## Extracurricular Achievements
+
+-   2020 Poster presentation on “Potentiality and strategies for Agro-tourism in Nepal”
+-   2020 National Member, Society for Conservation Biology Nepal
+-   2022 Attended “National Dialogue on Agriculture Financing in Nepal 2022”
+:::
+
+------------------------------------------------------------------------
+
+::: section-box
+## Additional Academic Courses and Certificates
+
+-   “Applied Linear Algebra, MATH-3300” by University of Georgia
+-   “Applied Calculus” by HarvardX, Harvard University
+-   “A Crash Course in Data Science” by Johns Hopkins University
+-   “Applied Machine Learning in Python” by University of Michigan
+-   “Assessing Risk in Agriculture” by United Nations FAO e-learning Academy
+-   “Bayesian Statistics: Techniques and Models” by University of California, Santa Cruz
+-   "Econometrics: Method and Applications" by Erasmus University Rotterdam
+:::
+
+------------------------------------------------------------------------
+
+::: section-box
+## Professional Courses and Certificates
+
+-   "A crash course in Data Science" by Johns Hopkins University
+-   “Data Analysis with R” by International Business Machines, IBM
+-   "Introduction to Marketing" by University of Pennsylvania
+-   "Data Visualization in R" by IBM
+-   "Introduction to Data Analytics" by IBM
+-   "SQL for Data Science with R" by IBM
+-   "Assessment for Data Analysis and Visualization Foundations" by IBM
+-   "Data Analysis with R" by IBM
+-   "Introduction to R programming for Data Science" by IBM
+-   "Excel Basics for Data Analysis" by IBM
+-   "Data Visualization and Dashboards with Excel and Cognos" by IBM
+-   "Graphic Design" by University of Colorado Boulder
+:::
