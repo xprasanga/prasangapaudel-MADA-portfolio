@@ -1,5 +1,5 @@
 ---
-title: "Model Fitting Exercise"
+title: "Model Fitting and Model Evaluation"
 author: Prasanga Paudel
 date: February 28, 2025
 format:
@@ -8,8 +8,6 @@ format:
     number-sections: true
     highlight-style: github
 ---
-
-
 
 ```{r, echo=FALSE, message=FALSE}
 # loading R packages
@@ -25,11 +23,27 @@ library(pROC)
 library(tidymodels)
 ```
 
+# Introduction
 
+This project is completed as a requirement for BIOS: 7010 (Modern Applied Data Analytiics). This “Model Fitting” assessment is a data exploration and model-fitting project where I use real pharmacokinetic (drug concentration) data for a drug called Mavoglurant. Here, we are practicing the full modeling workflow, from data wrangling and EDA (exploratory data analysis) to fitting and evaluating simple statistical models using the tidymodels framework in R.
+
+I will not be not doing a pharmacology study in detail, but the goal is to learn and demonstrate modeling workflow skills.
+
+The objectives for this project are set as:
+
+1.  Load, clean, and explore messy real-world data (with little documentation).
+
+2.  Derive a meaningful outcome variable (“Y”) from time-series drug concentration data.
+
+3.  Fit simple linear and logistic models with tidymodels.
+
+4.  Interpret the results and document the analysis clearly in a Quarto file.
 
 # Importing Dataset
 
-We will first import our dataset from the directory.
+The dataset Mavoglurant_A2121_nmpk.csv contains pharmacokinetic measurements with repeated observations over time for multiple subjects who received different doses of a drug.
+
+We will first import our dataset from the directory and observe the first six observation from the dataset.
 
 ```{r}
 # Constructing the file path using here()
@@ -42,18 +56,26 @@ Mavoglurant_data <- read.csv(file_path)
 head(Mavoglurant_data)
 ```
 
+We can observe that there are some dummy variables such as SEX, categorical varaiables such as RACE, and contunuous variables such as WT, HT, etc. A brief description of some of the interesting variables is provided below:
 
+| Variable | Description |
+|------------------------------------|------------------------------------|
+| ID | Individual patient/subject ID |
+| TIME | Time since dose (hours) |
+| DV | Drug concentration in the body (the measured value at that time) |
+| DOSE | Amount of drug administered |
+| AMT | Dosing amount (nonzero when TIME = 0) |
+| OCC | Occasion (e.g., 1st or 2nd dose cycle) |
+| AGE, SEX, RACE, WT, HT | Subject characteristics |
+| EVID | Event ID (whether a record is a dose event or observation) |
 
+# Looking into the dataset and preparing for EDA
 
-# Looking into the dataset and preparing for EDA 
-
-
-In this section, we will have an initial look into the dataset and prepare a new dataset for EDA.
-
+In this section, we will have an initial look into the dataset and prepare a new dataset for Exploratory Data Analysis.
 
 ## Plotting DV on Y-axis and TIME on X-axis
 
-Here, we will write a code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis, stratified by dose ( using a different color for each dose). 
+As discussed, DV represents the drug concentration in the body (the measured value at a particular time). As this variable is an important part of our analysis, we will look at how the values within this value are distributed. Here, we will write a code to create a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis, stratified by dose (using a different color for each dose).
 
 ```{r}
 # Creating a line plot with different colors for each dose
@@ -66,10 +88,17 @@ ggplot(Mavoglurant_data, aes(x = TIME, y = DV, group = ID, color = factor(DOSE))
   theme_minimal()
 ```
 
-_This figures show the three doses in three colors. The DOSE 37.5 is not visible in this graph, probably because it is less frequent._
+This figure shows the three doses in three colors. The DOSE 37.5 is not visible in this graph, probably because it is less frequent.
 
+Lets actually look into the dataset to see if this is the case. Lets tabulate the DOSE variable basd on frequency.
 
-## Preparing the data
+```{r}
+table(Mavoglurant_data$DOSE)
+```
+
+As suspected, Dose amount 37.5 is less frequent than other two doses, 25 and 50, which are both above 1200.
+
+## Considering the time stamp
 
 As there are some individuals that seem to have received the drug more than once, we will only keep observations with OCC = 1
 
@@ -80,25 +109,28 @@ Mavoglurant_data_OCC1 <- subset(Mavoglurant_data, OCC == 1)
 #writing code to exclude the observations with TIME = 0
 Mavoglurant_data_filtered <- Mavoglurant_data_OCC1 %>%
   filter(TIME != 0)
-
 ```
-
 
 ## Computing the total amount of drug for each individual by adding all the DV values
 
-Here, we will compute the total amount of drug for each individual by adding all the DV values.
+Here, we will compute the total amount of drug for each individual by adding all the DV values. The “Y” variable is the outcome variable which we will try to model. It represents the total drug concentration measured over time for each subject.
+
+Here’s how it’s created:
+
+Each subject (ID) has multiple rows (time points). We remove the “dose event” rows (TIME == 0) because they’re not actual concentration measurements. Then, we sum up all the DV values for each individual across all their time points.
 
 ```{r}
 summarized_data <- Mavoglurant_data_filtered %>%
   group_by(ID) %>%
   summarize(Y = sum(DV, na.rm = TRUE))
 
-
 dim(summarized_data) # checking dimension
 ```
 
+Since, the total number of individuals in the dataset is 120, the dimensions are correct.
 
-Now, we will create a dataframe that contains only the observations where TIME == 0, and then we will check the dimensions to see if it is correctly created. 
+Now, we will create a dataframe that contains only the observations where TIME == 0, and then we will check the dimensions to see if it is correctly created.
+
 ```{r}
 # creating a data frame that contains only the observations where TIME == 0
 time_zero_data <- Mavoglurant_data_OCC1 %>%
@@ -107,36 +139,42 @@ time_zero_data <- Mavoglurant_data_OCC1 %>%
 dim(time_zero_data) # checking dimension
 ```
 
-Now, we will create a new dataframe using the join function and then we will check the dimensions to see if it is correctly created. 
+The number of observations are same as the other dataset we created a while ago. The dataset is therefore correctly created.
+
+Now, we will create a new dataframe using the join function and then we will check the dimensions again to see if it is correctly created.
+
 ```{r}
 # using the join function to combine those two data frames
 final_data <- time_zero_data %>%
   left_join(summarized_data, by = "ID")
 
-
 dim(final_data) # checking dimension
 ```
 
+So the resulting dataset after cleaning will have one row per individual, and Y will represent their total observed drug level (kind of a crude version of “area under the concentration-time curve”).
+
 ## Creating the final dataset
 
-Writing a code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT
+Now, we need one more edit before our dataset is ready for analysis. Now, we'll write a code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT.
+
 ```{r}
 final_data_cleaned <- final_data %>% mutate (
-  RACE = factor(RACE), SEX = factor(SEX)) %>% select (Y, DOSE, AGE, SEX, RACE, WT, HT
-)
+  RACE = factor(RACE), SEX = factor(SEX)) %>% select (Y, DOSE, AGE, SEX, RACE, WT, HT)
 
 dim(final_data_cleaned)
+```
+
+The dimensions are as expected. Let's quickly save the dataset.
+
+```{r}
 saveRDS(final_data_cleaned, here("ml-models-exercise", "data", "data.rds"))
 ```
 
-
 # Exploratory Data Analysis
 
-Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables. 
+Now, we will go through the Exploratory Data Analysis process. We will create tables, figures, and plots to see if there is any relation between the variables.
 
 ## Making some useful summary tables
-
-
 
 Here, we create a summary table of all the variables we have in our final dataset.
 
@@ -157,20 +195,16 @@ summary_stats <- summary_stats %>%
                names_sep = "_")
 
 # Printing the summary statistics as a  table format
-kable(summary_stats, caption = "Summary Statistics", align = "c")
+kable(summary_stats, caption = "This table represents the summary statistics of the 5 variables.", align = "c")
 ```
 
-_This table represennts the summary statistics of the 5 variables._
-
-
+We can observe that the average age of the individuals is 33 years and the average height and weight are 1.75 m and 82.55 kg respectively.
 
 ## Plotting the relationship with outcome of interest (Y)
 
-
 Here, we will show some scatterplots or boxplots, whichever is suitable, between the main outcome of interest (total drug, Y) and other predictors. We will use box-plot if the variable is categorical.
 
-
-```{r}
+```{r, message=FALSE}
 
 # Scatterplot: Y vs DOSE
 p1 <- ggplot(final_data_cleaned, aes(x = DOSE, y = Y)) +
@@ -215,17 +249,18 @@ combined_plots <- (p1 + p2) / (p3 + p4) / (p5 + p6)
 combined_plots
 
 ```
-We can observe from the figures above that: 
 
-1. Dose and Y (Total drug) dont have a strong correlation.
-2. Age and Y dont have a strong correlation.
-3. Weight and Y have a negative correlation.
-4. Height and Y have a negative correlation.
-5. Sex 1 on average has higher total drug.
+We can observe from the figures above that:
+
+1.  Dose and Y (Total drug) dont have a strong correlation.
+2.  Age and Y (Total drug) dont have a strong correlation.
+3.  Weight and Y (Total drug) have a negative correlation.
+4.  Height and Y (Total drug) have a negative correlation.
+5.  Sex 1 on average has higher total drug.
 
 ## Plotting the distribution of variables
 
-Now, we will plot the distributions of our variables to make sure they all make sense. We will set the bin according to the values and distribution patterns within the variable 
+Now, we will plot the distributions of our variables to make sure they all make sense. We will set the bin according to the values and distribution patterns within the variable
 
 ```{r}
 
@@ -290,14 +325,11 @@ combined_plots
 
 The distribution of the variables make sense in my opinion. Age, Weight, Height are all fairly normally distributed. Total drug has a somewhat uniform distribution. Other categorical variables have an unbalanced distribution among them but it is practically possible if the research is focused on specific group of people.
 
-
-
-
 ## Pair-wise plots
 
-Here, we will plot different variables against each other to see any possible relation or pattern between the variables. 
+Here, we will plot different variables against each other to see any possible relation or pattern between the variables.
 
-_Note: Please ignore the plots of a variable against itself as it does not make any sense._
+*Note: Please ignore the plots of a variable against itself as it does not make any sense.*
 
 ```{r}
 
@@ -317,11 +349,12 @@ print(pair_plot)
 
 
 ```
-It is visible that HT and WT are strongly correlated. Y shows correlation with WT. Age and WT also show some moderate correlation.
 
-## Correlation among variables
+It is visible that HT and WT are strongly positively correlated. Age and WT also show some moderately positive correlation. The variables DOSE, AGE, WT and HT also show a positive/negative correlation pattern with our variable of interest Y in the figures.
 
-Here, we will create a cross-table matrix that shows the correlation among our variable of interests.
+## Correlation values among variables
+
+Here, we will create a cross-table matrix that will mathematically show the correlation among our variable of interests.
 
 ```{r}
 # Creating a correlation plot
@@ -341,13 +374,15 @@ print(cor_plot)
 
 It is visible that HT and WT show the maximum correlation with a correlation coefficient of 0.6. Age and HT also show sloghtly weaker correlation. Dose has no correlation with WT and HT.
 
-# Fitting a model for Y with only DOSE, and ALL predictors 
-
+# Fitting a model for Y
 
 We will now fit a linear model to the continuous outcome (Y) using the main predictor of interest to be DOSE in one case and using all predictors in another case.
 
 ## Fitting a linear model using only DOSE as the predictor
 
+In our first model we will only use DOSE to explain the variation in Y (total drug).
+
+Model 1: Y = $β_0$ + $β_1$ DOSE + $ϵ$
 
 ```{r}
 # Fitting a linear model using only DOSE as the predictor
@@ -355,12 +390,16 @@ model_dose <- lm(Y ~ DOSE, data = final_data_cleaned)
 
 summary(model_dose)
 ```
-We can observe that dose has an insignificant effect on Y.
 
+The p-value for DOSE is less than 0.05. Therefore we can conclude that dose has a significant effect on Y when only DOSE is included in the model, and the effect is positive. A unit increase in DOSE increases the total observed drug (Y) by approximately 58 units.
 
+The $R^2$ value for the model is 0.51
 
 ## Fitting a linear model using all predictor
 
+In our next model, we will add AGE, SEX, RACE, WT and HT in addition to DOSE into our model 1.
+
+Model 2: Y= $β_0$ + $β_1$DOSE + $β_2$ AGE + $β_3$ SEX + $β_4$ RACE + $β_5$ WT + $β_6$ HT + $ϵ$
 
 ```{r}
 # Fit a linear model using all predictors
@@ -368,18 +407,16 @@ model_all <- lm(Y ~ DOSE + AGE + SEX + RACE + WT + HT, data = final_data_cleaned
 
 summary(model_all)
 ```
-We can observe that SEX2 and Wt has a significant effect on Y. But majority o the predictors are insignificant in the model. This has lead to an insufficient information to predict the dependent vriable and only around 10% variation in the dependent variable is explained by the model with all predictors. With only DOSE the performance is even poorer.
 
+Model 2 also shows a similar result for DOSE even after controlling for other variables/factors. DOSE is statistically significant with a similar magnitude positive effect.
 
+We can also observe that Weight has a significant effect on Y. But majority of the predictors are insignificant in the model. This has lead to an insignificant increase in information to predict the dependent vriable and only around 62% variation in the dependent variable is explained by the model with all predictors. With only DOSE the performance is little weaker, with DOSE explaining around 50% of the variation.
 
-## computing RMSE and R-squared for both models
+## Manually computing RMSE and R-squared for both models
 
-Here, we will compute the RMSE and R-squared for the both the models discussed above. 
-
+Here, we will compute the RMSE and R-squared for the both the models manually. We will first define a function that represents the formula to calculate RMSE and $R^2$. Then, we will apply the formulas to both the models.
 
 ```{r}
-
-
 # creating function to compute RMSE and R-squared
 compute_metrics <- function(model, data) {
   # Predictions
@@ -415,18 +452,22 @@ kable(results_table, caption = "Model Performance Metrics", align = "c")
 
 ```
 
-_This tables shows the model performance with Y as dependent variable. "All predictor" model has a lower RMSE and explains the variation in dependent variable better that the "Dose only" model._
+This table summarizes the model performance with Y as dependent variable. "All predictor" model has a lower RMSE and explains the variation in dependent variable better that the "Dose only" model. This makes sense as more predictor variables in the full model explain more of the variation and thus the error sum of square drops compared to DOSE-only model.
+
+# Fitting a Logistic model for SEX
+
+Now, this is completelty rediculous! Predicting someone's sex based on other characteristics is a very strange thing to try. However, this is a requirement for this assignment, so we will go forward and see what results we get.
 
 
-
-# Fitting a Logistic model for SEX with only DOSE, and ALL predictors 
-
-
-We will now fit a linear model to the binary outcome (SEX) using the main predictor of interest to be DOSE in one case and using all predictors in another.
-
+We will now fit a logistic model to the binary outcome (SEX) using DOSE in one case and using all predictors in another.
 
 ## Fiting a logistic model using only DOSE as the predictor
 
+The question here is, can we predict SEX by looking at someone's medication dose? Let's see.
+
+We will rely on the following logit model:
+
+Model 3: $SEX = f(DOSE)$
 
 ```{r}
 # Ensuring SEX is a binary factor
@@ -437,10 +478,16 @@ final_data_cleaned <- final_data_cleaned %>%
 logistic_dose <- glm(SEX ~ DOSE, data = final_data_cleaned, family = binomial())
 summary(logistic_dose)
 ```
-We can observe that DOSE does not significantly affect SEX.
 
+As expected, we can observe that DOSE does not significantly affect SEX, and we can not describe someone's SEX by just looking at their medication doses.
 
 ## Fitting a logistic model using all predictors
+
+We just found out that DOSE cant help up predict someone's SEX. But, what if we add more variables to the model? If we add information on height, weight, race, and age in addition to DOSE, can we then predict someone's SEX accurately?
+
+For this purpose, we will rely on the following logit model:
+
+Model 4: $SEX = f(DOSE, AGE, RACE, WT, HT, Y)$
 
 ```{r}
 # Fit a logistic model using all predictors
@@ -449,15 +496,20 @@ logistic_all <- glm(SEX ~ DOSE + AGE + RACE + WT + HT + Y, data = final_data_cle
 
 summary(logistic_all)
 ```
-We can observe that HT significantly affect SEX. We will need to check the Accuracy and AUC values to tell about the performance of the model.
 
+
+Well, we obtain an interesting result. It can observed that height (HT) significantly affect SEX. This kind of makes sense when we think about it in this way: Men and Women usually have a distinct height pattern. Men are usually tall and women are usually short in most of the countries. According to reports, the average height for US adult men is around 5'9" (175 cm) and for US adult women is about 5'4" (163 cm). So, prediction of someone's SEX based on height is quite possible. Except height, all other factors included in the model are statistically insignificant.
+
+Now, we will need check the Accuracy and AUC values to compare the performance of our two models: Model 3 and Model 4.
 
 ## Computing accuracy and ROC-AUC for both the models
 
-Here, we will compute  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable.
+Here, we will compute accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable.
 
-```{r}
 
+We will again define functions to compute the metrices.
+
+```{r, message=FALSE}
 # Function to compute accuracy and ROC-AUC
 compute_metrics_logistic <- function(model, data) {
   # Predict probabilities
@@ -494,11 +546,13 @@ results_table_logistic <- data.frame(
 # Print the table using kable
 kable(results_table_logistic, caption = "Logistic Model Performance Metrics", align = "c")
 ```
-The table above shows the  accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only slightly better than a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.The accuracy for "all predictor" model is also better.
 
-# Module 10  (Model Improvement)
+The table above shows the accuracy and ROC-AUC for both the models discussed above with SEX as dependent variable. The AUC value for DOSE only slightly better than a random model. The AUC value for All predictors is close to 1 implying a nearly perfect prediction performance. I personally find this very surprising that we can predict SEX so perfectly.The accuracy for "all predictor" model is also better.
 
-First, we will remove the variable RACE from our dataset, and store our seeding value `1234` as `rngseed`.
+# Model Improvement
+
+In this section, we will try a different approach.
+First, we will remove the variable RACE from our dataset, and store our seeding value 1234 as rngseed.
 
 ```{r}
 data <- subset(final_data_cleaned, select = -RACE) #removing race
@@ -506,8 +560,7 @@ rngseed=1234 # saving value, rngseed = 1234
 set.seed(rngseed) # setting seed based on rngseed
 ```
 
-
-We will now split the data into `train_data` and `test data`.
+We will now split the data into train data and test data. We will use 25% of the data as test data.
 
 ```{r}
 # Putting 3/4 (75%) of the data
@@ -518,42 +571,48 @@ train_data <- training(data_split) # setting training data
 test_data  <- testing(data_split) #setting testing data
 ```
 
-##Fitting models
+## Fitting models
 
-We will now define the two models that we will be working on:
-the model with "all predictors" and the model with only `DOSE` as predictor
+We will now define the two models that we will be working on: the model with "all predictors" and the model with only DOSE as predictor.
+
+**Note: Ideally, our test data should never be used in the development process of our model. It is only used after we are done with all model selection and we want to test if the model we selected based on our train data infact work equally great on the never-seen before test data.** But, just for the sake of easy comparision we will use the train/test technique in this project although we already used the whole dataset in earlier models.
+
+With that being said, lets define the two models:
+
 ```{r}
 m1 <- lm(Y ~ DOSE , data = train_data) # defining model 1
 m2 <- lm(Y ~ DOSE + AGE + SEX  + WT + HT, data = train_data) #defining model 2
 ```
 
+Making predictions using train data:
 
-**Making predictions:**
-
-Then, we make predictions based on these models.
+Then, we make predictions based on these models .
 
 ```{r}
 predictions_m1 <- predict(m1, newdata = train_data)
 predictions_m2 <- predict(m2, newdata = train_data)
 ```
 
-**Computing RMSE**
+Computing RMSE using train data:
 
-RMSE for m1
+* RMSE for m1
 
 ```{r}
 RMSE_m1 <- sqrt(mean((train_data$Y - predictions_m1)^2))
 print(paste("RMSE for m1:", RMSE_m1))
 ```
 
-RMSE for m2
+* RMSE for m2
 
 ```{r}
 RMSE_m2 <- sqrt(mean((train_data$Y - predictions_m2)^2))
 print(paste("RMSE for m2:", RMSE_m2))
 ```
 
-RMSE for null model
+* RMSE for null model
+
+We will also estimate the null model and calculate it's performance metrics so that we can compare the null model with other models.
+
 
 ```{r}
 # Fit the null model (intercept-only model)
@@ -574,21 +633,23 @@ RMSE_null <- sqrt(mean(residuals_null^2))
 # Print RMSE
 print(paste("RMSE for the null model:", RMSE_null))
 ```
-Comparing all three RMSE values: RMSE ( all pred) > RMSE (DOSE) > RMSE (NULL)
-Based on the RMSE values, we can conclude that Model with "all predictors" is the one that is best fitting.
+
+Comparing all three RMSE values: RMSE (all pred) \> RMSE (DOSE) \> RMSE (NULL). Based on the RMSE values, we can conclude that model with "all predictors" is the one that is best fitting.
+
+## Cross-Validation usuing train data
+
+In this section, we will use CV technique (10 folds) to split the train-data into 90%-10% analysis dataset and assessment dataset, and compare the RMSE values. We will use the same seed value (1234) which we earlier stored as rngseed.
 
 
-
-## Setting random seed (1234)
-
-In this section, we will use CV technique to split the `train-data` into 90%-10% analysis dataset and assessment dataset, and compare the RMSE values.
-
+Lets first define the seed and CV folds.
 ```{r}
 set.seed(rngseed) # setting seed based on rngseed
 folds <- vfold_cv(train_data, v = 10) # creating 10 folds
 folds
 ```
 
+
+Lets now calculate RMSE based on the 10 folds.
 
 ```{r}
 # Initializing vectors to store RMSE results
@@ -623,41 +684,53 @@ results <- data.frame(
   Fold = 1:10,
   Analyze_Size = analyze_size,  
   Assessment_Size = assessment_size,
-  RMSE_m1 = rmse_m1,
-  RMSE_m2 = rmse_m2
+  "RMSE DOSE-only" = rmse_m1,
+  "RMSE Full" = rmse_m2
 )
-
-# Print results
-print(results)
-
 ```
-We can observe that in most of the cases, the RMSE of "NULL Model" is greater.
+
+We have now calculated the RMSE values for both the models based on the 10 folds created using the train data. RMSE_m1 represents the RMSE for the dose-only model. RMSE_m2 represents the RMSE value for the all predictors model.
+
+
+Lets see the actual result over 10 folds.
+
+```{r}
+print(results)
+```
+
+Lets calculate the average RMSE value over the 10 folds for both the models.
+
 
 ```{r}
 # Compute average RMSE for each model
 avg_rmse_m1 <- mean(rmse_m1)
 avg_rmse_m2 <- mean(rmse_m2)
 
-print(paste("Average RMSE for m1:", avg_rmse_m1))
-print(paste("Average RMSE for m2:", avg_rmse_m2))
+print(paste("Average RMSE for DOSE-only model:", avg_rmse_m1))
+print(paste("Average RMSE for all predictors mdoel:", avg_rmse_m2))
 ```
 
-But, on average, the RMSE value for the NULL Model (m1) is greater than RMSE for m2
+On average, the RMSE value for the Dose-only model (m1) is greater than RMSE for the full model (m2).
+
+Now that we have the RMSE values, we can also calculate the standard errors for the models
 
 ```{r}
 se_rmse_m1 <- sd(rmse_m1) / sqrt(10)
 print(paste("Standard Error of RMSE for m1:", se_rmse_m1))
 ```
 
+The standard Error for model m1 is 67.50
+
 ```{r}
 se_rmse_m2 <- sd(rmse_m2) / sqrt(10)
 print(paste("Standard Error of RMSE for m2:", se_rmse_m2))
-
 ```
-The standard error for both the Model are fairly acceptable, and the RMSE across the 10 folds can be considered fairly consistent.
 
+The standard Error for model m2 is 64.82
 
-## Changing the random seed to: 1212
+The standard error for both the Model are fairly acceptable given the average is around 645-690, and the RMSE across the 10 folds can be considered fairly consistent.
+
+### Changing the random seed to: 1212
 
 Here, we will change the seeding value and do all the analysis again.
 
@@ -666,7 +739,6 @@ set.seed(1212) # setting seed based on rngseed
 folds <- vfold_cv(train_data, v = 10) # creating 10 folds
 folds
 ```
-
 
 ```{r}
 # Initializing vectors to store RMSE results
@@ -716,7 +788,9 @@ print(paste("Average RMSE for m1:", avg_rmse_m1))
 print(paste("Average RMSE for m2:", avg_rmse_m2))
 ```
 
-In most of the cases, the RMSE of NULL Model is higher that the model with all predictors. This is similar to the result obtained from previous seed. m1, on average, has a higher RMSE.
+In most of the cases, the RMSE of Dose-only model is still higher that the model with all predictors.
+
+m1, on average, has a higher RMSE than m2. This is similar to the result obtained from previous seed. 
 
 ```{r}
 se_rmse_m1 <- sd(rmse_m1) / sqrt(10)
@@ -728,14 +802,13 @@ se_rmse_m2 <- sd(rmse_m2) / sqrt(10)
 print(paste("Standard Error of RMSE for m2:", se_rmse_m2))
 ```
 
-The Standard Error decreased in both the cases when we use another random seed.
+The Standard Error decreased in both the cases when we use another random seed, more importantly, the order remains the same. Model 2 has a smaller standard error.
 
-
-
-#  The following code is where ANNALISE CRAMER's contribution begins:
+# This is a collaboration project, and the following code is where ANNALISE CRAMER's contribution begins:
 
 First, we will combine the non-cross validated models together into a dataframe.
-```{r}
+
+```{r, message=FALSE}
 #create data frame with obs and pred values
 df_predictions <- rbind(
   data.frame(Observed = train_data$Y, Predicted = predictions_m1, Model = "m1"),
@@ -750,7 +823,8 @@ head(df_predictions)
 Then use ggplot to create a figure that plots (as symbols) observed values on the x-axis and predictions (from each of the 3 models, including the null model) on the y-axis. Use a different color and/or a different symbol to differentiate between the 3 model predictions. Alternatively, you can use facets. Let both x and y axes go from 0 to 5000 and add a 45 degree line. For a good model, the points will fall along that line, namely observed and predicted values agree - with some scatter.
 
 This looks a little weird given the data is horizontally clustered, but after examining the models more closely I think it's okay, the dose-only model is based off of 3 possible doses, and the null model is based off one value. None of these models looks particularly good.
-```{r}
+
+```{r, message=FALSE}
 ggplot(df_predictions, aes(x = Observed, y = Predicted, color = Model, shape = Model)) + #color and shape by model
   geom_point(alpha = 0.6, size = 2) +  # Add points with transparency
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "black") +  # 45-degree line
@@ -841,22 +915,23 @@ ggplot(preds_df, aes(x = Observed)) +
 
 ```
 
+# This section is agian contributed by PRASANGA PAUDEL (The Author)
 
-# This section is agian contributed by PRASANGA PAUDEL ( The Author)
+Now, as we have performed all testing and evaluations of our models, we will finally thest the performance of our full model with all predictors on test data, which we set apart at the start of section 7.
 
+Defining the model:
 
-Defining the model
 ```{r}
 model_train <- lm(Y ~ DOSE + AGE + SEX + WT + HT, data = train_data)
 ```
 
+Making predictions based on above model for the test data.
 
-Making predictions for the test data
 ```{r}
 test_data$Predicted <- predict(model_train, newdata = test_data)
 ```
 
-Now , we will plot the graph.
+Now , we will plot the graph to show the predicted and observed value for the two datasets: train data and test data. 
 
 ```{r}
 # adding predictions for the training data 
@@ -892,11 +967,11 @@ ggplot() +
 
 We can observe that the test data is more or less close to the 45-degree line and can be assumed to follow the same distribution as the training data. Therefore our model performs well in cace of testing data as well.
 
+# Conclusion
 
 In summary,
-
 All our other models have shown to be better than a NULL model.
 
-Although the model with only DOSE gives a better result than the NULL model, the prediction is rather limited to only few values. As there is very less variation in the predictor itself. We can not encorporate all the variation that is present in real life scenario.
+Although the model with only DOSE gives a better result than the NULL model, the explanation power is rather limited with a single independent variable. As there is very less variation in the predictor itself ( three possible value of DOSE), we cant explain much of the variation in the dependent variable.
 
-Our model with all predictor has show the best result among the three models. We verified that the model performs well in an unseen data as well. Furthermore, the addition of different factors into the model has enabled the model to adjust for a lot of variation and the prediction has significantly improved. The difference between the original and predicted values is lowest in case of this model.
+Our model with all predictor has shown to be the best result among the three models. We verified that the model performs well in an unseen data (test data) as well. Furthermore, the addition of different factors into the model has enabled the model to adjust for a lot of variation and the prediction has comparatively improved. The difference between the original and predicted values is lowest in case of this model.
