@@ -7,7 +7,7 @@ date: 2025-3-26
 
 At first, we will load the libraries.
 
-```{r}
+```{r, message=FALSE}
 library(tidymodels)
 library(ggplot2)
 library(GGally)
